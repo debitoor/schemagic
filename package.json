@@ -1,0 +1,32 @@
+{
+	"author":"E-conomic",
+	"name":"schemagic",
+	"description":"JSON validation with schemas, and schema tools",
+	"version":"0.0.1",
+	"repository":{
+		"type":"git",
+		"url":"https://github.com/e-conomic/schemagic"
+	},
+	"private":true,
+	"main":"./source/schemagic.js",
+	"engines":{
+		"node":"0.8.x",
+		"npm":">=1.1.9"
+	},
+	"dependencies":{
+		"json-schema":"",
+		"underscore":""
+	},
+	"scripts":{
+		"test":"node ./bin/runTests.js"
+	},
+	"devDependencies":{
+		"mocha":"",
+		"chai":"",
+		"sinon":"",
+		"sinon-chai":"",
+		"jshint":"",
+		"injectr":""
+	},
+	"optionalDependencies":{}
+}
