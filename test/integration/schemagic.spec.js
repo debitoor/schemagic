@@ -27,6 +27,10 @@ describe("/source/schemagic with valid example schemas injected", function () {
 		});
 	});
 
+	it("has all the exact number og keys at there are schemas (schemagic.getSchemaFromObject is not enumerable)", function(){
+		expect(Object.keys(schemagic)).to.have.property("length").to.equal(Object.keys(schemas).length);
+	});
+
 	it("has getSchemaFromObject as property", function(){
 		expect(schemagic).to.have.property("getSchemaFromObject").to.be.a("function");
 	});
