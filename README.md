@@ -41,6 +41,12 @@ var schemagic = require("schemagic");
 
 You will find the following things on `schemagic.login`
 
+NOTE: if you do:
+```
+Object.keys(schmagic)
+```
+You will ONLY get schemas. Anything not a schema on schemagic is non-enumerable
+
 schemagic.login.`validate(object)`
 ================================
 
@@ -105,7 +111,7 @@ schemagic.login.`schema`
 This property wil contain the result of `require("schemagic/login.js")`, the raw schema as it was required from disk.
 
 
-schemagic.`getSchemaFromObject()`
+schemagic.`getSchemaFromObject()` (non-enumerable)
 =====================================
 EXPERIMENTAL (NOTE: on root schemagic object)
 
