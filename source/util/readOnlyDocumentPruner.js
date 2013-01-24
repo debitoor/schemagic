@@ -11,11 +11,11 @@ var readOnlyDocumentPruner = (function() {
 			scanPropertiesDefinition(jsonSchema.properties, [], pruneDefinition);
 		} else {
 			throw new Error('Currently readOnlyDocumentPruner only supports objects and arrays at root ' +
-				'level in the schema. Current type not supported: ' + jsonSchema.type);
+				'level in the schema. Current type not supported: ' + jsonSchema.type + "\n" + JSON.stringify(jsonSchema, null, "\t"));
 		}
 		return pruneDefinition;
 	}
-	
+
 	function scanPropertiesDefinition(properties, path, pruneDefinition) {
 		var keys = Object.keys(properties);
 		keys.forEach(function(key){
