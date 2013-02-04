@@ -12,7 +12,7 @@ function schemaFactory(rawSchema) {
 		if(doPruning){
 			prune(document);
 		}
-		var doPruneEmptyFields = !options || options.doRemoveEmptyFields !== false;
+		var doPruneEmptyFields = !options || options.pruneEmptyFields !== false;
 		if (doPruneEmptyFields) {
 			emptyFieldsPrumer.prune(document);
 		}

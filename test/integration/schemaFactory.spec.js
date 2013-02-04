@@ -125,4 +125,76 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		});
 	});
 
+	describe("validating valid document with pruneEmptyFields option not set", function () {
+		var document = {
+			a:1,
+			c:"y",
+			e:""
+		};
+		var result;
+
+		before(function () {
+			result = schema.validate(document);
+		});
+
+		it("will validate the document", function () {
+			expect(result).to.have.property("valid").to.equal(true);
+		});
+
+		it("will have pruned the document", function () {
+			expect(document).to.eql({
+				"a":1,
+				"c":"y"
+			});
+		});
+	});
+
+	describe("validating valid document with pruneEmptyFields option set to true", function () {
+		var document = {
+			a:1,
+			c:"y",
+			e:""
+		};
+		var result;
+
+		before(function () {
+			result = schema.validate(document, {pruneEmptyFields:true});
+		});
+
+		it("will validate the document", function () {
+			expect(result).to.have.property("valid").to.equal(true);
+		});
+
+		it("will have pruned the document", function () {
+			expect(document).to.eql({
+				"a":1,
+				"c":"y"
+			});
+		});
+	});
+
+	describe("validating valid document with pruneEmptyFields option set to false", function () {
+		var document = {
+			a:1,
+			c:"y",
+			e:""
+		};
+		var result;
+
+		before(function () {
+			result = schema.validate(document, {pruneEmptyFields:false});
+		});
+
+		it("will validate the document", function () {
+			expect(result).to.have.property("valid").to.equal(true);
+		});
+
+		it("will not prune the document", function () {
+			expect(document).to.eql({
+				a:1,
+				c:"y",
+				e:""
+			});
+		});
+	});
 });
