@@ -1,6 +1,7 @@
 var jsonSchema = require("json-schema");
 var readOnlyDocumentPruner = require("./readOnlyDocumentPruner");
 var exampleJson = require("./exampleJson");
+var emptyFieldsPrumer = require("./emptyFieldsPrumer");
 
 function schemaFactory(rawSchema) {
 
@@ -10,6 +11,10 @@ function schemaFactory(rawSchema) {
 		var doPruning = !options || options.prune !== false; //unless options.prune===false, we do pruning
 		if(doPruning){
 			prune(document);
+		}
+		var doPruneEmptyFields = !options || options.doRemoveEmptyFields !== false;
+		if (doPruneEmptyFields) {
+			emptyFieldsPrumer.prune(document);
 		}
 		return jsonSchema.validate(document, rawSchema);
 	}
