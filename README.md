@@ -56,8 +56,8 @@ This is just a proxy for the [`json-schema`](https://github.com/kriszyp/json-sch
 Options can be passed to the `validate` function:
 ```js
 {
-	pruneReadOnlyFields: true, // remove readonly fields from the object, default: true
-	pruneEmptyFields: true     // remove empty fields (null, "" and undefined) from the object, default: true
+	removeReadOnlyFields: true, // remove readonly fields from the object, default: true
+	removeEmptyFields: true     // remove empty fields (null, "" and undefined) from the object, default: true
 }
 ```
 
