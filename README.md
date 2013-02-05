@@ -47,11 +47,19 @@ Object.keys(schmagic)
 ```
 You will ONLY get schemas. Anything not a schema on schemagic is non-enumerable
 
-schemagic.login.`validate(object)`
+schemagic.login.`validate(object, options)`
 ================================
 
-You will be able to validate a JavaScript object against the schema definition with the `validate` function.
+You will be able to validate a JavaScript object against the schema definition with the `validate` function. 
 This is just a proxy for the [`json-schema`](https://github.com/kriszyp/json-schema) validate function.
+
+Options can be passed to the `validate` function:
+```js
+{
+	pruneReadOnlyFields: true, // remove readonly fields from the object, default: true
+	pruneEmptyFields: true     // remove empty fields (null, "" and undefined) from the object, default: true
+}
+```
 
 It will return this kind of response if there is an error:
 ```js
