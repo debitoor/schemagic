@@ -20,7 +20,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		expect(schema).to.have.property("exampleJsonArray").to.equal(exampleJson(rawSchemas.simpleSchema, {asArray:true}));
 	});
 
-	describe("validating valid document with prune option not set", function () {
+	describe("validating valid document with removeReadOnlyFields option not set", function () {
 		var document = {
 			a:1,
 			b:"x",
@@ -37,7 +37,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 			expect(result).to.have.property("valid").to.equal(true);
 		});
 
-		it("will have pruned the document", function () {
+		it("will have removed the document", function () {
 			expect(document).to.eql({
 				"a":1,
 				"c":"y"
@@ -45,7 +45,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		});
 	});
 
-	describe("validating valid document with prune option set to true", function () {
+	describe("validating valid document with removeReadOnlyFields option set to true", function () {
 		var document = {
 			a:1,
 			b:"x",
@@ -55,14 +55,14 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		var result;
 
 		before(function () {
-			result = schema.validate(document, {prune:true});
+			result = schema.validate(document, {removeReadOnlyFields:true});
 		});
 
 		it("will validate the document", function () {
 			expect(result).to.have.property("valid").to.equal(true);
 		});
 
-		it("will have pruned the document", function () {
+		it("will have removed the document", function () {
 			expect(document).to.eql({
 				"a":1,
 				"c":"y"
@@ -70,7 +70,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		});
 	});
 
-	describe("validating valid document with prune option set to false", function () {
+	describe("validating valid document with removeReadOnlyFields option set to false", function () {
 		var document = {
 			a:1,
 			b:"x",
@@ -80,14 +80,14 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		var result;
 
 		before(function () {
-			result = schema.validate(document, {prune:false});
+			result = schema.validate(document, {removeReadOnlyFields:false});
 		});
 
 		it("will validate the document", function () {
 			expect(result).to.have.property("valid").to.equal(true);
 		});
 
-		it("will not prune the document", function () {
+		it("will not remove the document", function () {
 			expect(document).to.eql({
 				a:1,
 				b:"x",
@@ -125,7 +125,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		});
 	});
 
-	describe("validating valid document with pruneEmptyFields option not set", function () {
+	describe("validating valid document with removeEmptyFields option not set", function () {
 		var document = {
 			a:1,
 			c:"y",
@@ -141,7 +141,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 			expect(result).to.have.property("valid").to.equal(true);
 		});
 
-		it("will have pruned the document", function () {
+		it("will have removed the document", function () {
 			expect(document).to.eql({
 				"a":1,
 				"c":"y"
@@ -149,7 +149,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		});
 	});
 
-	describe("validating valid document with pruneEmptyFields option set to true", function () {
+	describe("validating valid document with removeEmptyFields option set to true", function () {
 		var document = {
 			a:1,
 			c:"y",
@@ -158,14 +158,14 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		var result;
 
 		before(function () {
-			result = schema.validate(document, {pruneEmptyFields:true});
+			result = schema.validate(document, {removeEmptyFields:true});
 		});
 
 		it("will validate the document", function () {
 			expect(result).to.have.property("valid").to.equal(true);
 		});
 
-		it("will have pruned the document", function () {
+		it("will have removed the document", function () {
 			expect(document).to.eql({
 				"a":1,
 				"c":"y"
@@ -173,7 +173,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		});
 	});
 
-	describe("validating valid document with pruneEmptyFields option set to false", function () {
+	describe("validating valid document with removeEmptyFields option set to false", function () {
 		var document = {
 			a:1,
 			c:"y",
@@ -182,14 +182,14 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		var result;
 
 		before(function () {
-			result = schema.validate(document, {pruneEmptyFields:false});
+			result = schema.validate(document, {removeEmptyFields:false});
 		});
 
 		it("will validate the document", function () {
 			expect(result).to.have.property("valid").to.equal(true);
 		});
 
-		it("will not prune the document", function () {
+		it("will not remove the document", function () {
 			expect(document).to.eql({
 				a:1,
 				c:"y",
