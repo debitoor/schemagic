@@ -11,18 +11,7 @@ describe("/source/util/readRawSchemas", function(){
 		});
 
 		it("will check parent directory and read the schemas from /test/integration/schemas", function(){
-			expect(rawSchemas()).to.have.property("test").to.eql(require("./schemas/test"));
-		});
-	});
-
-	describe("when it is passed /test/integration/schemas/tmp/tmp", function(){
-		var rawSchemas;
-		before(function(){
-			rawSchemas = require("../../source/util/readRawSchemas.js");
-		});
-
-		it("will check parent directory and read the schemas from /test/integration/schemas", function(){
-			expect(rawSchemas(path.join(__dirname, "schemas/tmp/tmp"))).to.have.property("test").to.eql(require("./schemas/test"));
+			expect(rawSchemas).to.have.property("test").to.eql(require("./schemas/test"));
 		});
 	});
 
@@ -35,18 +24,7 @@ describe("/source/util/readRawSchemas", function(){
 		});
 
 		it("will read the schemas from /test/integration/schemas", function(){
-			expect(rawSchemas()).to.have.property("test").to.eql(require("./schemas/test"));
-		});
-	});
-
-	describe("when it is passed /test/integration/schemas/tmp", function(){
-		var rawSchemas;
-		before(function(){
-			rawSchemas = require("../../source/util/readRawSchemas.js");
-		});
-
-		it("will check parent directory and read the schemas from /test/integration/schemas", function(){
-			expect(rawSchemas(path.join(__dirname, "schemas/tmp"))).to.have.property("test").to.eql(require("./schemas/test"));
+			expect(rawSchemas).to.have.property("test").to.eql(require("./schemas/test"));
 		});
 	});
 

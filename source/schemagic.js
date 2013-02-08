@@ -1,9 +1,8 @@
-var readRawSchemas = require("./util/readRawSchemas");
+var rawSchemas = require("./util/readRawSchemas");
 var schemaFactory = require("./util/schemaFactory");
 var getSchemaFromObject = require("./util/getSchemaFromObject");
 
-function schemagicFactory(options) {
-	var rawSchemas = readRawSchemas(options && options.dir);
+function schemagicInit() {
 	var schemagic = {};
 	Object.defineProperty(
 		schemagic,
@@ -15,14 +14,10 @@ function schemagicFactory(options) {
 			value: getSchemaFromObject
 		}
 	); //schemagic.getSchemaFromObject is not enumerable
-	if(rawSchemas){
-		Object.keys(rawSchemas).forEach(function (schemaName) {
-			schemagic[schemaName] = schemaFactory(rawSchemas[schemaName]);
-		});
-	} else {
-
-	}
+	Object.keys(rawSchemas).forEach(function (schemaName) {
+		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName]);
+	});
 	return schemagic;
 }
 
-module.exports = schemagicFactory;
+module.exports = schemagicInit();

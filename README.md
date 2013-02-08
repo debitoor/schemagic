@@ -34,16 +34,10 @@ module.exports = {
 };
 ```
 
-When you require schemagic in your main project
+When you require schemagic
 ```
-var schemagic = require("schemagic")();
+var schemagic = require("schemagic");
 ```
-
-When you require schemagic IN A MODULE
-```
-var schemagic = require("schemagic")({dir:__dirname});
-```
-NOTE: in modules you HAVE to pass __dirname, to load your local `schemas` folder
 
 You will find the following things on `schemagic.login`
 

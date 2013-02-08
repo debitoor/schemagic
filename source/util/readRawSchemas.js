@@ -1,12 +1,11 @@
 "use strict";
 var path = require("path");
 var fs = require("fs");
-var format = require("util").format;
 var existsSync = fs.existsSync || path.existsSync;
 var DIR_NAME = "schemas";
 
-function getSchemasDirectory(startDir) {
-	var dir = path.join(startDir || __dirname, "../..");
+function getSchemasDirectory() {
+	var dir = path.join(__dirname, "../..");
 	var lastDir;
 	while (lastDir !== dir) {
 		if (existsSync(path.join(dir, DIR_NAME))) {
@@ -19,10 +18,10 @@ function getSchemasDirectory(startDir) {
 }
 
 
-function readRawSchemas(startDir) {
-	var schemasDirectory = getSchemasDirectory(startDir);
+function readRawSchemas() {
+	var schemasDirectory = getSchemasDirectory();
 	if (!schemasDirectory) {
-		throw new Error(format("schemagic: can't find directory \"%s\" to contain schemas", DIR_NAME));
+		console.warn("schemagic: can't find directory \"%s\" to contain schemas", DIR_NAME);
 	}
 	var schemaFileNames = fs.readdirSync(schemasDirectory);
 	var schemas = {};
@@ -37,5 +36,5 @@ function readRawSchemas(startDir) {
 	return schemas;
 }
 
-module.exports = readRawSchemas;
+module.exports = readRawSchemas();
 
