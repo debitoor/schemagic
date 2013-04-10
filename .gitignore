@@ -20,5 +20,4 @@ npm-debug.log
 coverage
 coverageReport.html
 
-node_modules/*
-!node_modules/json-schema/
+node_modules
