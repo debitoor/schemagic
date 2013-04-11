@@ -15,7 +15,7 @@
 	},
 	"dependencies":{
 		"json-schema":"git+ssh://git@github.com/e-conomic/json-schema.git",
-		"underscore":""
+		"underscore":"~1.4"
 	},
 	"scripts":{
 		"test":"node ./bin/runTests.js"
