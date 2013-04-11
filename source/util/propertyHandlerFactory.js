@@ -36,6 +36,9 @@ var propertyHandlerFactory = function(options) {
 	}
 
 	function scanPropertiesDefinition(properties, path, definition) {
+		if (!properties) {
+			return;
+		}
 		var keys = Object.keys(properties);
 		keys.forEach(function(key){
 			path.push(key);

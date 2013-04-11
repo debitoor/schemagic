@@ -5,6 +5,19 @@ describe('source/util/maxDecimalHandler', function () {
 
 	describe('getDefinition', function () {
 
+		it('will not fails if no properties of root object', function () {
+			var definition = maxDecimalHandler.getDefinition(schemas.schemaRootObjectWithoutPropertiesSchema);
+			expect(definition).to.eql([]);
+		});
+
+		it('will not fails if no properties of an object', function () {
+			var definition = maxDecimalHandler.getDefinition(schemas.schemaObjectWithoutPropertiesSchema);
+			expect(definition).to.eql([]);
+		});
+	});
+
+	describe('getDefinition', function () {
+
 		it('will fail if root schema is not an object', function (done) {
 			try {
 				maxDecimalHandler.getDefinition(schemas.emptySchema);

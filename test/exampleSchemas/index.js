@@ -383,5 +383,23 @@ module.exports = {
 				}
 			}
 		}
+	},
+
+	schemaRootObjectWithoutPropertiesSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object"
+	},
+
+	schemaObjectWithoutPropertiesSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"object",
+				"required":true
+			}
+		}
 	}
 };
