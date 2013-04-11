@@ -25,8 +25,7 @@
 		"chai":"",
 		"sinon":"",
 		"sinon-chai":"",
-		"jshint":"",
+		"jshint": "~0.8",
 		"injectr":""
-	},
-	"optionalDependencies":{}
+	}
 }
