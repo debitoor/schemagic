@@ -211,5 +211,177 @@ module.exports = {
 				}
 			}
 		}
+	},
+
+	// DecimalSchema
+
+	noDecimalSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"number",
+				"required":true
+			},
+			"b":{
+				"type":"string",
+				"required":true
+			},
+			"c":{
+				"type":"string",
+				"required":true,
+				"readonly":false
+			},
+			"d":{
+				"type":"string",
+				"required":false
+			}
+		}
+	},
+
+	simpleDecimalSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"number",
+				"required":true
+			},
+			"b":{
+				"type":"number",
+				"required":false,
+				"maxDecimal":2
+			},
+			"c":{
+				"type":["null","number"],
+				"required":true
+			},
+			"d":{
+				"type":["null","number"],
+				"required":false,
+				"maxDecimal":3
+			}
+		}
+	},
+
+	nestedDecimalSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"number",
+				"required":true
+			},
+			"b":{
+				"required":true,
+				"type":"object",
+				"properties":{
+					"d":{
+						"type":"number",
+						"required":false,
+						"maxDecimal":2
+					},
+					"e":{
+						"type":"string",
+						"required":true
+					}
+				}
+			},
+			"c":{
+				"type":"number",
+				"required":false,
+				"maxDecimal":3
+			}
+		}
+	},
+
+	arrayDecimalSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"number",
+				"required":true
+			},
+			"b":{
+				"required":true,
+				"type":"array",
+				"items":{
+					"required":true,
+					"type":"object",
+					"properties":{
+						"d":{
+							"type":"number",
+							"required":false,
+							"maxDecimal":2
+						},
+						"e":{
+							"type":"string",
+							"required":true
+						}
+					}
+				}
+			},
+			"c":{
+				"type":"number",
+				"required":false,
+				"maxDecimal":3
+			}
+		}
+	},
+
+	arrayNestedDecimalSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"required":true,
+				"type":"array",
+				"items":{
+					"required":true,
+					"type":"object",
+					"properties":{
+						"b":{
+							"required":true,
+							"type":"object",
+							"properties":{
+								"c":{
+									"type":"number",
+									"required":false,
+									"maxDecimal":2
+								},
+								"d":{
+									"type":"string",
+									"required":true
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
+	arrayAtRootDecimalSchema:{
+		"description":"Schema that contains an array at root level",
+		"required":true,
+		"type":"array",
+		"items":{
+			"description":"The id",
+			"required":true,
+			"type":"object",
+			"properties":{
+				"a":{
+					"required":false,
+					"maxDecimal":2,
+					"type":"number"
+				}
+			}
+		}
 	}
 };
