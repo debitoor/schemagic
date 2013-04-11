@@ -20,13 +20,13 @@ function runMocha() {
 	process.exit = function(code){
 		setTimeout(realProcessExit.bind(process, code), 200);
 	};
-	require('../node_modules/mocha/bin/_mocha');
+	require('./../node_modules/mocha/bin/_mocha');
 }
 
 function runJsHint(pathsArray, callback) {
-	var jsHint = require("../node_modules/jshint/lib/hint.js");
+	var jsHint = require("./../node_modules/jshint/lib/hint.js");
 	var config = JSON.parse(fs.readFileSync(path.resolve(".jshintrc"), "utf-8"));
-	var reporter = require("../node_modules/jshint/lib/reporters/default.js").reporter;
+	var reporter = require("./../node_modules/jshint/lib/reporters/default.js").reporter;
 	var ignores = fs.readFileSync(path.resolve(".jshintignore"), "utf8").split("\n")
 		.filter(function (line) {
 			return !!line.trim(); //remove empty lines
