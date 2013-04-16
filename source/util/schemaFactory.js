@@ -1,4 +1,5 @@
 var jsonSchema = require("json-schema");
+var util = require('util');
 var readOnlyDocumentPrunerFactory = require("./readOnlyDocumentPruner");
 var maxDecimalHandlerFactory = require("./maxDecimalHandler");
 var exampleJson = require("./exampleJson");
@@ -8,6 +9,7 @@ function schemaFactory(rawSchema) {
 
 	var readOnlyDocumentProner = readOnlyDocumentPrunerFactory(rawSchema);
 	var maxDecimalHandler = maxDecimalHandlerFactory(rawSchema);
+	var normalizedJSON;
 
 	function validate(document, options) {
 		var doPruneReadOnlyFields = !options || options.removeReadOnlyFields !== false; // remove readonly fields from the object, default: true
@@ -24,12 +26,19 @@ function schemaFactory(rawSchema) {
 		}
 		return jsonSchema.validate(document, rawSchema);
 	}
+	function toJSON() {
+		normalizedJSON = normalizedJSON || JSON.parse(JSON.stringify(rawSchema, function(key, val) {
+			return util.isRegExp(val) ? val.source : val;
+		}));
+		return normalizedJSON;
+	}
 
 	return {
 		validate:validate,
 		schema:rawSchema,
 		exampleJson: exampleJson(rawSchema),
-		exampleJsonArray: exampleJson(rawSchema, {asArray:true})
+		exampleJsonArray: exampleJson(rawSchema, {asArray:true}),
+		toJSON: toJSON
 	};
 }
 
