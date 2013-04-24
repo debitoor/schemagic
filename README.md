@@ -57,7 +57,9 @@ Options can be passed to the `validate` function:
 ```js
 {
 	removeReadOnlyFields: true, // remove readonly fields from the object, default: true
-	removeEmptyFields: true     // remove empty fields (null, "" and undefined) from the object, default: true
+	removeEmptyFields: true,     // remove empty fields (null, "" and undefined) from the object, default: true
+	doDecimalsValidation: true,  // enable maxDecimals check, default:true
+	filter: true  // filter away any properties not in schema (if additionalProperties:false), default: false
 }
 ```
 
