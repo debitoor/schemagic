@@ -28,7 +28,7 @@ function schemaFactory(rawSchema) {
 		if (doDecimalsValidation) {
 			maxDecimalHandler(document);
 		}
-		return jsonSchema.validate(document, rawSchema, options);
+		return jsonSchema._validate(document, rawSchema, options);
 	}
 	function toJSON() {
 		normalizedJSON = normalizedJSON || JSON.parse(JSON.stringify(rawSchema, function(key, val) {
