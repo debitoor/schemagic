@@ -2,6 +2,7 @@ var jsonSchema = require("json-schema");
 var util = require('util');
 var readOnlyDocumentPrunerFactory = require("./readOnlyDocumentPruner");
 var maxDecimalHandlerFactory = require("./maxDecimalHandler");
+var stringFormatValidatorFactory = require("./stringFormatValidator");
 var exampleJson = require("./exampleJson");
 var emptyFieldsPrumer = require("./emptyFieldsPrumer");
 
@@ -9,10 +10,13 @@ function schemaFactory(rawSchema) {
 
 	var readOnlyDocumentProner = readOnlyDocumentPrunerFactory(rawSchema);
 	var maxDecimalHandler = maxDecimalHandlerFactory(rawSchema);
+	var stringFormatValidator = stringFormatValidatorFactory(rawSchema);
 	var normalizedJSON;
 
 	function validate(document, options) {
 		options = options || {};
+		var errors = [];
+
 		var doPruneReadOnlyFields = !options || options.removeReadOnlyFields !== false; // remove readonly fields from the object, default: true
 		delete options.removeReadOnlyFields;
 		if(doPruneReadOnlyFields){
@@ -23,12 +27,20 @@ function schemaFactory(rawSchema) {
 		if (doPruneEmptyFields) {
 			emptyFieldsPrumer.prune(document);
 		}
-		var doDecimalsValidation = !options || options.doDecimalsValidation !== false; // remove readonly fields from the object, default: true
+		var doDecimalsValidation = !options || options.doDecimalsValidation !== false; // cut off remaining decimals, default: true
 		delete options.doDecimalsValidation;
 		if (doDecimalsValidation) {
 			maxDecimalHandler(document);
 		}
-		return jsonSchema._validate(document, rawSchema, options);
+
+		var doStringFormatValidation = !options || options.doStringFormatValidation !== false;
+		delete options.doStringFormatValidation;
+		if (doStringFormatValidation) {
+			errors = errors.concat(stringFormatValidator(document).errors);
+		}
+
+		errors = errors.concat(jsonSchema._validate(document, rawSchema, options).errors);
+		return {valid:!errors.length,errors:errors};
 	}
 	function toJSON() {
 		normalizedJSON = normalizedJSON || JSON.parse(JSON.stringify(rawSchema, function(key, val) {

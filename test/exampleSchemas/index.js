@@ -1,6 +1,26 @@
 module.exports = {
+
+	// Common
 	emptySchema:{
 
+	},
+
+	schemaRootObjectWithoutPropertiesSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object"
+	},
+
+	schemaObjectWithoutPropertiesSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"object",
+				"required":true
+			}
+		}
 	},
 
 	noReadOnlySchema:{
@@ -385,20 +405,174 @@ module.exports = {
 		}
 	},
 
-	schemaRootObjectWithoutPropertiesSchema:{
-		"description":"Simple object",
-		"required":true,
-		"type":"object"
-	},
+	// StringFormatSchema
 
-	schemaObjectWithoutPropertiesSchema:{
+	noStringFormatSchema:{
 		"description":"Simple object",
 		"required":true,
 		"type":"object",
 		"properties":{
 			"a":{
-				"type":"object",
+				"type":"number",
 				"required":true
+			},
+			"b":{
+				"type":"string",
+				"required":true
+			},
+			"c":{
+				"type":"string",
+				"required":true,
+				"readonly":false
+			},
+			"d":{
+				"type":"string",
+				"required":false
+			}
+		}
+	},
+
+	simpleStringFormatSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"string",
+				"required":true
+			},
+			"b":{
+				"type":"string",
+				"required":false,
+				"format": "date"
+			},
+			"c":{
+				"type":["null","string"],
+				"required":true
+			},
+			"d":{
+				"type":["null","string"],
+				"required":false,
+				"format": "date"
+			}
+		}
+	},
+
+	nestedStringFormatSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"string",
+				"required":true
+			},
+			"b":{
+				"required":true,
+				"type":"object",
+				"properties":{
+					"d":{
+						"type":"string",
+						"required":false,
+						"format": "date"
+					},
+					"e":{
+						"type":"string",
+						"required":true
+					}
+				}
+			},
+			"c":{
+				"type":"string",
+				"required":false,
+				"format": "date"
+			}
+		}
+	},
+
+	arrayStringFormatSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"string",
+				"required":true
+			},
+			"b":{
+				"required":true,
+				"type":"array",
+				"items":{
+					"required":true,
+					"type":"object",
+					"properties":{
+						"d":{
+							"type":"string",
+							"required":false,
+							"format": "date"
+						},
+						"e":{
+							"type":"string",
+							"required":true
+						}
+					}
+				}
+			},
+			"c":{
+				"type":"string",
+				"required":false,
+				"format": "date"
+			}
+		}
+	},
+
+	arrayNestedStringFormatSchema:{
+		"description":"Simple object",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"required":true,
+				"type":"array",
+				"items":{
+					"required":true,
+					"type":"object",
+					"properties":{
+						"b":{
+							"required":true,
+							"type":"object",
+							"properties":{
+								"c":{
+									"type":"string",
+									"required":false,
+									"format": "date"
+								},
+								"d":{
+									"type":"string",
+									"required":true
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
+	arrayAtRootStringFormatSchema:{
+		"description":"Schema that contains an array at root level",
+		"required":true,
+		"type":"array",
+		"items":{
+			"description":"The id",
+			"required":true,
+			"type":"object",
+			"properties":{
+				"a":{
+					"required":false,
+					"format": "date",
+					"type":"string"
+				}
 			}
 		}
 	}

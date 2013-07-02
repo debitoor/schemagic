@@ -29,7 +29,7 @@ var propertyHandlerFactory = function(options) {
 		} else if (jsonSchema.type === 'object') {
 			scanPropertiesDefinition(jsonSchema.properties, [], definition);
 		} else {
-			throw new Error('Currently decimalPropertyHandler only supports objects and arrays at root ' +
+			throw new Error('Currently propertyHandlerFactory only supports objects and arrays at root ' +
 				'level in the schema. Current type not supported: ' + jsonSchema.type + "\n" + JSON.stringify(jsonSchema, null, "\t"));
 		}
 		return definition;
@@ -70,30 +70,34 @@ var propertyHandlerFactory = function(options) {
 	}
 
 	function process(document, definition) {
-
+		var errors = [];
 		definition.forEach(function(def){
-			processDocument(document, def.data, def.path, 0);
+			processDocument(document, def.data, def.path, 0, errors);
 		});
+		return {valid:!errors.length,errors:errors};
 	}
 
-	function processDocument(document, data, path, index) {
+	function processDocument(document, data, path, index, errors) {
 
 		var property = path[index];
 		var subDoc = document[property];
 
-		if (!subDoc) {
+		if (subDoc===undefined) {
 		} else if (path.length===index+1) {		// end of process path
-			processHandler(document, property, data);
+			var err = processHandler(document, property, data);
+			if (err) {
+				errors.push(err);
+			}
 		} else if (util.isArray(subDoc)) {				// we have an array
-			processArray(subDoc, data, path, index+1);
+			processArray(subDoc, data, path, index+1, errors);
 		} else {                                        // goto next property
-			processDocument(subDoc, data, path, index+1);
+			processDocument(subDoc, data, path, index+1, errors);
 		}
 	}
 
-	function processArray(array, data, processPath, index) {
+	function processArray(array, data, processPath, index, errors) {
 		array.forEach(function(doc){
-			processDocument(doc, data, processPath, index);
+			processDocument(doc, data, processPath, index, errors);
 		});
 	}
 
@@ -101,7 +105,7 @@ var propertyHandlerFactory = function(options) {
 		var definition = getDefinition(jsonSchema);
 
 		return function(document) {
-			process(document, definition);
+			return process(document, definition);
 		};
 	}
 
