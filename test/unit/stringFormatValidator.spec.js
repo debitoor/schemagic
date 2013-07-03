@@ -76,17 +76,18 @@ describe('source/util/stringFormatValidator', function () {
 		});
 
 		it('will validate invalid simple object', function () {
-			document = { a: '2013-01-01', b: '2013-01-00', c: '2013-13-01', d: 'boo', e: '', f: '01-01-2013' };
+			document = { a: '2013-01-01', b: '2013-01-00', c: '2013-13-01', d: 'boo', e: '', f: '01-01-2013', g: '01-01-10000' };
 			result = stringFormatValidatorFactory.process(document, [
 				{path:['a'], data: {format: 'date'}},
 				{path:['b'], data: {format: 'date'}},
 				{path:['c'], data: {format: 'date'}},
 				{path:['d'], data: {format: 'date'}},
 				{path:['e'], data: {format: 'date'}},
-				{path:['f'], data: {format: 'date'}}]
+				{path:['f'], data: {format: 'date'}},
+				{path:['g'], data: {format: 'date'}}]
 			);
 			expect(result.valid).to.equal(false);
-			expect(result.errors.length).to.equal(5);
+			expect(result.errors.length).to.equal(6);
 		});
 
 		it('will validate correct simple object with null', function () {

@@ -11,8 +11,8 @@ function isValidType(type) {
 	return type==="string" || _.isArray(type) && _.contains(type, "string");
 }
 
-var datePattern = /\d{4}-\d{2}-\d{2}/;
-var dateTimePattern = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/;
+var datePattern = /^\d{4}-\d{2}-\d{2}$/;
+var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 
 var stringFormatValidator = propertyHandlerFactory({
 	toBeProcess: function(properties) {
@@ -31,6 +31,7 @@ var stringFormatValidator = propertyHandlerFactory({
 		if (typeof value !== 'string') {
 			return;
 		}
+		value = value.trim();
 
 		if (format==='date-time') {
 			if (!dateTimePattern.test(value) || !moment(value, "YYYY-MM-DDThh:mm:ssZ").isValid()) {
