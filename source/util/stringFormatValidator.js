@@ -8,11 +8,10 @@ function isValidFormat(format) {
 }
 
 function isValidType(type) {
-	return type==="string" || _.isArray(type) && _.contains(type, "string");
+	return type==='string' || _.isArray(type) && _.contains(type, 'string');
 }
 
-var datePattern = /^\d{4}-\d{2}-\d{2}$/;
-var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
+var minYear = 1970;
 
 var stringFormatValidator = propertyHandlerFactory({
 	toBeProcess: function(properties) {
@@ -33,20 +32,32 @@ var stringFormatValidator = propertyHandlerFactory({
 		}
 		value = value.trim();
 
-		if (format==='date-time') {
-			if (!dateTimePattern.test(value) || !moment(value, "YYYY-MM-DDThh:mm:ssZ").isValid()) {
+		if (format === 'date-time') {
+			var dateTime = moment(value, 'YYYY-MM-DDThh:mm:ssZ');
+			if (!dateTime || !dateTime.isValid()) {
 				return {
 					property: property,
 					message: 'should be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ (date-time)'
 				};
+			} else if (dateTime.year() < minYear) {
+				return {
+					property: property,
+					message: 'should year be in range from 1970 to 9999'
+				};
 			}
 		}
 
-		if (format==='date') {
-			if (!datePattern.test(value) || !moment(value, "YYYY-MM-DD").isValid()) {
+		if (format === 'date') {
+			var date = moment(value, 'YYYY-MM-DD');
+			if (!date || !date.isValid()) {
 				return {
 					property: property,
 					message: 'should be a date of format YYYY-MM-DD (date)'
+				};
+			} else if (date.year() < minYear) {
+				return {
+					property: property,
+					message: 'should year be in range from 1970 to 9999'
 				};
 			}
 		}

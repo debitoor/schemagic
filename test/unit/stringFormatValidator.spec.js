@@ -139,5 +139,72 @@ describe('source/util/stringFormatValidator', function () {
 				{path:['c'], data: {format: 'date'}}]);
 			expect(result.errors.length).to.equal(3);
 		});
+
+		describe('when validating date ranges', function () {
+			beforeEach(function () {
+				document = { a: '1950-01-01', b: '1950-01-01T12:00:00Z', c: '10000-01-00', d: '10000-01-00T12:00:00Z'};
+			});
+
+			describe('and year < 1970', function () {
+				describe('for date', function () {
+					beforeEach(function () {
+						result = stringFormatValidatorFactory.process(document, [{path: ['a'], data: {format: 'date'}}]);
+					});
+
+					it('should be invalid', function () {
+						expect(result.valid).to.equal(false);
+					});
+
+					it('should specify reason in message', function () {
+						expect(result.errors[0].message).to.equal('should year be in range from 1970 to 9999');
+					});
+				});
+
+				describe('for date-time', function () {
+					beforeEach(function () {
+						result = stringFormatValidatorFactory.process(document, [{path: ['b'], data: {format: 'date-time'}}]);
+					});
+
+					it('should be invalid', function () {
+						expect(result.valid).to.equal(false);
+					});
+
+					it('should specify reason in message', function () {
+						expect(result.errors[0].message).to.equal('should year be in range from 1970 to 9999');
+					});
+				});
+
+			});
+
+			describe('and year > 9999', function () {
+				describe('for date', function () {
+					beforeEach(function () {
+						result = stringFormatValidatorFactory.process(document, [{path: ['c'], data: {format: 'date'}}]);
+					});
+
+					it('should be invalid', function () {
+						expect(result.valid).to.equal(false);
+					});
+
+					it('should specify reason in message', function () {
+						expect(result.errors[0].message).to.equal('should be a date of format YYYY-MM-DD (date)');
+					});
+				});
+
+				describe('for date-time', function () {
+					beforeEach(function () {
+						result = stringFormatValidatorFactory.process(document, [{path: ['d'], data: {format: 'date-time'}}]);
+					});
+
+					it('should be invalid', function () {
+						expect(result.valid).to.equal(false);
+					});
+
+					it('should specify reason in message', function () {
+						expect(result.errors[0].message).to.equal('should be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ (date-time)');
+					});
+				});
+			});
+		});
 	});
 });
