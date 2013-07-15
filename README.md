@@ -76,7 +76,7 @@ module.exports = {
 			if(invoicesInDb.length === invoiceIds.length){
 				//Array of length = invoiceIds.length, with values all TRUE
 				result = invoicesInDb.map(Boolean); //truthy values become TRUE
-				return callback(null, result)
+				return callback(null, result); //result array must have same order as array passed in invoiceIds param
 			}
 			var idsInDb = invoicesInDb.map(function(invoice){
                 invoice._id.toString();
@@ -84,7 +84,7 @@ module.exports = {
 			result = invoiceIds.map(function(invoiceId){
 				return idsInDb.indexOf(invoiceId) !== -1;
 			});
-			return callback(null, result)
+			return callback(null, result); //result array must have same order as array passed in invoiceIds param
 		}
 	},
 	unitId: function(unitIds, options, callback){
