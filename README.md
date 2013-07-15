@@ -5,7 +5,7 @@ JSON validation with schemagic, and schema tools
 
 Put your JSV schemagic in a directory called `schemagic` in your root folder.
 
-Each schema will be loaded with `require`. This is an example of a schema in the file `schemagic/login.js`
+Each schema will be loaded with `require`. This is an example of a schema in the file `schemas/login.js`
 
 ```js
 //JSON Schemas defined according to the standard JSV http://tools.ietf.org/html/draft-zyp-json-schema-03
@@ -47,7 +47,58 @@ Object.keys(schmagic)
 ```
 You will ONLY get schemas. Anything not a schema on schemagic is non-enumerable
 
-schemagic.login.`validate(object, options)`
+TODO: Foreign key constraints in MongoDB (`schemas/foreignKeys.js`)
+===================================================================
+In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB like this
+
+NOTE: It makes sense to extract the first function here into helper function and reuse
+
+```js
+module.exports = {
+	invoiceId: function(invoiceIds, options, callback){
+		var ids = invoiceIds.map(function(invoiceId){
+			new options.mongo.ObjectID(invoiceId);
+		});
+		options.mongo("invoices").find({_id: {$in: ids} }, {_id:1}, getArray);
+
+		function getArray(err, cursor){
+			if(err){
+				return callback(err);
+			}
+			cursor.toArray(checkResults);
+		}
+
+		function checkResults(err, invoicesInDb){
+			var result;
+			if(err){
+				return callback(err);
+			}
+			if(invoicesInDb.length === invoiceIds.length){
+				//Array of length = invoiceIds.length, with values all TRUE
+				result = invoicesInDb.map(Boolean); //truthy values become TRUE
+				return callback(null, result)
+			}
+			var idsInDb = invoicesInDb.map(function(invoice){
+                invoice._id.toString();
+            });
+			result = invoiceIds.map(function(invoiceId){
+				return idsInDb.indexOf(invoiceId) !== -1;
+			});
+			return callback(null, result)
+		}
+	},
+	unitId: function(unitIds, options, callback){
+		//unitIds === [1,9999,2]
+		//lookup in memory: result = [true, false, true]; array must have same order as array passed in unitIds param
+		return callback(null, result);
+	}
+};
+```
+
+Foreign keys are specified by convention. Meaning that with the above specification, ANY property with the name
+`invoiceId` or `unitId` will be subject to a foreign key check in ALL schemas.
+
+schemagic.login.`validate(object, options[, callback])`
 ================================
 
 You will be able to validate a JavaScript object against the schema definition with the `validate` function. 
@@ -60,6 +111,8 @@ Options can be passed to the `validate` function:
 	removeEmptyFields: true,     // remove empty fields (null, "" and undefined) from the object, default: true
 	doDecimalsValidation: true,  // enable maxDecimals check, default:true
 	filter: true  // filter away any properties not in schema (if additionalProperties:false), default: false
+	foreignKeys: true //check MongoDB foreign keys (callback is required), default: false
+	mongo: [tenantmongo-object] // this is just passed to the functions in schemas/foreignKeys.js
 }
 ```
 
