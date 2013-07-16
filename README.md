@@ -133,7 +133,7 @@ NOTE: It makes sense to extract the first function here into helper function and
 module.exports = {
 	invoiceId: function(invoiceIds, options, callback){
 		var ids = invoiceIds.map(function(invoiceId){
-			new options.mongo.ObjectID(invoiceId);
+			return new options.mongo.ObjectID(invoiceId);
 		});
 		options.mongo("invoices").find({_id: {$in: ids} }, {_id:1}, getArray);
 
