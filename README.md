@@ -46,57 +46,6 @@ Object.keys(schmagic)
 ```
 You will ONLY get schemas. Anything not a schema on schemagic is non-enumerable
 
-TODO: Foreign key constraints in MongoDB (`schemas/foreignKeys.js`)
-===================================================================
-In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB like this
-
-NOTE: It makes sense to extract the first function here into helper function and reuse
-
-```js
-module.exports = {
-	invoiceId: function(invoiceIds, options, callback){
-		var ids = invoiceIds.map(function(invoiceId){
-			new options.mongo.ObjectID(invoiceId);
-		});
-		options.mongo("invoices").find({_id: {$in: ids} }, {_id:1}, getArray);
-
-		function getArray(err, cursor){
-			if(err){
-				return callback(err);
-			}
-			cursor.toArray(checkResults);
-		}
-
-		function checkResults(err, invoicesInDb){
-			var result;
-			if(err){
-				return callback(err);
-			}
-			if(invoicesInDb.length === invoiceIds.length){
-				//Array of length = invoiceIds.length, with values all TRUE
-				result = invoicesInDb.map(Boolean); //truthy values become TRUE
-				return callback(null, result); //result array must have same order as array passed in invoiceIds param
-			}
-			var idsInDb = invoicesInDb.map(function(invoice){
-                invoice._id.toString();
-            });
-			result = invoiceIds.map(function(invoiceId){
-				return idsInDb.indexOf(invoiceId) !== -1;
-			});
-			return callback(null, result); //result array must have same order as array passed in invoiceIds param
-		}
-	},
-	unitId: function(unitIds, options, callback){
-		//unitIds === [1,9999,2]
-		//lookup in memory: result = [true, false, true]; array must have same order as array passed in unitIds param
-		return callback(null, result);
-	}
-};
-```
-
-Foreign keys are specified by convention. Meaning that with the above specification, ANY property with the name
-`invoiceId` or `unitId` will be subject to a foreign key check in ALL schemas.
-
 schemagic.login.`validate(object, options[, callback])`
 ================================
 
@@ -171,6 +120,58 @@ Example:
 schemagic.login.`schema`
 ======================
 This property wil contain the result of `require("schemagic/login.js")`, the raw schema as it was required from disk.
+
+
+TODO: Foreign key constraints in MongoDB (`schemas/foreignKeys.js`)
+===================================================================
+In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB like this
+
+NOTE: It makes sense to extract the first function here into helper function and reuse
+
+```js
+module.exports = {
+	invoiceId: function(invoiceIds, options, callback){
+		var ids = invoiceIds.map(function(invoiceId){
+			new options.mongo.ObjectID(invoiceId);
+		});
+		options.mongo("invoices").find({_id: {$in: ids} }, {_id:1}, getArray);
+
+		function getArray(err, cursor){
+			if(err){
+				return callback(err);
+			}
+			cursor.toArray(checkResults);
+		}
+
+		function checkResults(err, invoicesInDb){
+			var result;
+			if(err){
+				return callback(err);
+			}
+			if(invoicesInDb.length === invoiceIds.length){
+				//Array of length = invoiceIds.length, with values all TRUE
+				result = invoicesInDb.map(Boolean); //truthy values become TRUE
+				return callback(null, result); //result array must have same order as array passed in invoiceIds param
+			}
+			var idsInDb = invoicesInDb.map(function(invoice){
+                invoice._id.toString();
+            });
+			result = invoiceIds.map(function(invoiceId){
+				return idsInDb.indexOf(invoiceId) !== -1;
+			});
+			return callback(null, result); //result array must have same order as array passed in invoiceIds param
+		}
+	},
+	unitId: function(unitIds, options, callback){
+		//unitIds === [1,9999,2]
+		//lookup in memory: result = [true, false, true]; array must have same order as array passed in unitIds param
+		return callback(null, result);
+	}
+};
+```
+
+Foreign keys are specified by convention. Meaning that with the above specification, ANY property with the name
+`invoiceId` or `unitId` will be subject to a foreign key check in ALL schemas.
 
 
 schemagic.`getSchemaFromObject()` (non-enumerable)
