@@ -1,4 +1,4 @@
-describe("/source/schemagic with valid example schemas injected", function () {
+describe("/source/schemagic with valid example schemas", function () {
 	var schemagic;
 
 	describe("requiring schemagic here", function () {
@@ -10,16 +10,108 @@ describe("/source/schemagic with valid example schemas injected", function () {
 			expect(schemagic).to.be.a("object");
 		});
 
-		it("has all the schemas as properties", function () {
+		it("has the 'test' schema", function () {
 			expect(schemagic).to.have.property("test");
 		});
-
+		it("has the 'test2' schema", function () {
+			expect(schemagic).to.have.property("test2");
+		});
 		it("has all the exact number og keys at there are schemas (schemagic.getSchemaFromObject is not enumerable)", function () {
-			expect(Object.keys(schemagic)).to.have.property("length").to.equal(1);
+			expect(Object.keys(schemagic)).to.have.property("length").to.equal(2);
 		});
 
 		it("has getSchemaFromObject as property", function () {
 			expect(schemagic).to.have.property("getSchemaFromObject").to.be.a("function");
+		});
+
+		describe("validating against test2 schema that has foreign key value, foreignKey:false - no callback", function(){
+			var result;
+			var doc;
+			before(function(){
+				doc =  {
+					testForeignKey: 3 //this is invalid in foreign key check
+				};
+				result = schemagic.test2.validate(doc);
+			});
+
+			it("should return valid result", function(){
+				expect(result).to.eql({
+					"valid": true,
+					"errors": []
+				});
+			});
+
+		});
+
+		describe("validating against test2 schema that has foreign key value, foreignKey:true - no callback", function(){
+			var doc, options, validate;
+			before(function(){
+				doc =  {
+					testForeignKey: 3 //this is invalid in foreign key check
+				};
+				options = {foreignKey:true};
+				validate = function(){
+					schemagic.test2.validate(doc, options);
+				};
+			});
+
+			it("should throw an error because of no callback", function(){
+				expect(validate).to["throw"];
+			});
+
+		});
+
+		describe("validating against test2 schema that has invalid foreign key value, foreignKey:true - callback", function(){
+			var result;
+			var doc;
+			var options;
+			before(function(done){
+				doc =  {
+					testForeignKey: 3 //this is invalid in foreign key check
+				};
+				options = {foreignKey:true};
+				return schemagic.test2.validate(doc, options, saveResult);
+
+				function saveResult(err, res){
+					if(err){
+						return done(err);
+					}
+					result = res;
+					return done();
+				}
+			});
+
+			it("should return result with error", function(){
+				expect(result).to.eql({
+					"valid": false,
+					"errors": [{
+						property: 'testForeignKey',
+						value: 3,
+						message: 'This is not a valid value'
+					}]
+				});
+			});
+		});
+		describe("validating against test2 schema with foreign key check that fails, foreignKey:true - callback", function(){
+			var error;
+			var doc;
+			var options;
+			before(function(done){
+				doc =  {
+					testForeignKeyError: 3 //this foreign key checker fails
+				};
+				options = {foreignKey:true};
+				return schemagic.test2.validate(doc, options, saveResult);
+
+				function saveResult(err){
+					error = err;
+					return done();
+				}
+			});
+
+			it("should error", function(){
+				expect(error).to.be.instanceOf(Error).to.have.property("message", "This mock foreign key check fails");
+			});
 		});
 	});
 
@@ -33,7 +125,7 @@ describe("/source/schemagic with valid example schemas injected", function () {
 			expect(schemagic1).to.have.property("test1");
 		});
 
-		it("will have only one schema", function () {
+		it("will have only two schemas", function () {
 			expect(Object.keys(schemagic1)).to.have.property("length").to.equal(1);
 		});
 

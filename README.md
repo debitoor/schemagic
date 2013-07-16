@@ -46,7 +46,7 @@ Object.keys(schmagic)
 ```
 You will ONLY get schemas. Anything not a schema on schemagic is non-enumerable
 
-schemagic.login.`validate(object, options[, callback])`
+schemagic.login.validate(object, options[, callback])
 ================================
 
 You will be able to validate a JavaScript object against the schema definition with the `validate` function. 
@@ -57,9 +57,10 @@ Options can be passed to the `validate` function:
 {
 	removeReadOnlyFields: true, // remove readonly fields from the object, default: true
 	removeEmptyFields: true,     // remove empty fields (null, "" and undefined) from the object, default: true
-	doDecimalsValidation: true,  // enable maxDecimals check, default:true
+	decimalsValidation: true,  // enable maxDecimals check, default:true
+	stringFormatValidation: true, // enable check of date and date-time formats to be ANSI standard, default: true
 	filter: true  // filter away any properties not in schema (if additionalProperties:false), default: false
-	foreignKeys: true //check MongoDB foreign keys (callback is required), default: false
+	foreignKeys: false //check MongoDB foreign keys (callback is required), default: false
 	mongo: [tenantmongo-object] // this is just passed to the functions in schemas/foreignKeys.js
 }
 ```

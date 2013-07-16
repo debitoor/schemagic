@@ -1,17 +1,13 @@
 var util = require('util');
 
 var propertyHandlerFactory = function(options) {
-
 	if (!options.toBeProcess) {
 		throw new Error('toBeProcess is missing');
 	}
-
 	if (!options.processHandler) {
 		throw new Error('processHandler is missing');
 	}
-
 	var toBeProcess = options.toBeProcess;
-
 	var processHandler = options.processHandler;
 
 	function pushToDefinition(data, path, definition) {
@@ -23,7 +19,6 @@ var propertyHandlerFactory = function(options) {
 
 	function getDefinition(jsonSchema) {
 		var definition = [];
-
 		if (jsonSchema.type === 'array') {
 			scanPropertyDefinition(jsonSchema, [], definition);
 		} else if (jsonSchema.type === 'object') {
@@ -42,9 +37,7 @@ var propertyHandlerFactory = function(options) {
 		var keys = Object.keys(properties);
 		keys.forEach(function(key){
 			path.push(key);
-
 			scanPropertyDefinition(properties[key], path, definition);
-
 			path.pop();
 		});
 	}

@@ -10,7 +10,9 @@ describe("/source/util/redRawSchemas", function(){
 
 		it("reads the test schema", function(){
 			expect(schemas).to.eql({
-				test: require("./schemas/test")
+				test: require("./schemas/test"),
+				test2: require("./schemas/test2"),
+				foreignKeys: require("./schemas/foreignKeys")
 			});
 		});
 	});

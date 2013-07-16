@@ -31,8 +31,13 @@ function schemagicInit() {
 			value: getSchemaFromObject
 		}
 	); //schemagic.getSchemaFromObject is not enumerable
+	var foreignKeys = {};
+	if(rawSchemas.foreignKeys){
+		foreignKeys = rawSchemas.foreignKeys;
+		delete rawSchemas.foreignKeys;
+	}
 	Object.keys(rawSchemas).forEach(function (schemaName) {
-		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName]);
+		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName], foreignKeys);
 	});
 	cache.schemagics[schemasDirectory] = schemagic;
 	return schemagic;
