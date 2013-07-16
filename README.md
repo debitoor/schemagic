@@ -78,7 +78,7 @@ It will return this kind of response if there is an error:
 }
 ```
 
-schemagic.login.`exampleJson`
+schemagic.login.exampleJson
 ===========================
 This property wil contain a string, with pretty-printed JSON and comments about what is required, read only and so on.
 This example JSON is generated directly from the schema definition, using the `example` properties, if available (not required).
@@ -96,7 +96,7 @@ Example:
 }
 ```
 
-schemagic.login.`exampleJsonArray`
+schemagic.login.exampleJsonArray
 ================================
 This property wil contain a string, with pretty-printed JSON and comments about what is required, read only and so on.
 This example is almost the same as above, except the example shows an Array of objects that satisfy the schema.
@@ -123,7 +123,7 @@ schemagic.login.`schema`
 This property wil contain the result of `require("schemagic/login.js")`, the raw schema as it was required from disk.
 
 
-TODO: Foreign key constraints in MongoDB (`schemas/foreignKeys.js`)
+Foreign key constraints in MongoDB (`schemas/foreignKeys.js`)
 ===================================================================
 In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB like this
 
@@ -175,7 +175,7 @@ Foreign keys are specified by convention. Meaning that with the above specificat
 `invoiceId` or `unitId` will be subject to a foreign key check in ALL schemas.
 
 
-schemagic.`getSchemaFromObject()` (non-enumerable)
+schemagic.getSchemaFromObject() (non-enumerable)
 =====================================
 EXPERIMENTAL (NOTE: on root schemagic object)
 
