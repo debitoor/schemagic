@@ -3,32 +3,31 @@ schemagic
 
 JSON validation with schemagic, and schema tools
 
-Put your JSV schemagic in a directory called `schemagic` in your root folder.
+Put your json-schemas in a directory called `schemas` in your root folder.
 
 Each schema will be loaded with `require`. This is an example of a schema in the file `schemas/login.js`
 
 ```js
-//JSON Schemas defined according to the standard JSV http://tools.ietf.org/html/draft-zyp-json-schema-03
+//JSON Schemas defined according to the standard json-schema http://json-schema.org/latest/json-schema-core.html
+var regexpPatternUtil = require("./util/regexpPatternUtil");
 module.exports = {
-	login:{
-		"description":"Login",
-		"required":true,
-		"type":"object",
-		"properties":{
-			"email":{
-				"description":"Email of the user",
-				"required":true,
-				"type":"string",
-				"format":"email",
-				"pattern": regexpPatternUtil.emailPattern.source,
-				"example": "email@mydomain.com"
-			},
-			"password":{
-				"description":"Password of the user",
-				"required":true,
-				"type":"string",
-				"example": "*********"
-			}
+	"description":"Login",
+	"required":true,
+	"type":"object",
+	"properties":{
+		"email":{
+			"description":"Email of the user",
+			"required":true,
+			"type":"string",
+			"format":"email",
+			"pattern": regexpPatternUtil.emailPattern.source,
+			"example": "email@mydomain.com"
+		},
+		"password":{
+			"description":"Password of the user",
+			"required":true,
+			"type":"string",
+			"example": "*********"
 		}
 	}
 };
