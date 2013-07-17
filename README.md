@@ -178,7 +178,7 @@ function getForeignKeyChecker(collectionName, propertyName) {
 				return callback(null, result); //result array must have same order as array passed in documentIds param
 			}
 			var idsInDb = documentsInDb.map(function (invoice) {
-				traverse(invoice).get(propertyName.split(".")).toString();
+				return traverse(invoice).get(propertyName.split(".")).toString();
 			});
 			result = documentIds.map(function (id) {
 				return idsInDb.indexOf(id) !== -1;
