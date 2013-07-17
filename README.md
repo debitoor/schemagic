@@ -125,9 +125,7 @@ This property wil contain the result of `require("schemagic/login.js")`, the raw
 
 Foreign key constraints in MongoDB (`schemas/foreignKeys.js`)
 ===================================================================
-In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB like this
-
-NOTE: It makes sense to extract the first function here into helper function and reuse
+In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB like this:
 
 ```js
 function getForeignKeyChecker(collectionName, propertyName) {
