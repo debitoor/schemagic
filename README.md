@@ -123,9 +123,10 @@ schemagic.login.`schema`
 This property wil contain the result of `require("schemagic/login.js")`, the raw schema as it was required from disk.
 
 
-Foreign key constraints in MongoDB (`schemas/foreignKeys.js`)
+Foreign key constraints (`schemas/foreignKeys.js`)
 ===================================================================
-In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB like this:
+In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB and in-memory lookups
+like this:
 
 ```js
 function getForeignKeyChecker(collectionName, propertyName) {
@@ -191,6 +192,17 @@ module.exports = {
 
 Foreign keys are specified by convention. Meaning that with the above specification, ANY property with the name
 `invoiceId` or `unitId` will be subject to a foreign key check in ALL schemas.
+
+NOTE: If you want specific checks that only apply to one schema, for now you have to do them elswhere.
+TODO: Specifying a foreign key check for one schema only could be done like this
+```js
+module.exports = {
+	"expense.categoryId": function(categoryIds, options, callback){
+		//...
+	}
+}
+```
+Where the above foreign key constraint only applies to the expense schema. THIS IS NOT IMPLEMENTED YET.
 
 
 schemagic.getSchemaFromObject() (non-enumerable)
