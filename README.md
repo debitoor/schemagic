@@ -59,7 +59,7 @@ Options can be passed to the `validate` function:
 	removeEmptyFields: true,     // remove empty fields (null, "" and undefined) from the object, default: true
 	decimalsValidation: true,  // enable maxDecimals check, default:true
 	stringFormatValidation: true, // enable check of date and date-time formats to be ANSI standard, default: true
-	filter: true  // filter away any properties not in schema (if additionalProperties:false), default: false
+	filter: false  // filter away any properties not in schema (if additionalProperties:false), default: false
 	foreignKeys: false //check MongoDB foreign keys (callback is required), default: false
 	mongo: [tenantmongo-object] // this is just passed to the functions in schemas/foreignKeys.js
 }
@@ -75,6 +75,14 @@ It will return this kind of response if there is an error:
     		"message":"string value found, but a number is required"
     	}
 	]
+}
+```
+
+It will return this response if there is no error:
+```js
+{
+	valid: true,
+	errors: []
 }
 ```
 
@@ -118,7 +126,7 @@ Example:
 ]
 ```
 
-schemagic.login.`schema`
+schemagic.login.schema
 ======================
 This property wil contain the result of `require("schemagic/login.js")`, the raw schema as it was required from disk.
 
@@ -193,7 +201,15 @@ module.exports = {
 Foreign keys are specified by convention. Meaning that with the above specification, ANY property with the name
 `invoiceId` or `unitId` will be subject to a foreign key check in ALL schemas.
 
-NOTE: If you want specific checks that only apply to one schema, for now you have to do them elswhere.
+If you want to use foreignKey checks you will have to pass `mongo` (and anything else used by your foreign key checkers) 
+in `options` when you call `validate` like this:
+
+```js
+schemagic.invoice.validate(doc, {foreignKey:true, mongo: mongo}, callback);
+```
+
+
+If you want specific checks that only apply to one schema, for now you have to do them elswhere.
 
 TODO: Specifying a foreign key check for one schema only could be done like this
 ```js
