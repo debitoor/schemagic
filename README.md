@@ -130,39 +130,59 @@ In the file `schemas/foreignKeys.js` you can specify foreign key constraints for
 NOTE: It makes sense to extract the first function here into helper function and reuse
 
 ```js
-module.exports = {
-	invoiceId: function(invoiceIds, options, callback){
-		var ids = invoiceIds.map(function(invoiceId){
-			return new options.mongo.ObjectID(invoiceId);
+function getForeignKeyChecker(collectionName, propertyName) {
+	return function (documentIds, options, callback) {
+		var ids = [], formatErrors = [], anyFormatError = false;
+		documentIds.forEach(function (invoiceId) {
+			var id;
+			try {
+				id = new options.mongo.ObjectID(invoiceId);
+				formatErrors.push(true);
+			} catch (ex) {
+				formatErrors.push(false);
+				anyFormatError = true;
+			}
+			ids.push(id);
 		});
-		options.mongo("invoices").find({_id: {$in: ids} }, {_id:1}, getArray);
+		if(anyFormatError){
+			return callback(null, formatErrors);
+		}
+		var query = {};
+		query[propertyName] = {$in: ids};
+		var fields = {};
+		fields[propertyName] = 1;
+		return options.mongo(collectionName).find(query, fields, getArray);
 
-		function getArray(err, cursor){
-			if(err){
+		function getArray(err, cursor) {
+			if (err) {
 				return callback(err);
 			}
-			cursor.toArray(checkResults);
+			return cursor.toArray(checkResults);
 		}
 
-		function checkResults(err, invoicesInDb){
+		function checkResults(err, documentsInDb) {
 			var result;
-			if(err){
+			if (err) {
 				return callback(err);
 			}
-			if(invoicesInDb.length === invoiceIds.length){
+			if (documentsInDb.length === documentIds.length) {
 				//Array of length = invoiceIds.length, with values all TRUE
-				result = invoicesInDb.map(Boolean); //truthy values become TRUE
-				return callback(null, result); //result array must have same order as array passed in invoiceIds param
+				result = documentsInDb.map(Boolean); //truthy values become TRUE
+				return callback(null, result); //result array must have same order as array passed in documentIds param
 			}
-			var idsInDb = invoicesInDb.map(function(invoice){
-                invoice._id.toString();
-            });
-			result = invoiceIds.map(function(invoiceId){
-				return idsInDb.indexOf(invoiceId) !== -1;
+			var idsInDb = documentsInDb.map(function (invoice) {
+				traverse(invoice).get(propertyName.split(".")).toString();
 			});
-			return callback(null, result); //result array must have same order as array passed in invoiceIds param
+			result = documentIds.map(function (id) {
+				return idsInDb.indexOf(id) !== -1;
+			});
+			return callback(null, result); //result array must have same order as array passed in documentIds param
 		}
-	},
+	};
+}
+
+module.exports = {
+	invoiceId: getForeignKeyChecker("invoices", "_id"),
 	unitId: function(unitIds, options, callback){
 		//unitIds === [1,9999,2]
 		//lookup in memory: result = [true, false, true]; array must have same order as array passed in unitIds param
