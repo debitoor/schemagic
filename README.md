@@ -194,6 +194,7 @@ Foreign keys are specified by convention. Meaning that with the above specificat
 `invoiceId` or `unitId` will be subject to a foreign key check in ALL schemas.
 
 NOTE: If you want specific checks that only apply to one schema, for now you have to do them elswhere.
+
 TODO: Specifying a foreign key check for one schema only could be done like this
 ```js
 module.exports = {
