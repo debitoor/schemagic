@@ -131,18 +131,6 @@ schemagic.login.schema
 This property wil contain the result of `require("schemagic/login.js")`, the raw schema as it was required from disk.
 
 
-schemagic.login.allOptional
-======================
-This property wil contain a schemagic schema like `login` except ALL required properties are now optional. The is
-for use in validation of JSON-PATCH. It has the properties:
-```
-- schemagic.login.allOptional.validate
-- schemagic.login.allOptional.exampleJson
-- schemagic.login.allOptional.exampleJsonArray
-- schemagic.login.allOptional.schema
-```
-
-
 Foreign key constraints (`schemas/foreignKeys.js`)
 ===================================================================
 In the file `schemas/foreignKeys.js` you can specify foreign key constraints for MongoDB and in-memory lookups

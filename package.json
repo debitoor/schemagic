@@ -2,7 +2,7 @@
   "author": "E-conomic",
   "name": "schemagic",
   "description": "JSON validation with schemas, and schema tools",
-  "version": "1.5.0",
+  "version": "1.4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/e-conomic/schemagic"
@@ -18,8 +18,7 @@
     "underscore": "",
     "moment": "",
     "traverse": "",
-    "async": "",
-    "lodash.clonedeep": ""
+    "async": ""
   },
   "scripts": {
     "test": "node ./bin/runTests.js"
