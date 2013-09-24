@@ -16,6 +16,18 @@ describe("/source/schemagic with valid example schemas", function () {
 		it("has the 'test2' schema", function () {
 			expect(schemagic).to.have.property("test2");
 		});
+		it("has the 'test.allOptional' schema", function () {
+			expect(schemagic).to.have.property("test").to.have.property("allOptional");
+		});
+		it("has the 'test2.allOptional' schema", function () {
+			expect(schemagic).to.have.property("test2").to.have.property("allOptional");
+		});
+		it("has required=true in 'test' schema", function () {
+			expect(schemagic.test.schema).to.have.property("properties").to.have.property("c").to.have.property("required", true);
+		});
+		it("has set required=false in  'testPatch' schema", function () {
+			expect(schemagic.test.allOptional.schema).to.have.property("properties").to.have.property("c").to.have.property("required", false);
+		});
 		it("has all the exact number og keys at there are schemas (schemagic.getSchemaFromObject is not enumerable)", function () {
 			expect(Object.keys(schemagic)).to.have.property("length").to.equal(2);
 		});
@@ -125,7 +137,7 @@ describe("/source/schemagic with valid example schemas", function () {
 			expect(schemagic1).to.have.property("test1");
 		});
 
-		it("will have only two schemas", function () {
+		it("will have only oen schema", function () {
 			expect(Object.keys(schemagic1)).to.have.property("length").to.equal(1);
 		});
 
