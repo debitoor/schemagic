@@ -5,18 +5,20 @@ var schemaFactory = require("./util/schemaFactory");
 var getSchemaFromObject = require("./util/getSchemaFromObject");
 var cache = require("./util/cache"); //use requires caching to have a singleton
 var path = require("path");
+var cloneDeep = require("lodash.clonedeep");
+var traverse = require("traverse");
 
 
 function schemagicInit() {
 	var startDir = path.dirname(module.parent.filename);
 	var schemasDirectory;
-	if(cache.schemaDirectories[startDir]){
+	if (cache.schemaDirectories[startDir]) {
 		schemasDirectory = cache.schemaDirectories[startDir];
 	} else {
 		schemasDirectory = getSchemasDirectory(startDir);
 		cache.schemaDirectories[startDir] = schemasDirectory;
 	}
-	if(cache.schemagics[schemasDirectory]){
+	if (cache.schemagics[schemasDirectory]) {
 		return cache.schemagics[schemasDirectory];
 	}
 	var rawSchemas = readRawSchemas(schemasDirectory);
@@ -32,12 +34,31 @@ function schemagicInit() {
 		}
 	); //schemagic.getSchemaFromObject is not enumerable
 	var foreignKeys = {};
-	if(rawSchemas.foreignKeys){
+	if (rawSchemas.foreignKeys) {
 		foreignKeys = rawSchemas.foreignKeys;
 		delete rawSchemas.foreignKeys;
 	}
 	Object.keys(rawSchemas).forEach(function (schemaName) {
 		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName], foreignKeys);
+		var rawPatchSchema = cloneDeep(rawSchemas[schemaName]);
+		var t = traverse(rawPatchSchema);
+		t.forEach(function (value) {
+			if (this.key === "required") {
+				this.update(false);
+			}
+			//make sure null is allowed for all object properties
+			if (this.key === 'type' && this.path.length>=3 && this.path[this.path.length-3] === 'properties') {
+				var type = value;
+				if (!Array.isArray(type)) {
+					type = [type];
+				}
+				if (type.indexOf('null') === -1) {
+					type.push('null');
+				}
+				this.update(type);
+			}
+		});
+		schemagic[schemaName].patch = schemaFactory(rawPatchSchema, foreignKeys);
 	});
 	cache.schemagics[schemasDirectory] = schemagic;
 	return schemagic;
