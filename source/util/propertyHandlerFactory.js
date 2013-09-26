@@ -1,6 +1,6 @@
 var util = require('util');
 
-var propertyHandlerFactory = function(options) {
+var propertyHandlerFactory = function (options) {
 	if (!options.toBeProcess) {
 		throw new Error('toBeProcess is missing');
 	}
@@ -19,9 +19,9 @@ var propertyHandlerFactory = function(options) {
 
 	function getDefinition(jsonSchema) {
 		var definition = [];
-		if (jsonSchema.type === 'array') {
+		if (jsonSchema.type === 'array' || (Array.isArray(jsonSchema.type) && jsonSchema.type.indexOf('array') !== -1 )) {
 			scanPropertyDefinition(jsonSchema, [], definition);
-		} else if (jsonSchema.type === 'object') {
+		} else if (jsonSchema.type === 'object' || (Array.isArray(jsonSchema.type) && jsonSchema.type.indexOf('object') !== -1 )) {
 			scanPropertiesDefinition(jsonSchema.properties, [], definition);
 		} else {
 			throw new Error('Currently propertyHandlerFactory only supports objects and arrays at root ' +
@@ -35,7 +35,7 @@ var propertyHandlerFactory = function(options) {
 			return;
 		}
 		var keys = Object.keys(properties);
-		keys.forEach(function(key){
+		keys.forEach(function (key) {
 			path.push(key);
 			scanPropertyDefinition(properties[key], path, definition);
 			path.pop();
@@ -46,9 +46,9 @@ var propertyHandlerFactory = function(options) {
 		var data = toBeProcess(property);
 		if (data) {
 			pushToDefinition(data, path, definition);
-		} else if (property.type === 'object') {
+		} else if (property.type === 'object' || (Array.isArray(property.type) && property.type.indexOf('object') !== -1 )) {
 			scanPropertiesDefinition(property.properties, path, definition);
-		} else if (property.type === 'array') {
+		} else if (property.type === 'array' || (Array.isArray(property.type) && property.type.indexOf('array') !== -1 )) {
 			scanArrayDefinition(property, path, definition);
 		}
 	}
@@ -64,10 +64,10 @@ var propertyHandlerFactory = function(options) {
 
 	function process(document, definition) {
 		var errors = [];
-		definition.forEach(function(def){
+		definition.forEach(function (def) {
 			processDocument(document, def.data, def.path, 0, errors);
 		});
-		return {valid:!errors.length,errors:errors};
+		return {valid: !errors.length, errors: errors};
 	}
 
 	function processDocument(document, data, path, index, errors) {
@@ -75,21 +75,21 @@ var propertyHandlerFactory = function(options) {
 		var property = path[index];
 		var subDoc = document[property];
 
-		if (subDoc===undefined) {
-		} else if (path.length===index+1) {		// end of process path
+		if (subDoc === undefined) {
+		} else if (path.length === index + 1) {		// end of process path
 			var err = processHandler(document, property, data);
 			if (err) {
 				errors.push(err);
 			}
 		} else if (util.isArray(subDoc)) {				// we have an array
-			processArray(subDoc, data, path, index+1, errors);
+			processArray(subDoc, data, path, index + 1, errors);
 		} else {                                        // goto next property
-			processDocument(subDoc, data, path, index+1, errors);
+			processDocument(subDoc, data, path, index + 1, errors);
 		}
 	}
 
 	function processArray(array, data, processPath, index, errors) {
-		array.forEach(function(doc){
+		array.forEach(function (doc) {
 			processDocument(doc, data, processPath, index, errors);
 		});
 	}
@@ -97,7 +97,7 @@ var propertyHandlerFactory = function(options) {
 	function getProcessFunction(jsonSchema) {
 		var definition = getDefinition(jsonSchema);
 
-		return function(document) {
+		return function (document) {
 			return process(document, definition);
 		};
 	}

@@ -1,11 +1,9 @@
-var _ = require('underscore');
 var propertyHandlerFactory = require('./propertyHandlerFactory.js');
 
 var maxDecimalHandler = propertyHandlerFactory({
 	toBeProcess: function(properties) {
 		if (properties.maxDecimal &&
-			(properties.type==="number" || _.isArray(properties.type) && _.contains(properties.type, "number"))) {
-
+			(properties.type==="number" || (Array.isArray(properties.type) && properties.type.indexOf("number") !== -1))) {
 			return {
 				maxDecimal: properties.maxDecimal
 			};
@@ -19,7 +17,6 @@ var maxDecimalHandler = propertyHandlerFactory({
 		if (number===null || number===undefined) {
 			return;
 		}
-
 		var split = number.toString().split('.');
 		var result = (split.length>1) ? split[0] + '.' + split[1].substr(0,maxDecimal) : number;
 		document[property] = parseFloat(result);
