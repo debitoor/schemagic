@@ -43,23 +43,25 @@ function schemagicInit() {
 		var rawPatchSchema = cloneDeep(rawSchemas[schemaName]);
 		var t = traverse(rawPatchSchema);
 		t.forEach(function (value) {
-			if (this.key === "required" && this.path.length>=3 && this.path[this.path.length-3] === 'properties') {
-				this.update(false);
+			//make sure null is allowed for all non-required properties
+			if (this.key === 'type' && this.path.length >= 3 && this.path[this.path.length - 3] === 'properties') {
+				var required = t.get([].concat(this.parent.path, ['required']));
+				if (required === false) {
+					var type = value;
+					if (!Array.isArray(type)) {
+						type = [type];
+					}
+					if (type.indexOf('null') === -1) {
+						console.warn('WARNING in schema: "' + schemaName + '": ' + this.parent.path.join('.') + ' is not required, but null is not allowed (allowing null)');
+						type.push('null');
+					}
+					this.update(type);
+				}
 			}
-			//make sure null is allowed for all object properties
-			if (this.key === 'type' && this.path.length>=3 && this.path[this.path.length-3] === 'properties') {
-				var required = t.get([].concat(this.parent.path, 'required'));
-				if(required === false){
-				var type = value;
-				if (!Array.isArray(type)) {
-					type = [type];
-				}
-				if (type.indexOf('null') === -1) {
-					console.warn('WARNING in schema: "' + schemaName + '": ' + this.parent.path.join('.') + ' is not required, but null is not allowed (allowing null)');
-					type.push('null');
-				}
-				this.update(type);
-				}
+		});
+		t.forEach(function (value) {
+			if (this.key === "required" && this.path.length >= 3 && this.path[this.path.length - 3] === 'properties') {
+				this.update(false);
 			}
 		});
 		schemagic[schemaName].patch = schemaFactory(rawPatchSchema, foreignKeys);
