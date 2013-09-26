@@ -14,7 +14,7 @@ module.exports = {
 		},
 		"c":{
 			"type":"string",
-			"required":true,
+			"required":false,
 			"readonly":false
 		},
 		"d":{

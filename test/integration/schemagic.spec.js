@@ -23,12 +23,12 @@ describe("/source/schemagic with valid example schemas", function () {
 			expect(schemagic).to.have.property("test2").to.have.property("patch");
 		});
 		it("has required=true in 'test' schema", function () {
-			expect(schemagic.test.schema).to.have.property("properties").to.have.property("c").to.have.property("required", true);
+			expect(schemagic.test.schema).to.have.property("properties").to.have.property("a").to.have.property("required", true);
 		});
-		it("has set required=false in  'testPatch' schema", function () {
-			expect(schemagic.test.patch.schema).to.have.property("properties").to.have.property("c").to.have.property("required", false);
+		it("has set required=false in  'test.patch' schema", function () {
+			expect(schemagic.test.patch.schema).to.have.property("properties").to.have.property("a").to.have.property("required", false);
 		});
-		it("has added 'null' in type in 'testPatch' schema", function () {
+		it("has added 'null' in type to non-required property in 'test.patch' schema", function () {
 			expect(schemagic.test.patch.schema).to.have.property("properties").to.have.property("c").to.have.property("type").to.contain('null');
 		});
 		it("has all the exact number og keys at there are schemas (schemagic.getSchemaFromObject is not enumerable)", function () {
