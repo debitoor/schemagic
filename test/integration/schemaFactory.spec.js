@@ -197,4 +197,44 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 			});
 		});
 	});
+
+	describe('validating document with date and date-time', function () {
+		var document, result;
+
+		before(function () {
+			schema = schemaFactory(rawSchemas.dateTimeSchema);
+		});
+
+		describe('and pass date as datetime', function () {
+			before(function () {
+				document = {
+					a: '2013-01-01T12:00:00Z'
+				};
+			});
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should be invalid', function () {
+				expect(result).to.have.property("valid").to.equal(false);
+			});
+		});
+
+		describe('and pass datetime as date', function () {
+			before(function () {
+				document = {
+					b: '2013-01-01'
+				};
+			});
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should be invalid', function () {
+				expect(result).to.have.property("valid").to.equal(false);
+			});
+		});
+	});
 });

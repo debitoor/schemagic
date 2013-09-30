@@ -34,6 +34,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 		if (doStringFormatValidation) {
 			errors = errors.concat(stringFormatValidator(document).errors);
 		}
+
 		errors = errors.concat(jsonSchema._validate(document, rawSchema, options).errors);
 		var doForeignKeyValidation = options && options.foreignKey === true;
 		if (errors.length === 0 && doForeignKeyValidation && foreignKeys) {

@@ -575,5 +575,23 @@ module.exports = {
 				}
 			}
 		}
+	},
+
+	dateTimeSchema: {
+		"description":"Simple object with date and datetime",
+		"required":true,
+		"type":"object",
+		"properties":{
+			"a":{
+				"type":"string",
+				"format": "date",
+				"required":false
+			},
+			"b":{
+				"type":"string",
+				"format": "date-time",
+				"required":false
+			}
+		}
 	}
 };

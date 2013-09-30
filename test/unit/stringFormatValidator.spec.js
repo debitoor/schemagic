@@ -1,7 +1,6 @@
 var schemas = require("../exampleSchemas");
 var stringFormatValidatorFactory = require('./../../source/util/stringFormatValidator.js');
 
-
 describe('source/util/stringFormatValidator', function () {
 
 	describe('getDefinition', function () {
@@ -203,6 +202,32 @@ describe('source/util/stringFormatValidator', function () {
 					it('should specify reason in message', function () {
 						expect(result.errors[0].message).to.equal('should be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ (date-time)');
 					});
+				});
+			});
+		});
+
+		describe('when validating date string', function () {
+			beforeEach(function () {
+				document = { a: '2013-01-01', b: '2013-01-01T12:00:00Z'};
+			});
+
+			describe('date as datetime', function () {
+				beforeEach(function () {
+					result = stringFormatValidatorFactory.process(document, [{path: ['a'], data: {format: 'date-time'}}]);
+				});
+
+				it('should be invalid', function () {
+					expect(result.valid).to.equal(false);
+				});
+			});
+
+			describe('datetime as date', function () {
+				beforeEach(function () {
+					result = stringFormatValidatorFactory.process(document, [{path: ['b'], data: {format: 'date'}}]);
+				});
+
+				it('should be invalid', function () {
+					expect(result.valid).to.equal(false);
 				});
 			});
 		});

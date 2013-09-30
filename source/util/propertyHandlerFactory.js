@@ -27,6 +27,7 @@ var propertyHandlerFactory = function (options) {
 			throw new Error('Currently propertyHandlerFactory only supports objects and arrays at root ' +
 				'level in the schema. Current type not supported: ' + jsonSchema.type + "\n" + JSON.stringify(jsonSchema, null, "\t"));
 		}
+
 		return definition;
 	}
 
@@ -44,6 +45,7 @@ var propertyHandlerFactory = function (options) {
 
 	function scanPropertyDefinition(property, path, definition) {
 		var data = toBeProcess(property);
+
 		if (data) {
 			pushToDefinition(data, path, definition);
 		} else if (property.type === 'object' || (Array.isArray(property.type) && property.type.indexOf('object') !== -1 )) {
@@ -64,6 +66,7 @@ var propertyHandlerFactory = function (options) {
 
 	function process(document, definition) {
 		var errors = [];
+
 		definition.forEach(function (def) {
 			processDocument(document, def.data, def.path, 0, errors);
 		});
@@ -71,7 +74,6 @@ var propertyHandlerFactory = function (options) {
 	}
 
 	function processDocument(document, data, path, index, errors) {
-
 		var property = path[index];
 		var subDoc = document[property];
 

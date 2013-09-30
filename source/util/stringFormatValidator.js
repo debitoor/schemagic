@@ -3,8 +3,7 @@ var moment = require('moment');
 var propertyHandlerFactory = require('./propertyHandlerFactory.js');
 
 function isValidFormat(format) {
-	return format==='date';
-	//return format==='date' || format==='date-time';  // ignore date-time for now
+	return format==='date' || format==='date-time';
 }
 
 function isValidType(type) {
@@ -12,6 +11,8 @@ function isValidType(type) {
 }
 
 var minYear = 1970;
+var datePattern = /^\d{4}-\d{2}-\d{2}$/;
+var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 
 var stringFormatValidator = propertyHandlerFactory({
 	toBeProcess: function(properties) {
@@ -24,9 +25,9 @@ var stringFormatValidator = propertyHandlerFactory({
 	},
 
 	processHandler: function(document, property, data) {
-
 		var value = document[property];
 		var format = data.format;
+
 		if (typeof value !== 'string') {
 			return;
 		}
@@ -34,7 +35,7 @@ var stringFormatValidator = propertyHandlerFactory({
 
 		if (format === 'date-time') {
 			var dateTime = moment(value, 'YYYY-MM-DDThh:mm:ssZ');
-			if (!dateTime || !dateTime.isValid()) {
+			if (!dateTime || !dateTime.isValid() || !dateTimePattern.test(value)) {
 				return {
 					property: property,
 					message: 'should be a date in ISO 8601 format of YYYY-MM-DDThh:mm:ssZ (date-time)'
@@ -49,7 +50,7 @@ var stringFormatValidator = propertyHandlerFactory({
 
 		if (format === 'date') {
 			var date = moment(value, 'YYYY-MM-DD');
-			if (!date || !date.isValid()) {
+			if (!date || !date.isValid() || !datePattern.test(value)) {
 				return {
 					property: property,
 					message: 'should be a date of format YYYY-MM-DD (date)'
