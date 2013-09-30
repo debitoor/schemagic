@@ -11,7 +11,9 @@ function isValidType(type) {
 }
 
 var minYear = 1970;
-var datePattern = /^\d{4}-\d{2}-\d{2}$/;
+
+// ABE: SB-6227: do not strict dates validation
+// var datePattern = /^\d{4}-\d{2}-\d{2}$/;
 var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 
 var stringFormatValidator = propertyHandlerFactory({
@@ -50,7 +52,12 @@ var stringFormatValidator = propertyHandlerFactory({
 
 		if (format === 'date') {
 			var date = moment(value, 'YYYY-MM-DD');
-			if (!date || !date.isValid() || !datePattern.test(value)) {
+			// ABE: it will accept datetime string, but would skip time part of it
+			if (date) {
+				document[property] = date.format('YYYY-MM-DD');
+			}
+
+			if (!date || !date.isValid()) {
 				return {
 					property: property,
 					message: 'should be a date of format YYYY-MM-DD (date)'

@@ -220,16 +220,6 @@ describe('source/util/stringFormatValidator', function () {
 					expect(result.valid).to.equal(false);
 				});
 			});
-
-			describe('datetime as date', function () {
-				beforeEach(function () {
-					result = stringFormatValidatorFactory.process(document, [{path: ['b'], data: {format: 'date'}}]);
-				});
-
-				it('should be invalid', function () {
-					expect(result.valid).to.equal(false);
-				});
-			});
 		});
 	});
 });

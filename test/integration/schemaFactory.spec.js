@@ -216,8 +216,12 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 				result = schema.validate(document);
 			});
 
-			it('should be invalid', function () {
-				expect(result).to.have.property("valid").to.equal(false);
+			it('should be valid', function () {
+				expect(result).to.have.property("valid").to.equal(true);
+			});
+
+			it('should have to be modifed to date (without time)', function () {
+				expect(document.a).to.equal('2013-01-01');
 			});
 		});
 
