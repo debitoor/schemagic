@@ -225,6 +225,26 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 			});
 		});
 
+		describe('and pass new date stringify as json', function () {
+			before(function () {
+				document = {
+					a: JSON.stringify(new Date('2013-01-01T12:00:00Z'))
+				};
+			});
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should be valid', function () {
+				expect(result).to.have.property("valid").to.equal(true);
+			});
+
+			it('should have to be modifed to date (without time)', function () {
+				expect(document.a).to.equal('2013-01-01');
+			});
+		});
+
 		describe('and pass datetime as date', function () {
 			before(function () {
 				document = {
