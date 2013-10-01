@@ -66,10 +66,11 @@ var propertyHandlerFactory = function (options) {
 
 	function process(document, definition) {
 		var errors = [];
-
-		definition.forEach(function (def) {
-			processDocument(document, def.data, def.path, 0, errors);
-		});
+		if (document) {
+			definition.forEach(function (def) {
+				processDocument(document, def.data, def.path, 0, errors);
+			});
+		}
 		return {valid: !errors.length, errors: errors};
 	}
 
