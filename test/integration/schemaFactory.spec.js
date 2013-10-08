@@ -158,7 +158,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		var result;
 
 		before(function () {
-			result = schema.validate(document, {removeEmptyFields:true});
+			result = schema.validate(document, {removeEmptyFields: true});
 		});
 
 		it("will validate the document", function () {
@@ -194,6 +194,56 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 				a:1,
 				c:"y",
 				e:""
+			});
+		});
+	});
+
+	describe('validating valid document with emptyStringsToNull option set to true, removeEmptyFields to false', function () {
+		var document = {
+			a: 1,
+			c: 'y',
+			e: ''
+		};
+		var result;
+
+		before(function () {
+			result = schema.validate(document, {emptyStringsToNull: true, removeEmptyFields: false});
+		});
+
+		it('will validate the document', function () {
+			expect(result).to.have.property('valid').to.equal(true);
+		});
+
+		it('will have document with null instead', function () {
+			expect(document).to.eql({
+				a: 1,
+				c: 'y',
+				e: null
+			});
+		});
+	});
+
+	describe('validating valid document with emptyStringsToNull option set to false, removeEmptyFields to false', function () {
+		var document = {
+			a: 1,
+			c: 'y',
+			e: ''
+		};
+		var result;
+
+		before(function () {
+			result = schema.validate(document, {emptyStringsToNull: false, removeEmptyFields: false});
+		});
+
+		it('will validate the document', function () {
+			expect(result).to.have.property('valid').to.equal(true);
+		});
+
+		it('will have document with empty string', function () {
+			expect(document).to.eql({
+				a: 1,
+				c: 'y',
+				e: ''
 			});
 		});
 	});

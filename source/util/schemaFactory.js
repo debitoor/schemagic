@@ -6,6 +6,7 @@ var stringFormatValidatorFactory = require("./stringFormatValidator");
 var foreignKeyValidationFactory = require("./foreignKeyValidationFactory");
 var exampleJson = require("./exampleJson");
 var emptyFieldsPrumer = require("./emptyFieldsPrumer");
+var emptyStringsToNullFactory = require("./emptyStringsToNullFactory");
 
 function schemaFactory(rawSchema, foreignKeys) {
 
@@ -18,20 +19,19 @@ function schemaFactory(rawSchema, foreignKeys) {
 	function validate(document, options, optionalCallback) {
 		options = options || {};
 		var errors = [];
-		var doPruneReadOnlyFields = !options || options.removeReadOnlyFields !== false; // remove readonly fields from the object, default: true
-		if (doPruneReadOnlyFields) {
+		if (options.removeReadOnlyFields !== false) { // remove readonly fields from the object, default: true
 			readOnlyDocumentProner(document);
 		}
-		var doPruneEmptyFields = !options || options.removeEmptyFields !== false; // remove empty fields (null, "" and undefined) from the object, default: true
-		if (doPruneEmptyFields) {
+		if (options.emptyStringsToNull === true) { //replace empty strings to null, default: false
+			emptyStringsToNullFactory.toNull(document);
+		}
+		if (options.removeEmptyFields !== false) { // remove empty fields (null, "" and undefined) from the object, default: true
 			emptyFieldsPrumer.prune(document);
 		}
-		var doDecimalsValidation = !options || options.decimalsValidation !== false; // cut off remaining decimals, default: true
-		if (doDecimalsValidation) {
+		if (options.decimalsValidation !== false) {  // cut off remaining decimals, default: true
 			maxDecimalHandler(document);
 		}
-		var doStringFormatValidation = !options || options.stringFormatValidation !== false;
-		if (doStringFormatValidation) {
+		if (options.stringFormatValidation !== false) {
 			errors = errors.concat(stringFormatValidator(document).errors);
 		}
 
