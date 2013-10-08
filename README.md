@@ -57,7 +57,8 @@ Options can be passed to the `validate` function:
 {
 	removeReadOnlyFields: true, // remove readonly fields from the object, default: true
 	removeEmptyFields: true,     // remove empty fields (null, "" and undefined) from the object, default: true
-	decimalsValidation: true,  // enable maxDecimals check, default:true
+	emptyStringsToNull: true,     // fields with empty strings to null, default: false
+	decimalsValidation: true,  // enable maxDecimals check, default: true
 	stringFormatValidation: true, // enable check of date and date-time formats to be ANSI standard, default: true
 	filter: false  // filter away any properties not in schema (if additionalProperties:false), default: false
 	foreignKeys: false //check MongoDB foreign keys (callback is required), default: false
