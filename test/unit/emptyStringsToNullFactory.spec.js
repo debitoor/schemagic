@@ -100,7 +100,7 @@ describe('emptyStringsToNullFactory.js', function() {
 				});
 			});
 
-			describe('when is with empty strings,', function() {
+			describe('when is with empty strings and undefined,', function() {
 
 				beforeEach(function (done) {
 					document = {a: 1, b: 'a', c: null, d: "", f: undefined};
@@ -113,7 +113,7 @@ describe('emptyStringsToNullFactory.js', function() {
 				});
 
 				it('should return simple object with nulls', function() {
-					expect(result).to.eql({a: 1, b: 'a', c: null, d: null, f: undefined});
+					expect(result).to.eql({a: 1, b: 'a', c: null, d: null, f: null});
 				});
 			});
 
@@ -168,7 +168,7 @@ describe('emptyStringsToNullFactory.js', function() {
 				});
 
 				it('should return object without null', function() {
-					expect(result).to.eql({a: 1, b: 'a', c: null, d: null, f: undefined, g: {h: 1, i: 'a', j: null, k: null, l: undefined}});
+					expect(result).to.eql({a: 1, b: 'a', c: null, d: null, f: null, g: {h: 1, i: 'a', j: null, k: null, l: null}});
 				});
 			});
 		});
@@ -241,7 +241,7 @@ describe('emptyStringsToNullFactory.js', function() {
 				});
 
 				it('should remove null values', function() {
-					expect(result).to.eql([1, {}, [], null, undefined, null]);
+					expect(result).to.eql([1, {}, [], null, null, null]);
 				});
 			});
 		});
@@ -265,7 +265,7 @@ describe('emptyStringsToNullFactory.js', function() {
 				});
 			});
 
-			describe('when with null,', function() {
+			describe('when with null, undefined, empty strings', function() {
 
 				beforeEach(function (done) {
 					document = [{a: [1, undefined], b: ""}, [2, {c: 3, d: undefined}, ""], null];
@@ -277,8 +277,8 @@ describe('emptyStringsToNullFactory.js', function() {
 					done();
 				});
 
-				it('should remove null values', function() {
-					expect(result).to.eql([{a: [1, undefined], b: null}, [2, {c: 3, d: undefined}, null], null]);
+				it('should be null values', function() {
+					expect(result).to.eql([{a: [1, null], b: null}, [2, {c: 3, d: null}, null], null]);
 				});
 			});
 		});

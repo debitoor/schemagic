@@ -8,7 +8,7 @@ module.exports = (function() {
 			return null;
 		}
 		traverse(documents).forEach(function(value) {
-			if (value === '') {
+			if (value === '' || value === undefined) {
 				this.update(null);
 			}
 		});
