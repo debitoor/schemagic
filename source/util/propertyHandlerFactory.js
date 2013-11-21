@@ -78,7 +78,7 @@ var propertyHandlerFactory = function (options) {
 		var property = path[index];
 		var subDoc = document[property];
 
-		if (subDoc === undefined) {
+		if (subDoc === undefined || subDoc === null) {
 		} else if (path.length === index + 1) {		// end of process path
 			var err = processHandler(document, property, data);
 			if (err) {

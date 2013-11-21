@@ -113,5 +113,14 @@ describe('source/util/readOnlyDocumentPruner', function () {
 			processFunction(document);
 			expect(document).to.eql({ a: [{b: {d: 5}}, {b: {d: 7}}] });
 		});
+
+		it('will not throw error on nested null input', function() {
+			var document = { a: null };
+			var processFunction = readOnlyDocumentPruner.process(document, [
+				{ path: ['a', 'b'], data: true }
+			]);
+
+			expect(document).to.eql({ a: null });
+		});
 	});
 });
