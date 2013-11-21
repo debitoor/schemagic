@@ -12,13 +12,10 @@
         "waits",
         "waitsFor",
         "runs",
-        "_",
         "injectr"
     ],
 
     "node" : true,
-    "browser" : true,
-    "jquery" : true,
     "boss" : false,
     "curly": true,
     "debug": false,

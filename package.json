@@ -29,7 +29,9 @@
     "chai": "",
     "sinon": "",
     "sinon-chai": "",
-    "jshint": "0.x",
-    "injectr": ""
+    "jshint": "",
+    "injectr": "",
+    "mocha-teamcity-reporter": "",
+    "jshint-teamcity-reporter": ""
   }
 }
