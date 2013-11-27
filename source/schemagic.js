@@ -5,7 +5,7 @@ var schemaFactory = require("./util/schemaFactory");
 var getSchemaFromObject = require("./util/getSchemaFromObject");
 var cache = require("./util/cache"); //use requires caching to have a singleton
 var path = require("path");
-var cloneDeep = require("lodash.clonedeep");
+var _ = require("lodash");
 var traverse = require("traverse");
 
 
@@ -40,7 +40,7 @@ function schemagicInit() {
 	}
 	Object.keys(rawSchemas).forEach(function (schemaName) {
 		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName], foreignKeys);
-		var rawPatchSchema = cloneDeep(rawSchemas[schemaName]);
+		var rawPatchSchema = _.cloneDeep(rawSchemas[schemaName]);
 		var t = traverse(rawPatchSchema);
 		t.forEach(function (value) {
 			//make sure null is allowed for all non-required properties

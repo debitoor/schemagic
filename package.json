@@ -19,7 +19,7 @@
     "moment": "",
     "traverse": "",
     "async": "",
-    "lodash.clonedeep": ""
+    "lodash": ""
   },
   "scripts": {
     "test": "node ./bin/runTests.js"
