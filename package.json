@@ -2,7 +2,7 @@
   "author": "E-conomic",
   "name": "schemagic",
   "description": "JSON validation with schemas, and schema tools",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/e-conomic/schemagic"
@@ -29,7 +29,7 @@
     "chai": "",
     "sinon": "",
     "sinon-chai": "",
-    "jshint": "",
+    "jshint": ">=2.3.0",
     "injectr": "",
     "mocha-teamcity-reporter": "",
     "jshint-teamcity-reporter": ""
