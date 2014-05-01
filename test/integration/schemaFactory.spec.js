@@ -247,6 +247,18 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 			});
 		});
 	});
+	describe('validating an Array in root, where schema requires an object', function () {
+		var document = ['test'];
+		var result;
+
+		before(function () {
+			result = schema.validate(document, {emptyStringsToNull: false, removeEmptyFields: false});
+		});
+
+		it('should not validate the document', function () {
+			expect(result).to.have.deep.property('errors.0.message', 'Array value found, but a object is required');
+		});
+	});
 
 	describe('validating document with date and date-time', function () {
 		var document, result;
