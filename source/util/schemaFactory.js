@@ -1,4 +1,3 @@
-var jsonSchema = require("json-schema");
 var util = require('util');
 var readOnlyDocumentPrunerFactory = require("./readOnlyDocumentPruner");
 var maxDecimalHandlerFactory = require("./maxDecimalHandler");
@@ -7,6 +6,7 @@ var foreignKeyValidationFactory = require("./foreignKeyValidationFactory");
 var exampleJson = require("./exampleJson");
 var emptyFieldsPrumer = require("./emptyFieldsPrumer");
 var emptyStringsToNullFactory = require("./emptyStringsToNullFactory");
+var _validate = require('jsonschema').validate;
 
 function schemaFactory(rawSchema, foreignKeys) {
 
@@ -35,7 +35,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 			errors = errors.concat(stringFormatValidator(document).errors);
 		}
 
-		errors = errors.concat(jsonSchema._validate(document, rawSchema, options).errors);
+		errors = errors.concat(_validate(document, rawSchema, options).errors);
 		var doForeignKeyValidation = options && options.foreignKey === true;
 		if (errors.length === 0 && doForeignKeyValidation && foreignKeys) {
 			if (!optionalCallback) {

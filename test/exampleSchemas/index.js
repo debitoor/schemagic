@@ -593,5 +593,36 @@ module.exports = {
 				"required":false
 			}
 		}
+	},
+	
+	oneOfSchema: {
+		description: "Simple object with 2 possible subdocuments",
+		required: true,
+		type: "object",
+		properties: {
+			a: {
+				type: "object",
+				oneOf: [
+					{
+						type: 'object',
+						properties: {
+							b: {
+								type: "string",
+								required: true
+							}
+						}
+					}
+					, {
+						type: 'object',
+						properties: {
+							c: {
+								type: "string",
+								required: true
+							}
+						}
+					}
+				]
+			}
+		}
 	}
 };

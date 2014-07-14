@@ -115,10 +115,10 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		});
 
 		it("will have the correct error", function () {
-			expect(result.errors).to.eql([
+			expect(result.errors).to.containSubset([
 				{
-					"property":"a",
-					"message":"string value found, but a number is required"
+					"property": "instance.a",
+					"message": "is not of a type(s) number"
 				}
 			]
 			);
@@ -256,7 +256,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 		});
 
 		it('should not validate the document', function () {
-			expect(result).to.have.deep.property('errors.0.message', 'Array value found, but a object is required');
+			expect(result).to.have.deep.property('errors.0.message', "is not of a type(s) object");
 		});
 	});
 
@@ -322,5 +322,60 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 				expect(result).to.have.property("valid").to.equal(false);
 			});
 		});
+	});
+
+	describe('test v4 features', function() {
+		before(function() {
+			schema = schemaFactory(rawSchemas.oneOfSchema);
+		});
+
+		describe('test valid document', function() {
+			var result;
+
+			var document = {
+				a: {b: 'yess'}
+			};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate with no erros', function() {
+				expect(result).to.have.property("valid", true);
+			});
+		});
+
+		describe('test 1st invalid document', function() {
+			var result;
+
+			var document = {
+				a: {}
+			};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate with no erros', function() {
+				expect(result).to.have.property("valid", false);
+			});
+		});
+
+		describe('test 2nd invalid document', function() {
+			var result;
+
+			var document = {
+				a: {b: 'yess', c: 'de'}
+			};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate with no erros', function() {
+				expect(result).to.have.property("valid", false);
+			});
+		});
+
 	});
 });
