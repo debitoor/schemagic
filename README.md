@@ -1,4 +1,4 @@
-schemagic
+schemagic [![Build Status](https://travis-ci.org/e-conomic/schemagic.svg?branch=master)](https://travis-ci.org/e-conomic/schemagic)
 =========
 
 JSON validation with schemagic, and schema tools
