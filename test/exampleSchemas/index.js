@@ -611,8 +611,7 @@ module.exports = {
 								required: true
 							}
 						}
-					}
-					, {
+					}, {
 						type: 'object',
 						properties: {
 							c: {
