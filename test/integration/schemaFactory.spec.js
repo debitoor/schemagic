@@ -340,7 +340,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 				result = schema.validate(document);
 			});
 
-			it('should validate with no erros', function() {
+			it('should validate with no errors', function() {
 				expect(result).to.have.property("valid", true);
 			});
 		});
@@ -356,7 +356,7 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 				result = schema.validate(document);
 			});
 
-			it('should validate with no erros', function() {
+			it('should validate with no errors', function() {
 				expect(result).to.have.property("valid", false);
 			});
 		});
@@ -372,10 +372,47 @@ describe("/source/util/schemaFactory run on simpleSchema, the returned object", 
 				result = schema.validate(document);
 			});
 
-			it('should validate with no erros', function() {
+			it('should validate with no errors', function() {
 				expect(result).to.have.property("valid", false);
 			});
 		});
 
+	});
+
+	describe('test enum fields', function() {
+		var schema;
+		before(function () {
+			schema = schemaFactory(rawSchemas.schemaWithEnum);
+		});
+
+		describe('default positive case', function() {
+			var result;
+
+			var document = {
+				a: 'foo'
+			};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate with no erros', function() {
+				expect(result).to.have.property("valid", true);
+			});
+		});
+
+		describe('not required field', function() {
+			var result;
+
+			var document = {};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate with no erros', function() {
+				expect(result).to.have.property("valid", true);
+			});
+		});
 	});
 });

@@ -623,5 +623,20 @@ module.exports = {
 				]
 			}
 		}
+	},
+
+	schemaWithEnum: {
+		description: "Simple object with enum",
+		required: true,
+		type: 'object',
+		properties: {
+			a: {
+				description: 'Type of invoice/creditNote',
+				required: false,
+				type: ['null', 'string'],
+				enum: ['foo', 'bar', undefined],
+				example: 'bar'
+			}
+		}
 	}
 };
