@@ -75,6 +75,24 @@ module.exports = {
 		}
 	},
 
+	simpleSchemaWithNoAdditionalProperties:{
+		description: "Simple object",
+		required: true,
+		type: "object",
+		additionalProperties: false,
+		properties:{
+			a: {
+				"type":"number",
+				"required":true
+			},
+			b: {
+				"type":"string",
+				"required":false,
+				"readonly":true
+			}
+		}
+	},
+
 	nestedSchema:{
 		"description":"Simple object",
 		"required":true,

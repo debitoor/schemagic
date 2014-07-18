@@ -1,10 +1,10 @@
 "use strict";
 
-var emptyFieldsPrumer = require("./../../source/util/emptyFieldsPrumer.js");
+var emptyFieldsPruner = require("./../../source/util/emptyFieldsPruner.js");
 var util = require('util');
 var _ = require("underscore");
 
-describe('emptyFieldsPrumer.js #fast', function() {
+describe('emptyFieldsPruner.js #fast', function() {
 
 	var result, document;
 
@@ -20,7 +20,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -37,7 +37,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -54,7 +54,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -71,7 +71,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -88,7 +88,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -105,7 +105,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -125,7 +125,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -142,7 +142,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -159,7 +159,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -176,7 +176,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -193,7 +193,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -214,7 +214,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -231,7 +231,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -251,7 +251,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -269,7 +269,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -287,7 +287,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -304,7 +304,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -324,7 +324,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 
@@ -341,7 +341,7 @@ describe('emptyFieldsPrumer.js #fast', function() {
 				});
 
 				beforeEach(function (done) {
-					result = emptyFieldsPrumer.prune(document);
+					result = emptyFieldsPruner.prune(document);
 					done();
 				});
 

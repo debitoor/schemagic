@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var propertyHandlerFactory = require('./propertyHandlerFactory.js');
 
 var maxDecimalHandler = propertyHandlerFactory({

@@ -4,13 +4,13 @@ var maxDecimalHandlerFactory = require("./maxDecimalHandler");
 var stringFormatValidatorFactory = require("./stringFormatValidator");
 var foreignKeyValidationFactory = require("./foreignKeyValidationFactory");
 var exampleJson = require("./exampleJson");
-var emptyFieldsPrumer = require("./emptyFieldsPrumer");
+var emptyFieldsPruner = require("./emptyFieldsPruner");
 var emptyStringsToNullFactory = require("./emptyStringsToNullFactory");
 var _validate = require('jsonschema').validate;
 
 function schemaFactory(rawSchema, foreignKeys) {
 
-	var readOnlyDocumentProner = readOnlyDocumentPrunerFactory(rawSchema);
+	var readOnlyDocumentPruner = readOnlyDocumentPrunerFactory(rawSchema);
 	var maxDecimalHandler = maxDecimalHandlerFactory(rawSchema);
 	var stringFormatValidator = stringFormatValidatorFactory(rawSchema);
 	var foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
@@ -20,13 +20,13 @@ function schemaFactory(rawSchema, foreignKeys) {
 		options = options || {};
 		var errors = [];
 		if (options.removeReadOnlyFields !== false) { // remove readonly fields from the object, default: true
-			readOnlyDocumentProner(document);
+			readOnlyDocumentPruner(document);
 		}
 		if (options.emptyStringsToNull === true) { //replace empty strings to null, default: false
 			emptyStringsToNullFactory.toNull(document);
 		}
 		if (options.removeEmptyFields !== false) { // remove empty fields (null, "" and undefined) from the object, default: true
-			emptyFieldsPrumer.prune(document);
+			emptyFieldsPruner.prune(document);
 		}
 		if (options.decimalsValidation !== false) {  // cut off remaining decimals, default: true
 			maxDecimalHandler(document);
