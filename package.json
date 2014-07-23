@@ -2,7 +2,7 @@
   "author": "E-conomic",
   "name": "schemagic",
   "description": "JSON validation with schemas, and schema tools",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/e-conomic/schemagic"
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "async": "",
-    "jsonschema": "^0.4.0",
+    "jsonschema": "e-conomic/jsonschema",
     "lodash": "",
     "moment": "",
     "traverse": "",

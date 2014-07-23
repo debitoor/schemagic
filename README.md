@@ -63,6 +63,8 @@ Options can be passed to the `validate` function:
 	filter: false  // filter away any properties not in schema (if additionalProperties:false), default: false
 	foreignKeys: false //check MongoDB foreign keys (callback is required), default: false
 	mongo: [tenantmongo-object] // this is just passed to the functions in schemas/foreignKeys.js
+	includeInstance: false, // includes instance in error object, default: true
+	includeSchema: false, includes schema in error object, default: true 
 }
 ```
 
