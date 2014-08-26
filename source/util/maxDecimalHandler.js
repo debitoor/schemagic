@@ -14,7 +14,7 @@ var maxDecimalHandler = propertyHandlerFactory({
 	processHandler: function(document, property, data) {
 		var number = document[property];
 		var maxDecimal = data.maxDecimal;
-		if (number===null || number===undefined) {
+		if (typeof number !== 'number') {
 			return;
 		}
 		var split = number.toString().split('.');
