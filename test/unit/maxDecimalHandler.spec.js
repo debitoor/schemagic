@@ -103,6 +103,15 @@ describe('source/util/maxDecimalHandler', function () {
 			expect(document).to.eql({ a: 1.2345, b: undefined, c: 1.2345, d: 1.234 });
 		});
 
+		it('will process simple object with string', function () {
+			var document = { a: 1.2345, b: '20', c: 1.2345, d: 1.2345 };
+			maxDecimalHandler.process(document, [
+				{path:['b'], data: {maxDecimal: 2}},
+				{path:['d'], data: {maxDecimal: 3}}]
+			);
+			expect(document).to.eql({ a: 1.2345, b: '20', c: 1.2345, d: 1.234 });
+		});
+
 		it('will process nested object', function () {
 			var document = { a: 1.2345, b: { d: 1.2345, e: 1.2345 }, c: 1.2345 };
 			maxDecimalHandler.process(document,[
