@@ -2,7 +2,7 @@
   "author": "E-conomic",
   "name": "schemagic",
   "description": "JSON validation with schemas, and schema tools",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/e-conomic/schemagic"
@@ -14,25 +14,25 @@
     "npm": ">=1.1.9"
   },
   "dependencies": {
-    "async": "",
-    "jsonschema": "e-conomic/jsonschema",
-    "lodash": "",
-    "moment": "",
-    "traverse": "",
-    "underscore": ""
+    "async": "~0.9.0",
+    "jsonschema": "e-conomic/jsonschema.git#v1.1.0",
+    "lodash": "~2.4.1",
+    "moment": "~2.8.2",
+    "traverse": "~0.6.6",
+    "underscore": "~1.6.0"
   },
   "scripts": {
     "test": "node ./bin/runTests.js"
   },
   "devDependencies": {
-    "chai": "",
-    "chai-subset": "^0.1.2",
-    "injectr": "",
-    "jshint": ">=2.3.0",
-    "jshint-teamcity-reporter": "",
-    "mocha": "",
-    "mocha-teamcity-reporter": "",
-    "sinon": "",
-    "sinon-chai": ""
+    "chai": "~1.9.1",
+    "chai-subset": "~0.1.3",
+    "injectr": "~0.5.1",
+    "jshint": "~2.5.5",
+    "jshint-teamcity-reporter": "~0.0.1",
+    "mocha": "~1.21.4",
+    "mocha-teamcity-reporter": "~0.0.4",
+    "sinon": "~1.10.3",
+    "sinon-chai": "~2.5.0"
   }
 }
