@@ -17,7 +17,7 @@ var maxDecimalHandler = propertyHandlerFactory({
 		if (typeof number !== 'number') {
 			return;
 		}
-		var split = number.toFixed(20).split('.');
+		var split = number.toString().split('.');
 		var result = (split.length>1) ? split[0] + '.' + split[1].substr(0,maxDecimal) : number;
 		document[property] = parseFloat(result);
 	}
