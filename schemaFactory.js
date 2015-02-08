@@ -19,7 +19,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 	function validate(document, options, optionalCallback) {
 		options = options || {};
 		options.formats = xtend({
-			'date-time': datetimeFormatCheck
+			'date-time': datetimeFormatCheck,
+			date: dateFormatCheck,
+			currency: currencyFormatCheck
 		}, options.formats || {});
 		if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
 			validateSchemaNoReadonly(document, {filter: true});
@@ -84,7 +86,7 @@ function schemaWitNoReadonly(schema) {
 	});
 	return s;
 
-	function getParentObjectProp(prop){
+	function getParentObjectProp(prop) {
 		return t.get(this.parent.parent.parent.path.concat(prop));
 	}
 }
@@ -104,14 +106,14 @@ function schemaWithAdditionalPropertiesNotAllowedAsDefault(schema) {
 	});
 	return s;
 
-	function getParentObjectProp(prop){
+	function getParentObjectProp(prop) {
 		return t.get(this.parent.path.concat(prop));
 	}
 }
 
 var minYear = 1970;
 var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
-function datetimeFormatCheck(value){
+function datetimeFormatCheck(value) {
 	var dateTime = moment(value, 'YYYY-MM-DDThh:mm:ssZ');
 	if (!dateTime || !dateTime.isValid() || !dateTimePattern.test(value)) {
 		return false;
@@ -121,6 +123,30 @@ function datetimeFormatCheck(value){
 	return true;
 }
 
+var datePattern = /^\d{4}-\d{2}-\d{2}$/;
+function dateFormatCheck(value) {
+	var dateTime = moment(value, 'YYYY-MM-DD');
+	if (!dateTime || !dateTime.isValid() || !datePattern.test(value)) {
+		return false;
+	} else if (dateTime.year() < minYear) {
+		return false;
+	}
+	return true;
+}
+
+var max = Math.pow(2, 53) / 100;
+var min = -Math.pow(2, 53) / 100;
+function currencyFormatCheck(value) {
+	console.error(value, (value.toString().split('.')[1] || '').length);
+	if (typeof value !== 'number') {
+		return false;
+	} else if ((value.toString().split('.')[1] || '').length > 2) {
+		return false;
+	} else if (value > max || value < min) {
+		return false;
+	}
+	return true;
+}
 
 
 module.exports = schemaFactory;

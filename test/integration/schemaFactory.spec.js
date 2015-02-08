@@ -119,8 +119,8 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		it('will have the correct error', function () {
 			expect(result.errors).to.containSubset([
 					{
-						"field": "data.a",
-						"message": "is the wrong type"
+						"field": 'data.a',
+						"message": 'is the wrong type'
 					}
 				]
 			);
@@ -284,6 +284,45 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 			it('should validate with no errors', function () {
 				expect(result).to.have.property('valid', true);
+			});
+		});
+	});
+
+	describe('test currency format', function () {
+		var schema;
+		before(function () {
+			schema = schemaFactory(rawSchemas.currencySchema);
+		});
+
+		describe('default positive case', function () {
+			var result;
+
+			var document = {
+				a: 100.01
+			};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate with no errors', function () {
+				expect(result).to.have.property('valid', true);
+			});
+		});
+
+		describe('not required field', function () {
+			var result;
+
+			var document = {
+				a: 100.001
+			};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it.only('should validate with errors', function () {
+				expect(result).to.have.property('valid', false);
 			});
 		});
 	});
