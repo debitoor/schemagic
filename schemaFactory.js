@@ -134,8 +134,9 @@ function dateFormatCheck(value) {
 	return true;
 }
 
-var max = Math.pow(2, 53) / 100;
-var min = -Math.pow(2, 53) / 100;
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+var max = MAX_SAFE_INTEGER / 100;
+var min = -MAX_SAFE_INTEGER / 100;
 function currencyFormatCheck(value) {
 	console.error(value, (value.toString().split('.')[1] || '').length);
 	if (typeof value !== 'number') {
