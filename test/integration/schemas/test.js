@@ -1,24 +1,24 @@
 module.exports = {
-	"description":"Simple object",
+	"description":'Simple object',
 	"required":true,
-	"type":"object",
+	"type":'object',
 	"properties":{
 		"a":{
-			"type":"number",
+			"type":'number',
 			"required":true
 		},
 		"b":{
-			"type":"string",
+			"type":'string',
 			"required":false,
 			"readonly":true
 		},
 		"c":{
-			"type":"string",
+			"type":'string',
 			"required":false,
 			"readonly":false
 		},
 		"d":{
-			"type":"string",
+			"type":'string',
 			"required":false,
 			"readonly":true
 		}

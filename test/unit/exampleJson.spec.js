@@ -1,16 +1,16 @@
-var schemas = require("../exampleSchemas");
-var exampleJson = require("../../source/util/exampleJson");
+var schemas = require('../exampleSchemas');
+var exampleJson = require('../../exampleJson');
 
 //This is just a helper function I used for adding tests retrospectively
 //Given a string output from exampleJson, it will console log
 // a nicely formatted string for inserting into your expect statement
 function formatJsonExampleForExpect(exampleJsonGenerated){
-	console.log("\n'" + JSON.stringify(exampleJsonGenerated).replace(/^"/, "").replace(/"$/, "").replace(/\\\"/g, "\"").replace(/\\n/g, "\\n'+\n'") + "'\n");
+	console.log('\n\'' + JSON.stringify(exampleJsonGenerated).replace(/^"/, '').replace(/"$/, '').replace(/\\\"/g, '"').replace(/\\n/g, '\\n\'+\n\'') + '\'\n');
 }
 
-describe("/source/util/exampleJson", function(){
+describe('/source/util/exampleJson', function(){
 
-	it("will generate correct exampleJsonString for noReadOnlySchema", function(){
+	it('will generate correct exampleJsonString for noReadOnlySchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema);
 		expect(exampleJsonGenerated).to.equal(
 			'//Simple object\n'+
@@ -27,7 +27,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString (Array) for noReadOnlySchema", function(){
+	it('will generate correct exampleJsonString (Array) for noReadOnlySchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {asArray:true});
 		expect(exampleJsonGenerated).to.equal(
 			'//Array\n'+
@@ -48,7 +48,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString for simpleSchema", function(){
+	it('will generate correct exampleJsonString for simpleSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.simpleSchema);
 		expect(exampleJsonGenerated).to.equal(
 			'//Simple object\n'+
@@ -67,7 +67,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString (Array) for simpleSchema", function(){
+	it('will generate correct exampleJsonString (Array) for simpleSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {asArray:true});
 		expect(exampleJsonGenerated).to.equal(
 			'//Array\n'+
@@ -90,7 +90,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString for nestedSchema", function(){
+	it('will generate correct exampleJsonString for nestedSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.nestedSchema);
 		expect(exampleJsonGenerated).to.equal(
 			'//Simple object\n'+
@@ -112,7 +112,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString (Array) for nestedSchema", function(){
+	it('will generate correct exampleJsonString (Array) for nestedSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.nestedSchema, {asArray:true});
 		expect(exampleJsonGenerated).to.equal(
 			'//Array\n'+
@@ -138,7 +138,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString for arrayReadOnlyItemsSchema", function(){
+	it('will generate correct exampleJsonString for arrayReadOnlyItemsSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema);
 		expect(exampleJsonGenerated).to.equal(
 			'//Simple object\n'+
@@ -164,7 +164,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString (Array) for arrayReadOnlyItemsSchema", function(){
+	it('will generate correct exampleJsonString (Array) for arrayReadOnlyItemsSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {asArray:true});
 		expect(exampleJsonGenerated).to.equal(
 			'//Array\n'+
@@ -194,7 +194,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString for arraySchema", function(){
+	it('will generate correct exampleJsonString for arraySchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.arraySchema);
 		expect(exampleJsonGenerated).to.equal(
 			'//Simple object\n'+
@@ -219,7 +219,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString (Array) for arraySchema", function(){
+	it('will generate correct exampleJsonString (Array) for arraySchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.arraySchema, {asArray:true});
 		expect(exampleJsonGenerated).to.equal(
 			'//Array\n'+
@@ -248,7 +248,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString for arrayNestedSchema", function(){
+	it('will generate correct exampleJsonString for arrayNestedSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema);
 		expect(exampleJsonGenerated).to.equal(
 			'//Simple object\n'+
@@ -271,7 +271,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString (Array) for arrayNestedSchema", function(){
+	it('will generate correct exampleJsonString (Array) for arrayNestedSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {asArray:true});
 		expect(exampleJsonGenerated).to.equal(
 			'//Array\n'+
@@ -298,7 +298,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString for arrayAtRootSchema", function(){
+	it('will generate correct exampleJsonString for arrayAtRootSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema);
 		expect(exampleJsonGenerated).to.equal(
 			'//Schema that contains an array at root level\n'+
@@ -315,7 +315,7 @@ describe("/source/util/exampleJson", function(){
 		);
 	});
 
-	it("will generate correct exampleJsonString (Array) for arrayAtRootSchema", function(){
+	it('will generate correct exampleJsonString (Array) for arrayAtRootSchema', function(){
 		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {asArray:true});
 		expect(exampleJsonGenerated).to.equal(
 			'//Array\n'+

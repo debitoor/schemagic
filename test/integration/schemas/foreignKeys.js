@@ -5,6 +5,6 @@ module.exports = {
 		}));
 	},
 	testForeignKeyError: function (testValues, options, callback) {
-		return callback(new Error("This mock foreign key check fails"));
+		return callback(new Error('This mock foreign key check fails'));
 	}
 };
