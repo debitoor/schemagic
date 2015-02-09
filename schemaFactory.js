@@ -70,6 +70,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 function schemaWitNoReadonly(schema) {
 	var s = clone(schema);
 	var t = traverse(s);
+	var toBeDeleted = [];
 	t.forEach(function (value) {
 		if (this.key === 'readonly' && value) {
 			var getProp = getParentObjectProp.bind(this);
@@ -83,13 +84,17 @@ function schemaWitNoReadonly(schema) {
 					)
 				);
 			}
-			this.parent.remove(true);
+			toBeDeleted.push(this.parent);
 		}
+	});
+	toBeDeleted.forEach(function(node){
+		node.remove();
 	});
 	return s;
 
 	function getParentObjectProp(prop) {
-		return t.get(this.parent.parent.parent.path.concat(prop));
+		return !this.parent || !this.parent.parent || !this.parent.parent.parent ||
+			t.get(this.parent.parent.parent.path.concat(prop));
 	}
 }
 
@@ -109,7 +114,7 @@ function schemaWithAdditionalPropertiesNotAllowedAsDefault(schema) {
 	return s;
 
 	function getParentObjectProp(prop) {
-		return t.get(this.parent.path.concat(prop));
+		return !this.parent || t.get(this.parent.path.concat(prop));
 	}
 }
 
