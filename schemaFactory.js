@@ -25,9 +25,6 @@ function schemaFactory(rawSchema, foreignKeys) {
 
 	function validate(document, options, optionalCallback) {
 		options = options || {};
-		if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
-			validateSchemaNoReadonly(document, {filter: true});
-		}
 		validateSchema(document, options);
 		var errors = validateSchema.errors || [];
 		var doForeignKeyValidation = options && options.foreignKey === true;
@@ -47,6 +44,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 		var result = {valid: !errors.length, errors: errors};
 		if (optionalCallback) {
 			return optionalCallback(null, result);
+		}
+		if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
+			validateSchemaNoReadonly(document, {filter: true});
 		}
 		return result;
 	}
@@ -70,31 +70,21 @@ function schemaFactory(rawSchema, foreignKeys) {
 function schemaWitNoReadonly(schema) {
 	var s = clone(schema);
 	var t = traverse(s);
-	var toBeDeleted = [];
-	t.forEach(function (value) {
-		if (this.key === 'readonly' && value) {
-			var getProp = getParentObjectProp.bind(this);
-			var additionalProperties = getProp('additionalProperties');
-			var oneOfAllOfOrAnyOff = ['oneOf', 'anyOf', 'allOf'].some(getProp);
-			if ((!oneOfAllOfOrAnyOff) && (additionalProperties !== false)) {
-				throw new Error(
-					format('%s\nSchema "%s" can not have readonly properties in object that allows ' +
-						'additionalProperties in property "%s" ',
-						JSON.stringify(s, null, '\t'), s.description || 'No description', this.path.join('.')
-					)
-				);
-			}
-			toBeDeleted.push(this.parent);
-		}
-	});
-	toBeDeleted.forEach(function(node){
-		node.remove();
-	});
+	var p = getReadonlyPath();
+	while(p){
+		p.pop(); //pop readonly
+		var prop = p.pop();
+		var obj = t.get(p);
+		delete obj[prop];
+		t = traverse(s);
+		p = getReadonlyPath();
+	}
 	return s;
 
-	function getParentObjectProp(prop) {
-		return !this.parent || !this.parent.parent || !this.parent.parent.parent ||
-			t.get(this.parent.parent.parent.path.concat(prop));
+	function getReadonlyPath() {
+		return t.paths().filter(function(path){
+			return path[path.length-1] === 'readonly';
+		})[0];
 	}
 }
 

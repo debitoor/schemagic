@@ -66,8 +66,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 		it('will have removed the document', function () {
 			expect(document).to.eql({
-				"a": 1,
-				"c": 'y'
+				"a": 1
 			});
 		});
 	});
