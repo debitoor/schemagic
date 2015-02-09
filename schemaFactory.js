@@ -77,9 +77,9 @@ function schemaWitNoReadonly(schema) {
 			var oneOfAllOfOrAnyOff = ['oneOf', 'anyOf', 'allOf'].some(getProp);
 			if ((!oneOfAllOfOrAnyOff) && (additionalProperties !== false)) {
 				throw new Error(
-					format('Schema "%s" can not have readonly properties in object that allows ' +
+					format('%s\nSchema "%s" can not have readonly properties in object that allows ' +
 						'additionalProperties in property "%s" ',
-						s.description || 'No description', this.path.join('.')
+						JSON.stringify(s, null, '\t'), s.description || 'No description', this.path.join('.')
 					)
 				);
 			}
