@@ -321,7 +321,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 				result = schema.validate(document);
 			});
 
-			it.only('should validate with errors', function () {
+			it('should validate with errors', function () {
 				expect(result).to.have.property('valid', false);
 			});
 		});

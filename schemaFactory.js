@@ -2,7 +2,7 @@ var util = require('util');
 var format = util.format;
 var foreignKeyValidationFactory = require('./foreignKeyValidationFactory');
 var exampleJson = require('./exampleJson');
-var imjv = require('../is-my-json-valid');
+var imjv = require('is-my-json-valid');
 var clone = require('clone');
 var traverse = require('traverse');
 var moment = require('moment');
@@ -12,17 +12,19 @@ function schemaFactory(rawSchema, foreignKeys) {
 	var foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
 	var schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
 	var schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
-	var validateSchema = imjv(schema, {filter: true});
+	var validateSchema = imjv(schema, {
+		filter: true,
+		formats: {
+			'date-time': datetimeFormatCheck,
+			date: dateFormatCheck,
+			currency: currencyFormatCheck
+		}
+	});
 	var validateSchemaNoReadonly = imjv(schemaWitNoReadonlyProperties, {filter: true});
 	var normalizedJSON;
 
 	function validate(document, options, optionalCallback) {
 		options = options || {};
-		options.formats = xtend({
-			'date-time': datetimeFormatCheck,
-			date: dateFormatCheck,
-			currency: currencyFormatCheck
-		}, options.formats || {});
 		if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
 			validateSchemaNoReadonly(document, {filter: true});
 		}
@@ -138,7 +140,6 @@ var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
 var max = MAX_SAFE_INTEGER / 100;
 var min = -MAX_SAFE_INTEGER / 100;
 function currencyFormatCheck(value) {
-	console.error(value, (value.toString().split('.')[1] || '').length);
 	if (typeof value !== 'number') {
 		return false;
 	} else if ((value.toString().split('.')[1] || '').length > 2) {
