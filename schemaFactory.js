@@ -6,7 +6,6 @@ var imjv = require('is-my-json-valid');
 var clone = require('clone');
 var traverse = require('traverse');
 var moment = require('moment');
-var xtend = require('xtend');
 
 function schemaFactory(rawSchema, foreignKeys) {
 	var foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
@@ -37,18 +36,29 @@ function schemaFactory(rawSchema, foreignKeys) {
 					return optionalCallback(err);
 				}
 				errors = errors.concat(foreignKeyErrors);
-				var result = {valid: !errors.length, errors: errors};
+				var result = transformErrorsAndHandleReadOnly(errors);
 				return optionalCallback(null, result);
 			});
 		}
-		var result = {valid: !errors.length, errors: errors};
+		var result = transformErrorsAndHandleReadOnly(errors);
 		if (optionalCallback) {
 			return optionalCallback(null, result);
 		}
-		if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
-			validateSchemaNoReadonly(document, {filter: true});
-		}
 		return result;
+
+		function transformErrorsAndHandleReadOnly(errors){
+			errors.forEach(function(err){
+				if(err.field) {
+					err.property = err.field;
+					delete err.field;
+				}
+			});
+			if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
+				validateSchemaNoReadonly(document, {filter: true});
+			}
+			var result = {valid: !errors.length, errors: errors};
+			return result;
+		}
 	}
 
 	function toJSON() {
@@ -71,6 +81,16 @@ function schemaWitNoReadonly(schema) {
 	var s = clone(schema);
 	var t = traverse(s);
 	var p = getReadonlyPath();
+	if(p && p.length===1){
+		if(s.type !== 'object'){
+			throw new Error('only object type root objects in schema are allowed to be readonly');
+		}
+		return {
+			description: s.description,
+			type:'object',
+			additionalProperties: false
+		};
+	}
 	while(p){
 		p.pop(); //pop readonly
 		var prop = p.pop();
@@ -83,7 +103,7 @@ function schemaWitNoReadonly(schema) {
 
 	function getReadonlyPath() {
 		return t.paths().filter(function(path){
-			return path[path.length-1] === 'readonly';
+			return path[path.length-1] === 'readonly' && t.get(path);
 		})[0];
 	}
 }

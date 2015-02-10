@@ -66,7 +66,8 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 		it('will have removed the document', function () {
 			expect(document).to.eql({
-				"a": 1
+				"a": 1,
+				"c": 'y'
 			});
 		});
 	});
@@ -118,7 +119,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		it('will have the correct error', function () {
 			expect(result.errors).to.containSubset([
 					{
-						"field": 'data.a',
+						"property": 'data.a',
 						"message": 'is the wrong type'
 					}
 				]
