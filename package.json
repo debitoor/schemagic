@@ -2,7 +2,7 @@
   "author": "E-conomic",
   "name": "schemagic",
   "description": "JSON validation with schemas, and schema tools",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/e-conomic/schemagic"
@@ -16,7 +16,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "clone": "^0.2.0",
-    "is-my-json-valid": "git://github.com:e-conomic/is-my-json-valid",
+    "is-my-json-valid": "git://github.com/e-conomic/is-my-json-valid",
     "moment": "^2.9.0",
     "traverse": "^0.6.6"
   },
