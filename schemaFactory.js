@@ -16,8 +16,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 			'date-time': datetimeFormatCheck,
 			date: dateFormatCheck,
 			currency: currencyFormatCheck,
-			taxrate: taxRateFormat,
-			'taxrate-negative':taxRateNegativeFormat,
+			rate: rateFormat,
+			'rate-negative':rateNegativeFormat,
 			'currency-rate': currencyRateFormat
 		}
 	});
@@ -167,7 +167,7 @@ function currencyFormatCheck(value) {
 	return true;
 }
 
-function taxRateFormat(value) {
+function rateFormat(value) {
 	if (typeof value !== 'number') {
 		return false;
 	} else if ((value.toString().split('.')[1] || '').length > 2) {
@@ -178,7 +178,7 @@ function taxRateFormat(value) {
 	return true;
 }
 
-function taxRateNegativeFormat(value) {
+function rateNegativeFormat(value) {
 	if (typeof value !== 'number') {
 		return false;
 	} else if ((value.toString().split('.')[1] || '').length > 2) {

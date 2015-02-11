@@ -60,8 +60,8 @@ Schmagic has these build in formats:
 - `currency-rate` Positive number. Minimum 0.000001, maximum 999,999,999. Will allow maximum 6 decimals after the decimal point.
 - `date`. Is verified to be a date of the format `YYYY-MM-DD`
 - `date-time`. Is verified to be a valid date and time in the format `YYYY-MM-DDThh:mm:ssZ`
-- `taxrate`. Positive number, between zero and 100. Will allow maximum 2 decimals after the decimal point
-- `taxrate-negative`. Negative number, between zero and -100. Will allow maximum 2 decimals after the decimal point
+- `rate`. Positive number, between zero and 100. Will allow maximum 2 decimals after the decimal point
+- `rate-negative`. Negative number, between zero and -100. Will allow maximum 2 decimals after the decimal point
 
 schemagic.login.validate(object, options[, callback])
 ================================
