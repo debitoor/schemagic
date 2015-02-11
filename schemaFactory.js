@@ -26,9 +26,6 @@ function schemaFactory(rawSchema, foreignKeys) {
 
 	function validate(document, options, optionalCallback) {
 		options = options || {};
-		if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
-			validateSchemaNoReadonly(document, {filter: true});
-		}
 		validateSchema(document, options);
 		var errors = validateSchema.errors || [];
 		var doForeignKeyValidation = options && options.foreignKey === true;
@@ -58,6 +55,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 					delete err.field;
 				}
 			});
+			if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
+				validateSchemaNoReadonly(document, {filter: true});
+			}
 			var result = {valid: !errors.length, errors: errors};
 			return result;
 		}
