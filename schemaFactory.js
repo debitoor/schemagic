@@ -1,5 +1,4 @@
 var util = require('util');
-var format = util.format;
 var foreignKeyValidationFactory = require('./foreignKeyValidationFactory');
 var exampleJson = require('./exampleJson');
 var imjv = require('is-my-json-valid');
@@ -16,7 +15,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 		formats: {
 			'date-time': datetimeFormatCheck,
 			date: dateFormatCheck,
-			currency: currencyFormatCheck
+			currency: currencyFormatCheck,
+			taxrate: taxRateFormat,
+			'taxrate-negative':taxRateNegativeFormat
 		}
 	});
 	var validateSchemaNoReadonly = imjv(schemaWitNoReadonlyProperties, {filter: true});
@@ -24,6 +25,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 
 	function validate(document, options, optionalCallback) {
 		options = options || {};
+		if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
+			validateSchemaNoReadonly(document, {filter: true});
+		}
 		validateSchema(document, options);
 		var errors = validateSchema.errors || [];
 		var doForeignKeyValidation = options && options.foreignKey === true;
@@ -53,9 +57,6 @@ function schemaFactory(rawSchema, foreignKeys) {
 					delete err.field;
 				}
 			});
-			if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
-				validateSchemaNoReadonly(document, {filter: true});
-			}
 			var result = {valid: !errors.length, errors: errors};
 			return result;
 		}
@@ -165,5 +166,26 @@ function currencyFormatCheck(value) {
 	return true;
 }
 
+function taxRateFormat(value) {
+	if (typeof value !== 'number') {
+		return false;
+	} else if ((value.toString().split('.')[1] || '').length > 2) {
+		return false;
+	} else if (value > 100 || value < 0) {
+		return false;
+	}
+	return true;
+}
+
+function taxRateNegativeFormat(value) {
+	if (typeof value !== 'number') {
+		return false;
+	} else if ((value.toString().split('.')[1] || '').length > 2) {
+		return false;
+	} else if (value > 0 || value < -100) {
+		return false;
+	}
+	return true;
+}
 
 module.exports = schemaFactory;
