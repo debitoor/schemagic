@@ -17,7 +17,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 			date: dateFormatCheck,
 			currency: currencyFormatCheck,
 			taxrate: taxRateFormat,
-			'taxrate-negative':taxRateNegativeFormat
+			'taxrate-negative':taxRateNegativeFormat,
+			'currency-rate': currencyRateFormat
 		}
 	});
 	var validateSchemaNoReadonly = imjv(schemaWitNoReadonlyProperties, {filter: true});
@@ -183,6 +184,17 @@ function taxRateNegativeFormat(value) {
 	} else if ((value.toString().split('.')[1] || '').length > 2) {
 		return false;
 	} else if (value > 0 || value < -100) {
+		return false;
+	}
+	return true;
+}
+
+function currencyRateFormat(value) {
+	if (typeof value !== 'number') {
+		return false;
+	} else if ((value.toString().split('.')[1] || '').length > 6) {
+		return false;
+	} else if (value > 999999999 || value < 0.000001) {
 		return false;
 	}
 	return true;
