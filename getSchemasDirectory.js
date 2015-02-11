@@ -1,8 +1,7 @@
-"use strict";
-var path = require("path");
-var fs = require("fs");
+var path = require('path');
+var fs = require('fs');
 var existsSync = fs.existsSync || path.existsSync;
-var DIR_NAME = "schemas";
+var DIR_NAME = 'schemas';
 
 module.exports = function getSchemasDirectory(startDir) {
 	var dir = startDir;
@@ -12,7 +11,7 @@ module.exports = function getSchemasDirectory(startDir) {
 			return path.join(dir, DIR_NAME);
 		}
 		lastDir = dir;
-		dir = path.join(dir, "..");
+		dir = path.join(dir, '..');
 	}
 	return false;
 };

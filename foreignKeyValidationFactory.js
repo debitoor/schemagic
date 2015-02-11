@@ -1,5 +1,5 @@
-var traverse = require("traverse");
-var async = require("async");
+var traverse = require('traverse');
+var async = require('async');
 
 module.exports = function foreignKeyValidationFactory(foreignKeys) {
 	return foreignKeyValidation;
@@ -57,7 +57,7 @@ function getForeignKeyCheckTask(foreignKeyCheckFunction, valuesToCheck, options)
 				return callback(err);
 			}
 			if (validArray.length !== valuesToCheck.length) {
-				var error = new Error("Foreign key check function did not return array of same length as values array passed to it");
+				var error = new Error('Foreign key check function did not return array of same length as values array passed to it');
 				error.forignKeyFunction = foreignKeyCheckFunction.toString();
 				error.valuesPassed = values;
 				error.valuesReturned = validArray;
@@ -67,7 +67,7 @@ function getForeignKeyCheckTask(foreignKeyCheckFunction, valuesToCheck, options)
 			for (var i = 0; i < validArray.length; i++) {
 				if (!validArray[i]) {
 					errors.push({
-						property: valuesToCheck[i].path.join("."),
+						property: valuesToCheck[i].path.join('.'),
 						value: valuesToCheck[i].value,
 						message: 'This is not a valid value'
 					});

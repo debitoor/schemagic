@@ -46,25 +46,39 @@ Object.keys(schmagic)
 ```
 You will ONLY get schemas. Anything not a schema on schemagic is non-enumerable
 
+additionalProperties, default false
+===================================
+Instead of as in the spec where the default for the schema is to allow additionalProperties. Schmagic will insert
+`additionalProperties:false` if you have not specified a `additionalProperties`value. We have done this to avoid
+programmer mistakes of forgetting `additionalProperties:false` in schemas.
+
+NOTE: Schemagic 2.0 does not support removing properties with the values null, empty string or undefined.
+Take a look at the node module [groom](https://github.com/e-conomic/groom), for this functionality.
+
+
+Build in formats
+===================================
+Schmagic has these build in formats:
+- `currency`. Use this for numbers that are currency. Will allow maximum 2 decimals after the decimal point.
+- `currency-rate` Positive number. Minimum 0.000001, maximum 999,999,999. Will allow maximum 6 decimals after the decimal point.
+- `date`. Is verified to be a date of the format `YYYY-MM-DD`
+- `date-time`. Is verified to be a valid date and time in the format `YYYY-MM-DDThh:mm:ssZ`
+- `rate`. Positive number, between zero and 100. Will allow maximum 2 decimals after the decimal point
+- `rate-negative`. Negative number, between zero and -100. Will allow maximum 2 decimals after the decimal point
+
 schemagic.login.validate(object, options[, callback])
 ================================
 
 You will be able to validate a JavaScript object against the schema definition with the `validate` function. 
-This is just a proxy for the [`json-schema`](https://github.com/kriszyp/json-schema) validate function.
+This is just a proxy for the [`is-my-json-valid`](https://github.com/mafintosh/is-my-json-valid) validate function.
 
 Options can be passed to the `validate` function:
 ```js
 {
 	removeReadOnlyFields: true, // remove readonly fields from the object, default: true
-	removeEmptyFields: true,     // remove empty fields (null, "" and undefined) from the object, default: true
-	emptyStringsToNull: true,     // fields with empty strings to null, default: false
-	decimalsValidation: true,  // enable maxDecimals check, default: true
-	stringFormatValidation: true, // enable check of date and date-time formats to be ANSI standard, default: true
 	filter: false  // filter away any properties not in schema (if additionalProperties:false), default: false
 	foreignKeys: false //check MongoDB foreign keys (callback is required), default: false
 	mongo: [tenantmongo-object] // this is just passed to the functions in schemas/foreignKeys.js
-	includeInstance: false, // includes instance in error object, default: true
-	includeSchema: false, includes schema in error object, default: true 
 }
 ```
 

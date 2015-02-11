@@ -1,14 +1,14 @@
 module.exports = {
-	"description":"Simple object",
+	"description":'Simple object',
 	"required":true,
-	"type":"object",
+	"type":'object',
 	"properties":{
 		testForeignKey:{
-			"type":"number",
+			"type":'number',
 			"required":false
 		},
 		testForeignKeyError:{
-			"type":"number",
+			"type":'number',
 			"required":false
 		}
 	}

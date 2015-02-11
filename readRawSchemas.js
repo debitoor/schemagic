@@ -1,6 +1,6 @@
 "use strict";
-var path = require("path");
-var fs = require("fs");
+var path = require('path');
+var fs = require('fs');
 
 function readRawSchemas(schemasDirectory) {
 	var schemaFileNames = fs.readdirSync(schemasDirectory);

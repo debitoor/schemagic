@@ -1,12 +1,12 @@
 delete require.cache[__filename]; //do not cache in require cache
-var getSchemasDirectory = require("./util/getSchemasDirectory");
-var readRawSchemas = require("./util/readRawSchemas");
-var schemaFactory = require("./util/schemaFactory");
-var getSchemaFromObject = require("./util/getSchemaFromObject");
-var cache = require("./util/cache"); //use requires caching to have a singleton
-var path = require("path");
-var _ = require("lodash");
-var traverse = require("traverse");
+var getSchemasDirectory = require('./getSchemasDirectory');
+var readRawSchemas = require('./readRawSchemas');
+var schemaFactory = require('./schemaFactory');
+var getSchemaFromObject = require('./getSchemaFromObject');
+var cache = require('./cache'); //use requires caching to have a singleton
+var path = require('path');
+var clone = require('clone');
+var traverse = require('traverse');
 
 
 function schemagicInit() {
@@ -25,7 +25,7 @@ function schemagicInit() {
 	var schemagic = {};
 	Object.defineProperty(
 		schemagic,
-		"getSchemaFromObject",
+		'getSchemaFromObject',
 		{
 			enumerable: false,
 			configurable: false,
@@ -40,7 +40,7 @@ function schemagicInit() {
 	}
 	Object.keys(rawSchemas).forEach(function (schemaName) {
 		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName], foreignKeys);
-		var rawPatchSchema = _.cloneDeep(rawSchemas[schemaName]);
+		var rawPatchSchema = clone(rawSchemas[schemaName]);
 		var t = traverse(rawPatchSchema);
 		t.forEach(function (value) {
 			//make sure null is allowed for all non-required properties
@@ -59,8 +59,8 @@ function schemagicInit() {
 				}
 			}
 		});
-		t.forEach(function (value) {
-			if (this.key === "required" && this.path.length >= 3 && this.path[this.path.length - 3] === 'properties') {
+		t.forEach(function () {
+			if (this.key === 'required' && this.path.length >= 3 && this.path[this.path.length - 3] === 'properties') {
 				this.update(false);
 			}
 		});

@@ -1,21 +1,20 @@
 //Generate example JSONs for schemas
 //Examples are strings (so they can contain comments)
-var _ = require("underscore");
 
 /*** BEGIN output class that encapsulated indentation ***/
 var output = {
 	addLine:function (line) {
 		if (this.value.length > 0) {
-			this.value += "\n"; //add linechange
+			this.value += '\n'; //add linechange
 		}
 		this.addIndentedText(line);
 	},
 	indent:function () {
 		var array = [];
 		for (var i = 0; i < this.indentation; i++) {
-			array.push("    ");
+			array.push('    ');
 		}
-		this.value += array.join("");
+		this.value += array.join('');
 	},
 	addIndentedText:function (text) {
 		this.indent();
@@ -29,60 +28,60 @@ var output = {
 function createOutput(indentation) {
 	var newOutput = Object.create(output);
 	newOutput.indentation = indentation;
-	newOutput.value = "";
+	newOutput.value = '';
 	return newOutput;
 }
 /*** END output class that encapsulated indentation ***/
 
 function generateExampleJson(schema, output) {
 	var type = schema.type, allowNull = false;
-	if (_(type).isArray()) {
+	if (Array.isArray(type)) {
 		if (type.length === 0) {
-			throw new Error("type is array with length=0: " + JSON.stringify(type));
+			throw new Error('type is array with length=0: ' + JSON.stringify(type));
 		}
 		for (var i = 0; i < type.length; i++) {
-			if (type[i] !== "null") {
+			if (type[i] !== 'null') {
 				type = type[i];
 				break; //exit for
 			}
 		}
 
 	}
-	if (!_(type).isString()) {
-		throw new Error("type is not a string: " + JSON.stringify(type));
+	if (typeof type !== 'string') {
+		throw new Error('type is not a string: ' + JSON.stringify(type));
 	}
 
 	switch (type) {
-		case "object":
+		case 'object':
 			return generateObjectJson(schema, output);
-		case "string":
+		case 'string':
 			if (schema.example) {
 				return output.addText(JSON.stringify(schema.example));
 			}
 			return output.addText('"value"');
-		case "number":
-		case "integer":
+		case 'number':
+		case 'integer':
 			if (schema.example) {
 				return output.addText(schema.example);
 			}
 			return output.addText('1');
-		case "boolean":
+		case 'boolean':
 			if (schema.example) {
 				return output.addText(schema.example);
 			}
 			return output.addText('false');
-		case "array":
+		case 'array':
 			return generateArrayJson(schema, output);
 		default:
-			throw new Error("unknown type: " + JSON.stringify(type));
+			throw new Error('unknown type: ' + JSON.stringify(type));
 	}
 }
 
 function getAllowsNull(schema) {
 	var type = schema.type, allowNull = false;
-	if (_(type).isArray()) {
+	if (Array.isArray(type)) {
 		for (var i = 0; i < type.length; i++) {
-			if (type[i] === "null") {
+			if (type[i] === 'null') {
 				return true;
 			}
 		}
@@ -93,71 +92,71 @@ function getAllowsNull(schema) {
 function addIntro(schema, output) {
 	var allowNull = getAllowsNull(schema);
 	if (schema.description) {
-		output.addLine("//" + schema.description);
+		output.addLine('//' + schema.description);
 	}
 	var doc;
 	if (schema.required) {
-		doc = "//Required";
+		doc = '//Required';
 	} else {
-		doc = "//Optional";
+		doc = '//Optional';
 	}
 	if (allowNull) {
-		doc += ", can be null";
+		doc += ', can be null';
 	}
 	output.addLine(doc);
 	if (schema.readonly) {
-		output.addLine("//Read only (will be ignored on POST and PUT)");
+		output.addLine('//Read only (will be ignored on POST and PUT)');
 	}
 }
 
 function generateObjectJson(schema, output) {
-	output.addText("{");
+	output.addText('{');
 	output.indentation++;
 
-	var comma = "";
+	var comma = '';
 	for (var property in schema.properties) {
 		var propertySchema = schema.properties[property];
 		output.addText(comma);
 		addIntro(propertySchema, output);
-		output.addLine(property + ":");
+		output.addLine(property + ':');
 		generateExampleJson(propertySchema, output);
-		comma = ",";
+		comma = ',';
 	}
 
 	output.indentation--;
-	output.addLine("}");
+	output.addLine('}');
 }
 
 function generateArrayJson(schema, output) {
-	output.addText("[");
+	output.addText('[');
 	output.indentation++;
 
 	var propertySchema = schema.items;
 	addIntro(propertySchema, output);
-	output.addLine("");
+	output.addLine('');
 	generateExampleJson(propertySchema, output);
 
 	output.indentation--;
-	output.addLine("]");
+	output.addLine(']');
 }
 
 module.exports = function (schema, options) {
 	var asArray = options && options.asArray;
 	var output = createOutput(0);
 	if (asArray) {
-		output.addLine("//Array");
-		output.addLine("[");
+		output.addLine('//Array');
+		output.addLine('[');
 		output.indentation++;
 	}
 	if (schema.description) {
-		output.addLine("//" + schema.description + "\n"); //we need linebreak becaus object (top level in schema) does not insert linebreak
+		output.addLine('//' + schema.description + '\n'); //we need linebreak becaus object (top level in schema) does not insert linebreak
 		output.indent();
 	}
 	generateExampleJson(schema, output);
 	if (asArray) {
-		output.addLine(", ...");
+		output.addLine(', ...');
 		output.indentation--;
-		output.addLine("]");
+		output.addLine(']');
 	}
 	return output.value;
 };
