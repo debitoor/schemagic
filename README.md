@@ -52,6 +52,9 @@ Instead of as in the spec where the default for the schema is to allow additiona
 `additionalProperties:false` if you have not specified a `additionalProperties`value. We have done this to avoid
 programmer mistakes of forgetting `additionalProperties:false` in schemas.
 
+NOTE: Schemagic 2.0 does not support removing properties with the values null, empty string or undefined.
+Take a look at the node module [groom](https://github.com/e-conomic/groom), for this functionality.
+
 
 Build in formats
 ===================================
