@@ -158,7 +158,7 @@ var max = MAX_SAFE_INTEGER / 100;
 var min = -MAX_SAFE_INTEGER / 100;
 function currencyFormatCheck(value) {
 	if (typeof value !== 'number') {
-		return false;
+		return true;
 	} else if ((value.toString().split('.')[1] || '').length > 2) {
 		return false;
 	} else if (value > max || value < min) {
@@ -169,7 +169,7 @@ function currencyFormatCheck(value) {
 
 function rateFormat(value) {
 	if (typeof value !== 'number') {
-		return false;
+		return true;
 	} else if ((value.toString().split('.')[1] || '').length > 2) {
 		return false;
 	} else if (value > 100 || value < 0) {
@@ -180,7 +180,7 @@ function rateFormat(value) {
 
 function rateNegativeFormat(value) {
 	if (typeof value !== 'number') {
-		return false;
+		return true;
 	} else if ((value.toString().split('.')[1] || '').length > 2) {
 		return false;
 	} else if (value > 0 || value < -100) {
@@ -191,7 +191,7 @@ function rateNegativeFormat(value) {
 
 function currencyRateFormat(value) {
 	if (typeof value !== 'number') {
-		return false;
+		return true;
 	} else if ((value.toString().split('.')[1] || '').length > 6) {
 		return false;
 	} else if (value > 999999999 || value < 0.000001) {

@@ -310,7 +310,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			});
 		});
 
-		describe('not required field', function () {
+		describe('invalid format', function () {
 			var result;
 
 			var document = {
@@ -323,6 +323,36 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 			it('should validate with errors', function () {
 				expect(result).to.have.property('valid', false);
+			});
+		});
+
+		describe('not required field', function () {
+			var result;
+
+			var document = {};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate with errors', function () {
+				expect(result).to.have.property('valid', true);
+			});
+		});
+
+		describe('allow null', function () {
+			var result;
+
+			var document = {
+				a: null
+			};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate with errors', function () {
+				expect(result).to.have.property('valid', true);
 			});
 		});
 	});

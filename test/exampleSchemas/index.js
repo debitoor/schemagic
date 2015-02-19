@@ -279,11 +279,11 @@ module.exports = {
 
 	currencySchema:{
 		"description":'Simple object',
-		"required":true,
+		"required":false,
 		"type":'object',
 		"properties": {
 			"a": {
-				"type": 'number',
+				"type": ['null', 'number'],
 				"required": false,
 				"format": 'currency'
 			}
