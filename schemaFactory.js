@@ -11,6 +11,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 	var schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
 	var schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
 	var validateSchema = imjv(schema, {
+		formats: formats
+	});
+	var filterSchema = imjv(schema, {
 		filter: true,
 		formats: formats
 	});
@@ -19,7 +22,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 
 	function validate(document, options, optionalCallback) {
 		options = options || {};
-		validateSchema(document, options);
+		validateSchema(document, {verbose: true});
 		var errors = validateSchema.errors || [];
 		var doForeignKeyValidation = options && options.foreignKey === true;
 		if (errors.length === 0 && doForeignKeyValidation && foreignKeys) {
@@ -41,15 +44,17 @@ function schemaFactory(rawSchema, foreignKeys) {
 		}
 		return result;
 
-		function transformErrorsAndHandleReadOnly(errors){
-			errors.forEach(function(err){
-				if(err.field) {
+		function transformErrorsAndHandleReadOnly(errors) {
+			errors.forEach(function (err) {
+				if (err.field) {
 					err.property = err.field;
 					delete err.field;
 				}
 			});
 			if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
-				validateSchemaNoReadonly(document, {filter: true});
+				validateSchemaNoReadonly(document);
+			} else if (options.filter === true) {
+				filterSchema(document);
 			}
 			var result = {valid: !errors.length, errors: errors};
 			return result;
@@ -76,17 +81,17 @@ function schemaWitNoReadonly(schema) {
 	var s = clone(schema);
 	var t = traverse(s);
 	var p = getReadonlyPath();
-	if(p && p.length===1){
-		if(s.type !== 'object'){
+	if (p && p.length === 1) {
+		if (s.type !== 'object') {
 			throw new Error('only object type root objects in schema are allowed to be readonly');
 		}
 		return {
 			description: s.description,
-			type:'object',
+			type: 'object',
 			additionalProperties: false
 		};
 	}
-	while(p){
+	while (p) {
 		p.pop(); //pop readonly
 		var prop = p.pop();
 		var obj = t.get(p);
@@ -97,8 +102,8 @@ function schemaWitNoReadonly(schema) {
 	return s;
 
 	function getReadonlyPath() {
-		return t.paths().filter(function(path){
-			return path[path.length-1] === 'readonly' && t.get(path);
+		return t.paths().filter(function (path) {
+			return path[path.length - 1] === 'readonly' && t.get(path);
 		})[0];
 	}
 }
