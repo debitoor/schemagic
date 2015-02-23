@@ -29,21 +29,20 @@ describe('/source/util/exampleJson', function () {
 
 	it('will generate correct exampleJsonString for schemaWithFormats', function () {
 		var exampleJsonGenerated = exampleJson(schemas.schemaWithFormats);
-		console.log(JSON.stringify(exampleJsonGenerated));
 		expect(exampleJsonGenerated).to.equal(
 			'//Formats\n' +
 			'{\n' +
-			'    //Optional. Format currency. Must be a number with a maximum of two decimals after the decimal point. Must be between -90071992547409.9 and 90071992547409.9\n' +
+			'    //Optional. Format: currency. Must be a number with a maximum of two decimals after the decimal point. Must be between -90071992547409.9 and 90071992547409.9\n' +
 			'    a:1,\n' +
-			'    //Optional. Format rate. Must be a number with a maximum of two decimals after the decimal point. Must be between 0 and 100\n' +
+			'    //Optional. Format: rate. Must be a number with a maximum of two decimals after the decimal point. Must be between 0 and 100\n' +
 			'    b:1,\n' +
-			'    //Optional. Format negative-rate\n' +
+			'    //Optional. Format: rate-negative. Must be a number with a maximum of two decimals after the decimal point. Must be between -100 and 0\n' +
 			'    c:1,\n' +
-			'    //Optional. Format currency-rate. Must be a number with a maximum of six decimals after the decimal point. Must be between 0.000001 and 999999999\n' +
+			'    //Optional. Format: currency-rate. Must be a number with a maximum of six decimals after the decimal point. Must be between 0.000001 and 999999999\n' +
 			'    d:1,\n' +
-			'    //Optional. Format date. Must be a date in the format YYYY-MM-DD\n' +
+			'    //Optional. Format: date. Must be a date in the format YYYY-MM-DD\n' +
 			'    e:"value",\n' +
-			'    //Optional. Format date-time. Must be a date and time in the format YYYY-MM-DDThh:mm:ssZ\n' +
+			'    //Optional. Format: date-time. Must be a date and time in the format YYYY-MM-DDThh:mm:ssZ\n' +
 			'    f:"value"\n' +
 			'}'
 

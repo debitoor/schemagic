@@ -25,7 +25,7 @@ module.exports = {
 			},
 			c:{
 				type: 'number',
-				format: 'negative-rate'
+				format: 'rate-negative'
 			},
 			d: {
 				type: 'number',

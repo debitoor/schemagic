@@ -106,7 +106,7 @@ function addIntro(schema, output) {
 		doc += ', can be null';
 	}
 	if(schema.format) {
-		doc += '. Format ' + schema.format;
+		doc += '. Format: ' + schema.format;
 		if (formats[schema.format] && formats[schema.format].doc) {
 			doc += '. ' + formats[schema.format].doc;
 		}
