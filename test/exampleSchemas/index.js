@@ -10,6 +10,38 @@ module.exports = {
 		"type":'object'
 	},
 
+	schemaWithFormats:{
+		"description":'Formats',
+		"required":true,
+		"type":'object',
+		properties:{
+			a:{
+				type: 'number',
+				format: 'currency'
+			},
+			b:{
+				type: 'number',
+				format: 'rate'
+			},
+			c:{
+				type: 'number',
+				format: 'rate-negative'
+			},
+			d: {
+				type: 'number',
+				format: 'currency-rate'
+			},
+			e:{
+				type: 'string',
+				format: 'date'
+			},
+			f:{
+				type: 'string',
+				format: 'date-time'
+			}
+		}
+	},
+
 	schemaObjectWithoutPropertiesSchema:{
 		"description":'Simple object',
 		"required":true,

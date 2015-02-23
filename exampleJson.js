@@ -1,5 +1,7 @@
 //Generate example JSONs for schemas
 //Examples are strings (so they can contain comments)
+var formats = require('./formats');
+
 
 /*** BEGIN output class that encapsulated indentation ***/
 var output = {
@@ -102,6 +104,12 @@ function addIntro(schema, output) {
 	}
 	if (allowNull) {
 		doc += ', can be null';
+	}
+	if(schema.format) {
+		doc += '. Format: ' + schema.format;
+		if (formats[schema.format] && formats[schema.format].doc) {
+			doc += '. ' + formats[schema.format].doc;
+		}
 	}
 	output.addLine(doc);
 	if (schema.readonly) {
