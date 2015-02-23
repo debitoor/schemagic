@@ -366,7 +366,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 		describe('simple schema validation without filter: true', function () {
 			var result;
-			var document = {a: 1, c: 'd', notInSchemaField: 'foo'};
+			var document = {a: 1, b: 'd', notInSchemaField: 'foo'};
 
 			before(function () {
 				result = schema.validate(document);
@@ -379,12 +379,15 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			it('should provide errors', function () {
 				expect(result.errors).to.not.deep.equal([]);
 			});
+			it('should not remove properties that are not in schema', function () {
+				expect(document).to.eql({a: 1, b: 'd', notInSchemaField: 'foo'});
+			});
 
 		});
 
 		describe('simple schema validation with filter: true', function () {
 			var result;
-			var document = {a: 1, c: 'd', thisIsNotInSchemaField: 'foo'};
+			var document = {a: 1, b: 'd', thisIsNotInSchemaField: 'foo'};
 
 			before(function () {
 				result = schema.validate(document, {filter: true});
@@ -395,7 +398,36 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			});
 
 			it('should remove properties that are not in schema', function () {
-				expect(document).to.not.have.property('thisIsNotInSchemaField');
+				expect(document).to.eql({a: 1, b: 'd'});
+			});
+		});
+
+		describe('nested objects schema validation with filter: true', function () {
+			var result;
+			var document = {
+				a: 1,
+				b: 'd',
+				thisIsNotInSchemaField: 'foo',
+				c: {a: 1, b: 'd', thisIsNotInSchemaField: 'foo'}
+			};
+
+			before(function () {
+				result = schema.validate(document, {filter: true});
+			});
+
+			it('should not validate', function () {
+				expect(result).to.have.property('valid', false);
+			});
+
+			it.only('should remove properties that are not in schema', function () {
+				expect(document).to.eql({
+					"a": 1,
+					"b": "d",
+					"c": {
+						"a": 1,
+						"b": "d"
+					}
+				});
 			});
 		});
 	});

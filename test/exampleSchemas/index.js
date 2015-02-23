@@ -120,6 +120,23 @@ module.exports = {
 				"type":'string',
 				"required":false,
 				"readonly":true
+			},
+			c:{
+				description: 'Simple object',
+				required: false,
+				type: 'object',
+				additionalProperties: false,
+				properties:{
+					a: {
+						"type":'number',
+						"required":true
+					},
+					b: {
+						"type":'string',
+						"required":false,
+						"readonly":true
+					}
+				}
 			}
 		}
 	},

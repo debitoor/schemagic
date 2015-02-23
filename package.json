@@ -16,7 +16,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "clone": "^0.2.0",
-    "is-my-json-valid": "^2.9.2",
+    "is-my-json-valid": "^2.9.3",
     "moment": "^2.9.0",
     "traverse": "^0.6.6"
   },
