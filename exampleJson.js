@@ -105,8 +105,11 @@ function addIntro(schema, output) {
 	if (allowNull) {
 		doc += ', can be null';
 	}
-	if(schema.format && formats[schema.format] && formats[schema.format].doc){
-		doc += '. ' + formats[schema.format].doc;
+	if(schema.format) {
+		doc += '. Format ' + schema.format;
+		if (formats[schema.format] && formats[schema.format].doc) {
+			doc += '. ' + formats[schema.format].doc;
+		}
 	}
 	output.addLine(doc);
 	if (schema.readonly) {
