@@ -4,7 +4,7 @@ var exampleJson = require('./exampleJson');
 var imjv = require('is-my-json-valid');
 var clone = require('clone');
 var traverse = require('traverse');
-var moment = require('moment');
+var formats = require('./formats');
 
 function schemaFactory(rawSchema, foreignKeys) {
 	var foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
@@ -12,14 +12,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 	var schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
 	var validateSchema = imjv(schema, {
 		filter: true,
-		formats: {
-			'date-time': datetimeFormatCheck,
-			date: dateFormatCheck,
-			currency: currencyFormatCheck,
-			rate: rateFormat,
-			'rate-negative':rateNegativeFormat,
-			'currency-rate': currencyRateFormat
-		}
+		formats: formats
 	});
 	var validateSchemaNoReadonly = imjv(schemaWitNoReadonlyProperties, {filter: true});
 	var normalizedJSON;
@@ -130,74 +123,5 @@ function schemaWithAdditionalPropertiesNotAllowedAsDefault(schema) {
 	}
 }
 
-var minYear = 1970;
-var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
-function datetimeFormatCheck(value) {
-	var dateTime = moment(value, 'YYYY-MM-DDThh:mm:ssZ');
-	if (!dateTime || !dateTime.isValid() || !dateTimePattern.test(value)) {
-		return false;
-	} else if (dateTime.year() < minYear) {
-		return false;
-	}
-	return true;
-}
-
-var datePattern = /^\d{4}-\d{2}-\d{2}$/;
-function dateFormatCheck(value) {
-	var dateTime = moment(value, 'YYYY-MM-DD');
-	if (!dateTime || !dateTime.isValid() || !datePattern.test(value)) {
-		return false;
-	} else if (dateTime.year() < minYear) {
-		return false;
-	}
-	return true;
-}
-
-var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
-var max = MAX_SAFE_INTEGER / 100;
-var min = -MAX_SAFE_INTEGER / 100;
-function currencyFormatCheck(value) {
-	if (typeof value !== 'number') {
-		return true;
-	} else if ((value.toString().split('.')[1] || '').length > 2) {
-		return false;
-	} else if (value > max || value < min) {
-		return false;
-	}
-	return true;
-}
-
-function rateFormat(value) {
-	if (typeof value !== 'number') {
-		return true;
-	} else if ((value.toString().split('.')[1] || '').length > 2) {
-		return false;
-	} else if (value > 100 || value < 0) {
-		return false;
-	}
-	return true;
-}
-
-function rateNegativeFormat(value) {
-	if (typeof value !== 'number') {
-		return true;
-	} else if ((value.toString().split('.')[1] || '').length > 2) {
-		return false;
-	} else if (value > 0 || value < -100) {
-		return false;
-	}
-	return true;
-}
-
-function currencyRateFormat(value) {
-	if (typeof value !== 'number') {
-		return true;
-	} else if ((value.toString().split('.')[1] || '').length > 6) {
-		return false;
-	} else if (value > 999999999 || value < 0.000001) {
-		return false;
-	}
-	return true;
-}
 
 module.exports = schemaFactory;
