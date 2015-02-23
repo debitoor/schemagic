@@ -419,7 +419,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 				expect(result).to.have.property('valid', false);
 			});
 
-			it.only('should remove properties that are not in schema', function () {
+			it('should remove properties that are not in schema', function () {
 				expect(document).to.eql({
 					"a": 1,
 					"b": "d",
