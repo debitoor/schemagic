@@ -74,10 +74,10 @@ function schemagicInit() {
 function getSchemaForeignKeys(schemaName, foreignKeys) {
 	return Object.keys(foreignKeys).reduce(function(memo, key) {
 		var keyParts = key.split('.');
-		if (keyParts.length ===1) {
+		if (keyParts.length === 1) {
 			memo[key] = foreignKeys[key];
 		} else {
-			var keySchemaName = keyParts.slice(0, keyParts.length-1).join('.');
+			var keySchemaName = keyParts.slice(0, keyParts.length - 1).join('.');
 			if (keySchemaName === schemaName) {
 				memo[keyParts.pop()] = foreignKeys[key];
 			}
