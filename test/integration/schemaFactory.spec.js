@@ -431,4 +431,27 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			});
 		});
 	});
+
+	describe('test of optional object with nested schema', function() {
+		var schema;
+
+		before(function () {
+			schema = schemaFactory(rawSchemas.optionalObjectWithNestedSchema);
+		});
+
+		describe('when nested object was not provided', function() {
+			var result;
+			var document = {
+				nestedObject : null
+			};
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should validate', function() {
+				expect(result).to.have.property('valid', true);
+			});
+		});
+	});
 });

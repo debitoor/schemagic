@@ -400,5 +400,23 @@ module.exports = {
 				example: 'bar'
 			}
 		}
+	},
+
+	optionalObjectWithNestedSchema : {
+		description: "Contain optional object with nested schema",
+		type: 'object',
+		properties: {
+			nestedObject: {
+				required: false,
+				type: ['null', 'object'],
+				properties: {
+					a: {
+						description: 'String in nested object',
+						required: false,
+						type: 'string'
+					}
+				}
+			}
+		}
 	}
 };
