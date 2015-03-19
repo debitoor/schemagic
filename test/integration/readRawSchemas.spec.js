@@ -12,6 +12,7 @@ describe('/source/util/redRawSchemas', function(){
 			expect(schemas).to.eql({
 				test: require('./schemas/test'),
 				test2: require('./schemas/test2'),
+				'test3.with.dot': require('./schemas/test3.with.dot'),
 				foreignKeys: require('./schemas/foreignKeys')
 			});
 		});

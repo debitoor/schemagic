@@ -21,6 +21,10 @@ module.exports = {
 			"type":'string',
 			"required":false,
 			"readonly":true
+		},
+		testForeignKey2:{
+			"type":'number',
+			"required":false
 		}
 	}
 };

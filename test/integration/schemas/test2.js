@@ -10,6 +10,10 @@ module.exports = {
 		testForeignKeyError:{
 			"type":'number',
 			"required":false
+		},
+		testForeignKey2:{
+			"type":'number',
+			"required":false
 		}
 	}
 };
