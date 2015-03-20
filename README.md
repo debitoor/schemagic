@@ -231,26 +231,20 @@ module.exports = {
 Foreign keys are specified by convention. Meaning that with the above specification, ANY property with the name
 `invoiceId` or `unitId` will be subject to a foreign key check in ALL schemas.
 
+Use dot notation if you want to apply the check for a specific schema:
+```js
+module.exports = {
+	"expense.categoryId": function(){..},
+	"income.categoryId": function(){..},
+}
+```
+
 If you want to use foreignKey checks you will have to pass `mongo` (and anything else used by your foreign key checkers) 
 in `options` when you call `validate` like this:
 
 ```js
 schemagic.invoice.validate(doc, {foreignKey:true, mongo: mongo}, callback);
 ```
-
-
-If you want specific checks that only apply to one schema, for now you have to do them elswhere.
-
-TODO: Specifying a foreign key check for one schema only could be done like this
-```js
-module.exports = {
-	"expense.categoryId": function(categoryIds, options, callback){
-		//...
-	}
-}
-```
-Where the above foreign key constraint only applies to the expense schema. THIS IS NOT IMPLEMENTED YET.
-
 
 schemagic.getSchemaFromObject() (non-enumerable)
 =====================================

@@ -39,7 +39,8 @@ function schemagicInit() {
 		delete rawSchemas.foreignKeys;
 	}
 	Object.keys(rawSchemas).forEach(function (schemaName) {
-		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName], foreignKeys);
+		var schemaForeignKeys = getSchemaForeignKeys(schemaName, foreignKeys);
+		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName], schemaForeignKeys);
 		var rawPatchSchema = clone(rawSchemas[schemaName]);
 		var t = traverse(rawPatchSchema);
 		t.forEach(function (value) {
@@ -64,10 +65,25 @@ function schemagicInit() {
 				this.update(false);
 			}
 		});
-		schemagic[schemaName].patch = schemaFactory(rawPatchSchema, foreignKeys);
+		schemagic[schemaName].patch = schemaFactory(rawPatchSchema, schemaForeignKeys);
 	});
 	cache.schemagics[schemasDirectory] = schemagic;
 	return schemagic;
+}
+
+function getSchemaForeignKeys(schemaName, foreignKeys) {
+	return Object.keys(foreignKeys).reduce(function(memo, key) {
+		var keyParts = key.split('.');
+		if (keyParts.length === 1) {
+			memo[key] = foreignKeys[key];
+		} else {
+			var keySchemaName = keyParts.slice(0, keyParts.length - 1).join('.');
+			if (keySchemaName === schemaName) {
+				memo[keyParts.pop()] = foreignKeys[key];
+			}
+		}
+		return memo;
+	}, {});	
 }
 
 module.exports = schemagicInit();
