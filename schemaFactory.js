@@ -11,7 +11,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 	var schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
 	var schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
 	var validateSchema = imjv(schema, {
-		formats: formats
+		formats: formats,
+		verbose: true
 	});
 	var filterSchema = imjv(schema, {
 		filter: true,
@@ -22,7 +23,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 
 	function validate(document, options, optionalCallback) {
 		options = options || {};
-		validateSchema(document, {verbose: true});
+		validateSchema(document);
 		var errors = validateSchema.errors || [];
 		var doForeignKeyValidation = options && options.foreignKey === true;
 		if (errors.length === 0 && doForeignKeyValidation && foreignKeys) {
