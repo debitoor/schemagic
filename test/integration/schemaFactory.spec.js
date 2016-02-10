@@ -377,7 +377,13 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			});
 
 			it('should provide errors', function () {
-				expect(result.errors).to.not.deep.equal([]);
+				expect(result.errors).to.deep.equal([
+					{
+						message: 'has additional properties',
+						value: 'data.notInSchemaField',
+						property: 'data'
+					}
+				]);
 			});
 			it('should not remove properties that are not in schema', function () {
 				expect(document).to.eql({a: 1, b: 'd', notInSchemaField: 'foo'});
