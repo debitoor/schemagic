@@ -122,8 +122,10 @@ Example:
 }
 ```
 
-schemagic.login.exampleJsonArray
+schemagic.login.array.exampleJson
 ================================
+(formerly known as schemagic.login.exampleJsonArray)
+
 This property wil contain a string, with pretty-printed JSON and comments about what is required, read only and so on.
 This example is almost the same as above, except the example shows an Array of objects that satisfy the schema.
 Example:
@@ -148,6 +150,16 @@ schemagic.login.schema
 ======================
 This property wil contain the result of `require("schemagic/login.js")`, the raw schema as it was required from disk.
 
+
+schemagic.login.array
+======================
+This property wil contain a schemagic schema like `login` except it accepts an array of the documents specified in
+`login`. The root array is required.
+```
+- schemagic.login.array.validate
+- schemagic.login.array.exampleJson
+- schemagic.login.array.schema
+```
 
 schemagic.login.patch
 ======================

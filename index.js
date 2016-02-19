@@ -66,13 +66,19 @@ function schemagicInit() {
 			}
 		});
 		schemagic[schemaName].patch = schemaFactory(rawPatchSchema, schemaForeignKeys);
+		var rawArraySchema = {
+			"required": true,
+			"type": 'array',
+			"items": clone(rawSchemas[schemaName])
+		};
+		schemagic[schemaName].array = schemaFactory(rawArraySchema, schemaForeignKeys);
 	});
 	cache.schemagics[schemasDirectory] = schemagic;
 	return schemagic;
 }
 
 function getSchemaForeignKeys(schemaName, foreignKeys) {
-	return Object.keys(foreignKeys).reduce(function(memo, key) {
+	return Object.keys(foreignKeys).reduce(function (memo, key) {
 		var keyParts = key.split('.');
 		if (keyParts.length === 1) {
 			memo[key] = foreignKeys[key];
@@ -83,7 +89,7 @@ function getSchemaForeignKeys(schemaName, foreignKeys) {
 			}
 		}
 		return memo;
-	}, {});	
+	}, {});
 }
 
 module.exports = schemagicInit();
