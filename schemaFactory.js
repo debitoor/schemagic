@@ -54,7 +54,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 					delete err.field;
 				}
 				if (err.value && typeof err.value === 'string' && dataRegExp.test(err.value)) {
-					err.property = err.value;
+					err.property += '.' + err.value.split('.').pop();
 					delete err.value;
 				}
 				if(err.property){
