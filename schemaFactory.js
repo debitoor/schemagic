@@ -6,6 +6,8 @@ var clone = require('clone');
 var traverse = require('traverse');
 var formats = require('./formats');
 
+var dataRegExp = /^data\./;
+
 function schemaFactory(rawSchema, foreignKeys) {
 	var foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
 	var schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
@@ -48,10 +50,18 @@ function schemaFactory(rawSchema, foreignKeys) {
 		function transformErrorsAndHandleReadOnly(errors) {
 			errors.forEach(function (err) {
 				if (err.field) {
-					err.property = err.field.replace(/^data\./, '');
+					err.property = err.field;
 					delete err.field;
 				}
+				if (err.value && typeof err.value === 'string' && dataRegExp.test(err.value)) {
+					err.property = err.value;
+					delete err.value;
+				}
 				if(err.property){
+					err.property = err.property.replace(dataRegExp, '');
+					if(!err.property || err.property === 'data'){
+						err.property = 'root';
+					}
 					var index = parseInt(err.property, 10);
 					if (!isNaN(index)) {
 						err.index = index;

@@ -380,9 +380,8 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 				expect(result.errors).to.deep.equal([
 					{
 						message: 'has additional properties',
-						value: 'data.notInSchemaField',
-						type: 'object',
-						property: 'data'
+						property: 'notInSchemaField',
+						type: 'object'
 					}
 				]);
 			});
