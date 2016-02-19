@@ -2,7 +2,7 @@
   "author": "debitoor",
   "name": "schemagic",
   "description": "JSON validation with schemas, and schema tools",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/e-conomic/schemagic"
