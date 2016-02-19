@@ -48,8 +48,14 @@ function schemaFactory(rawSchema, foreignKeys) {
 		function transformErrorsAndHandleReadOnly(errors) {
 			errors.forEach(function (err) {
 				if (err.field) {
-					err.property = err.field;
+					err.property = err.field.replace(/^data\./, '');
 					delete err.field;
+				}
+				if(err.property){
+					var index = parseInt(err.property, 10);
+					if (!isNaN(index)) {
+						err.index = index;
+					}
 				}
 			});
 			if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
@@ -64,8 +70,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 
 	function toJSON() {
 		normalizedJSON = normalizedJSON || JSON.parse(JSON.stringify(schema, function (key, val) {
-			return util.isRegExp(val) ? val.source : val;
-		}));
+				return util.isRegExp(val) ? val.source : val;
+			}));
 		return normalizedJSON;
 	}
 

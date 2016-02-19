@@ -195,6 +195,7 @@ describe('/source/schemagic with valid example schemas', function () {
 					"errors": [{
 						property: '0.testForeignKey',
 						value: 3,
+						index: 0,
 						message: 'This is not a valid value'
 					}]
 				});

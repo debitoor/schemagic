@@ -119,7 +119,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		it('will have the correct error', function () {
 			expect(result.errors).to.containSubset([
 					{
-						"property": 'data.a',
+						"property": 'a',
 						"message": 'is the wrong type'
 					}
 				]
