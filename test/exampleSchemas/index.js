@@ -400,5 +400,19 @@ module.exports = {
 				example: 'bar'
 			}
 		}
+	},
+	schemaWithStringEscapePropertyName: {
+		description: 'Simple object with enum',
+		required: true,
+		type: 'object',
+		properties: {
+			'/a': {
+				description: 'test',
+				required: false,
+				type: ['null', 'string'],
+				enum: ['foo', 'bar', undefined],
+				example: 'bar'
+			}
+		}
 	}
 };

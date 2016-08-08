@@ -1,6 +1,6 @@
 var schemaFactory = require('../../schemaFactory');
 var rawSchemas = require('../exampleSchemas');
-var exampleJson = require('../../exampleJson');
+var exampleJson = require('../../generateExampleJson');
 
 describe('/source/util/schemaFactory run on simpleSchema, the returned object', function () {
 	var schema;
@@ -18,6 +18,25 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 	it('has exampleJsonArray', function () {
 		expect(schema).to.have.property('exampleJsonArray').to.equal(exampleJson(rawSchemas.simpleSchema, {asArray: true}));
+	});
+	it('has example', function () {
+		expect(schema).to.have.property('example').to.be.ok;
+	});
+
+	it('has exampleArray', function () {
+		expect(schema).to.have.property('exampleArray').to.be.ok;
+	});
+
+	describe('loading schema with property that requires string', function(){
+		var schema2;
+		before(function () {
+			schema2 = schemaFactory(rawSchemas.schemaWithStringEscapePropertyName);
+		});
+
+		it('has example', function () {
+			expect(schema2).to.have.property('example').to.be.ok;
+		});
+
 	});
 
 	describe('validating valid document with removeReadOnlyFields option not set', function () {

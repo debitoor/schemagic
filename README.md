@@ -122,6 +122,11 @@ Example:
 }
 ```
 
+schemagic.login.example
+===========================
+This property wil contain the parsed version of the `exampleJson` property. The `exampleJson` can not be parsed
+trivially because it's not valid JSON. It contains comments and property names are not quoted.
+
 schemagic.login.array.exampleJson
 ================================
 (formerly known as schemagic.login.exampleJsonArray)
@@ -145,6 +150,13 @@ Example:
     , ...
 ]
 ```
+
+schemagic.login.array.example
+=============================
+This property wil contain the parsed version of the `exampleJson` property for the array.
+The `exampleJson` can not be parsed trivially because it's not valid JSON.
+It contains comments and property names are not quoted.
+
 
 schemagic.login.schema
 ======================
@@ -258,7 +270,12 @@ in `options` when you call `validate` like this:
 schemagic.invoice.validate(doc, {foreignKey:true, mongo: mongo}, callback);
 ```
 
-schemagic.getSchemaFromObject() (non-enumerable)
+schemagic.parseExampleJson() (non-enumerable)
+=====================================
+(NOTE: on root schemagic object)
+
+This function tries to pares a text as though it was an exampleJson created by schemagic. It will throw if there is an error.
+
 =====================================
 EXPERIMENTAL (NOTE: on root schemagic object)
 

@@ -45,6 +45,10 @@ describe('/source/schemagic with valid example schemas', function () {
 			expect(schemagic).to.have.property('getSchemaFromObject').to.be.a('function');
 		});
 
+		it('has parseExampleJson as property', function () {
+			expect(schemagic).to.have.property('parseExampleJson').to.be.a('function');
+		});
+
 		describe('validating against test2 schema that has foreign key value, foreignKey:false - no callback', function() {
 			var result;
 			var doc;

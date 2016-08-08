@@ -3,6 +3,7 @@ var getSchemasDirectory = require('./getSchemasDirectory');
 var readRawSchemas = require('./readRawSchemas');
 var schemaFactory = require('./schemaFactory');
 var getSchemaFromObject = require('./getSchemaFromObject');
+var parseExampleJson = require('./parseExampleJson');
 var cache = require('./cache'); //use requires caching to have a singleton
 var path = require('path');
 var clone = require('clone');
@@ -33,6 +34,16 @@ function schemagicInit() {
 			value: getSchemaFromObject
 		}
 	); //schemagic.getSchemaFromObject is not enumerable
+	Object.defineProperty(
+		schemagic,
+		'parseExampleJson',
+		{
+			enumerable: false,
+			configurable: false,
+			writable: false,
+			value: parseExampleJson
+		}
+	); //schemagic.parseExampleJson is not enumerable
 	var foreignKeys = {};
 	if (rawSchemas.foreignKeys) {
 		foreignKeys = rawSchemas.foreignKeys;

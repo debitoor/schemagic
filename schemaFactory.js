@@ -1,10 +1,11 @@
 var util = require('util');
 var foreignKeyValidationFactory = require('./foreignKeyValidationFactory');
-var exampleJson = require('./exampleJson');
+var generateExampleJson = require('./generateExampleJson');
 var imjv = require('is-my-json-valid');
 var clone = require('clone');
 var traverse = require('traverse');
 var formats = require('./formats');
+var parseExampleJson = require('./parseExampleJson');
 
 var dataRegExp = /^data\./;
 
@@ -85,12 +86,18 @@ function schemaFactory(rawSchema, foreignKeys) {
 		return normalizedJSON;
 	}
 
+	var exampleJson = generateExampleJson(schema);
+	var example = parseExampleJson(exampleJson); //make sure it can be parser, this will throw if not
+	var exampleJsonArray = generateExampleJson(schema, {asArray: true});
+	var exampleArray = parseExampleJson(exampleJsonArray); //make sure it can be parser, this will throw if not
 	return {
-		validate: validate,
-		schema: schema,
-		exampleJson: exampleJson(schema),
-		exampleJsonArray: exampleJson(schema, {asArray: true}),
-		toJSON: toJSON
+		validate,
+		schema,
+		exampleJson,
+		exampleJsonArray,
+		example,
+		exampleArray,
+		toJSON
 	};
 }
 

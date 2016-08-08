@@ -1,7 +1,7 @@
 //Generate example JSONs for schemas
 //Examples are strings (so they can contain comments)
 var formats = require('./formats');
-
+var isProperty = require('is-property');
 
 /*** BEGIN output class that encapsulated indentation ***/
 var output = {
@@ -36,7 +36,7 @@ function createOutput(indentation) {
 /*** END output class that encapsulated indentation ***/
 
 function generateExampleJson(schema, output) {
-	var type = schema.type, allowNull = false;
+	var type = schema.type;
 	if (Array.isArray(type)) {
 		if (type.length === 0) {
 			throw new Error('type is array with length=0: ' + JSON.stringify(type));
@@ -126,13 +126,17 @@ function generateObjectJson(schema, output) {
 		var propertySchema = schema.properties[property];
 		output.addText(comma);
 		addIntro(propertySchema, output);
-		output.addLine(property + ':');
+		output.addLine(encodeProperty(property) + ':');
 		generateExampleJson(propertySchema, output);
 		comma = ',';
 	}
 
 	output.indentation--;
 	output.addLine('}');
+}
+
+function encodeProperty(property){
+	return isProperty(property) ? property : JSON.stringify(property);
 }
 
 function generateArrayJson(schema, output) {
@@ -162,7 +166,8 @@ module.exports = function (schema, options) {
 	}
 	generateExampleJson(schema, output);
 	if (asArray) {
-		output.addLine(', ...');
+		output.addLine('//, ...');
+		output.addLine('//Any additional items in this array go here.');
 		output.indentation--;
 		output.addLine(']');
 	}
