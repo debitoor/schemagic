@@ -1,28 +1,29 @@
 //Generate example JSONs for schemas
 //Examples are strings (so they can contain comments)
+var wordWrap = require('word-wrap');
 var formats = require('./formats');
 var isProperty = require('is-property');
 
 /*** BEGIN output class that encapsulated indentation ***/
 var output = {
-	addLine:function (line) {
+	addLine: function (line) {
 		if (this.value.length > 0) {
 			this.value += '\n'; //add linechange
 		}
 		this.addIndentedText(line);
 	},
-	indent:function () {
+	indent: function () {
 		var array = [];
 		for (var i = 0; i < this.indentation; i++) {
 			array.push('    ');
 		}
 		this.value += array.join('');
 	},
-	addIndentedText:function (text) {
+	addIndentedText: function (text) {
 		this.indent();
 		this.value += text;
 	},
-	addText:function (text) {
+	addText: function (text) {
 		this.value += text;
 	}
 };
@@ -80,7 +81,7 @@ function generateExampleJson(schema, output) {
 }
 
 function getAllowsNull(schema) {
-	var type = schema.type, allowNull = false;
+	var type = schema.type;
 	if (Array.isArray(type)) {
 		for (var i = 0; i < type.length; i++) {
 			if (type[i] === 'null') {
@@ -94,7 +95,8 @@ function getAllowsNull(schema) {
 function addIntro(schema, output) {
 	var allowNull = getAllowsNull(schema);
 	if (schema.description) {
-		output.addLine('//' + schema.description);
+		var lines = wordWrap(schema.description, {width: 80, indent: '//'}).split('\n');
+		lines.forEach(output.addLine.bind(output));
 	}
 	var doc;
 	if (schema.required) {
@@ -105,7 +107,7 @@ function addIntro(schema, output) {
 	if (allowNull) {
 		doc += ', can be null';
 	}
-	if(schema.format) {
+	if (schema.format) {
 		doc += '. Format: ' + schema.format;
 		if (formats[schema.format] && formats[schema.format].doc) {
 			doc += '. ' + formats[schema.format].doc;
@@ -135,7 +137,7 @@ function generateObjectJson(schema, output) {
 	output.addLine('}');
 }
 
-function encodeProperty(property){
+function encodeProperty(property) {
 	return isProperty(property) ? property : JSON.stringify(property);
 }
 
@@ -161,7 +163,10 @@ module.exports = function (schema, options) {
 		output.indentation++;
 	}
 	if (schema.description) {
-		output.addLine('//' + schema.description + '\n'); //we need linebreak becaus object (top level in schema) does not insert linebreak
+		var lines = wordWrap(schema.description, {width: 80, indent: '//'}).split('\n');
+		var lastLine = lines.pop();
+		lines.forEach(output.addLine.bind(output));
+		output.addLine(lastLine + '\n'); //we need linebreak because object (top level in schema) does not insert linebreak
 		output.indent();
 	}
 	generateExampleJson(schema, output);

@@ -27,6 +27,23 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+	it('will generate correct exampleJsonString for schemaWithVeryLongDescription, ' +
+		'should word wrap the long description', function () {
+		var exampleJsonGenerated = exampleJson(schemas.schemaWithVeryLongDescription);
+		expect(exampleJsonGenerated).to.equal(`//long long long long long long long long long long long long long long long long 
+//long long long long long long long long long long long long long long long long 
+//long long long long long long long long long long long long long long long long 
+//long long long long long long long long long long long long long long
+{
+    //long long long long long long long long long long long long long long long long 
+    //long long long long long long long long long long long long long long long long 
+    //long long long long long long long long long long long long long long long long 
+    //long long long long long long long long long long long long long long
+    //Optional. Format: currency. Must be a number with a maximum of two decimals after the decimal point. Must be between -90071992547409.9 and 90071992547409.9
+    a:1
+}`);
+	});
+
 	it('will generate correct exampleJsonString for schemaWithFormats', function () {
 		var exampleJsonGenerated = exampleJson(schemas.schemaWithFormats);
 		expect(exampleJsonGenerated).to.equal(
@@ -45,7 +62,6 @@ describe('/source/util/exampleJson', function () {
 			'    //Optional. Format: date-time. Must be a date and time in the format YYYY-MM-DDThh:mm:ssZ\n' +
 			'    f:"value"\n' +
 			'}'
-
 		);
 	});
 
