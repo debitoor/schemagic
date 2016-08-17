@@ -106,8 +106,8 @@ It will return this response if there is no error:
 
 schemagic.login.exampleJson
 ===========================
-This property wil contain a string, with pretty-printed JSON and comments about what is required, read only and so on.
-This example JSON is generated directly from the schema definition, using the `example` properties, if available (not required).
+This property wil contain a string, with pretty-printed JSON-ish and comments about what is required, read only and so on.
+This example-JSON is generated directly from the schema definition, using the `example` properties, if available (not required).
 Example:
 
 ```js
@@ -127,11 +127,40 @@ schemagic.login.example
 This property wil contain the parsed version of the `exampleJson` property. The `exampleJson` can not be parsed
 trivially because it's not valid JSON. It contains comments and property names are not quoted.
 
+schemagic.login.exampleMinimalJson
+==================================
+This property wil contain a string, with pretty-printed JSON-ish and comments about what is required, read only and so on.
+This example-JSON is generated directly from the schema definition, using the `example` properties, if available (not required).
+
+NOTE: This example only includes required properties, all other properties have been omitted
+
+Example:
+
+```js
+//Signup and login
+{
+     //Email of the user
+    //Required
+    email:"email@mydomain.com",
+    //Password of the user
+    //Required
+    password:"*********"
+}
+```
+
+schemagic.login.exampleMinimal
+==============================
+This property wil contain the parsed version of the `exampleMinimalJson` property. The `exampleJMinimalson` can not be parsed
+trivially because it's not valid JSON. It contains comments and property names are not quoted.
+
+NOTE: This example only includes required properties, all other properties have been omitted
+
+
 schemagic.login.array.exampleJson
 ================================
 (formerly known as schemagic.login.exampleJsonArray)
 
-This property wil contain a string, with pretty-printed JSON and comments about what is required, read only and so on.
+This property wil contain a string, with pretty-printed JSON-ish and comments about what is required, read only and so on.
 This example is almost the same as above, except the example shows an Array of objects that satisfy the schema.
 Example:
 

@@ -36,7 +36,7 @@ function createOutput(indentation) {
 }
 /*** END output class that encapsulated indentation ***/
 
-function generateExampleJson(schema, output) {
+function generateExampleJson(schema, minimal, output) {
 	var type = schema.type;
 	if (Array.isArray(type)) {
 		if (type.length === 0) {
@@ -56,7 +56,7 @@ function generateExampleJson(schema, output) {
 
 	switch (type) {
 		case 'object':
-			return generateObjectJson(schema, output);
+			return generateObjectJson(schema, minimal, output);
 		case 'string':
 			if (schema.example) {
 				return output.addText(JSON.stringify(schema.example));
@@ -74,7 +74,7 @@ function generateExampleJson(schema, output) {
 			}
 			return output.addText('false');
 		case 'array':
-			return generateArrayJson(schema, output);
+			return generateArrayJson(schema, minimal, output);
 		default:
 			throw new Error('unknown type: ' + JSON.stringify(type));
 	}
@@ -119,17 +119,20 @@ function addIntro(schema, output) {
 	}
 }
 
-function generateObjectJson(schema, output) {
+function generateObjectJson(schema, minimal, output) {
 	output.addText('{');
 	output.indentation++;
 
 	var comma = '';
 	for (var property in schema.properties) {
+		if(minimal && !schema.properties[property].required){
+			continue;
+		}
 		var propertySchema = schema.properties[property];
 		output.addText(comma);
 		addIntro(propertySchema, output);
 		output.addLine(encodeProperty(property) + ':');
-		generateExampleJson(propertySchema, output);
+		generateExampleJson(propertySchema, minimal,  output);
 		comma = ',';
 	}
 
@@ -141,21 +144,30 @@ function encodeProperty(property) {
 	return isProperty(property) ? property : JSON.stringify(property);
 }
 
-function generateArrayJson(schema, output) {
+function generateArrayJson(schema, minimal, output) {
+	if(minimal && !schema.required){
+		return;
+	}
+	if(minimal && !schema.items.required){
+		output.addText('[]');
+		return;
+	}
 	output.addText('[');
 	output.indentation++;
 
 	var propertySchema = schema.items;
 	addIntro(propertySchema, output);
 	output.addLine('');
-	generateExampleJson(propertySchema, output);
-
+	generateExampleJson(propertySchema, minimal, output);
+	output.addLine('//, ...');
+	output.addLine('//Any additional items in this array go here.');
 	output.indentation--;
 	output.addLine(']');
 }
 
 module.exports = function (schema, options) {
 	var asArray = options && options.asArray;
+	var minimal = options && options.minimal;
 	var output = createOutput(0);
 	if (asArray) {
 		output.addLine('//Array');
@@ -169,7 +181,7 @@ module.exports = function (schema, options) {
 		output.addLine(lastLine + '\n'); //we need linebreak because object (top level in schema) does not insert linebreak
 		output.indent();
 	}
-	generateExampleJson(schema, output);
+	generateExampleJson(schema, minimal, output);
 	if (asArray) {
 		output.addLine('//, ...');
 		output.addLine('//Any additional items in this array go here.');

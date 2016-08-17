@@ -13,6 +13,18 @@ describe('/source/schemagic with valid example schemas', function () {
 		it('has the \'test\' schema', function () {
 			expect(schemagic).to.have.property('test');
 		});
+		it('has the \'test.exampleJson\' property', function () {
+			expect(schemagic).to.have.deep.property('test.exampleJson').to.be.a('string');
+		});
+		it('has the \'test.exampleMinimalJson\' property', function () {
+			expect(schemagic).to.have.deep.property('test.exampleMinimalJson').to.be.a('string');
+		});
+		it('has the \'test.example\' property', function () {
+			expect(schemagic).to.have.deep.property('test.example').to.be.a('object');
+		});
+		it('has the \'test.exampleMinimal\' property', function () {
+			expect(schemagic).to.have.deep.property('test.exampleMinimal').to.be.a('object');
+		});
 		it('has the \'test2\' schema', function () {
 			expect(schemagic).to.have.property('test2');
 		});

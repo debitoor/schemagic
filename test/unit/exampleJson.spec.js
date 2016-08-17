@@ -27,6 +27,21 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+	it('will generate correct minimal exampleJsonString for noReadOnlySchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    b:"value",
+    //Required
+    c:"value"
+}`
+		);
+	});
+
 	it('will generate correct exampleJsonString for schemaWithVeryLongDescription, ' +
 		'should word wrap the long description', function () {
 		var exampleJsonGenerated = exampleJson(schemas.schemaWithVeryLongDescription);
@@ -65,6 +80,15 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+	it('will generate correct minimal exampleJsonString for schemaWithFormats', function () {
+		var exampleJsonGenerated = exampleJson(schemas.schemaWithFormats, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Formats
+{
+}`
+		);
+	});
+
 	it('will generate correct exampleJsonString (Array) for noReadOnlySchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {asArray: true});
 		expect(exampleJsonGenerated).to.equal(
@@ -80,6 +104,25 @@ describe('/source/util/exampleJson', function () {
         c:"value",
         //Optional
         d:"value"
+    }
+    //, ...
+    //Any additional items in this array go here.
+]`
+		);
+	});
+	it('will generate correct minimal exampleJsonString (Array) for noReadOnlySchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {asArray: true, minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Array
+[
+    //Simple object
+    {
+        //Required
+        a:1,
+        //Required
+        b:"value",
+        //Required
+        c:"value"
     }
     //, ...
     //Any additional items in this array go here.
@@ -103,6 +146,19 @@ describe('/source/util/exampleJson', function () {
 			'    //Read only (will be ignored on POST and PUT)\n' +
 			'    d:"value"\n' +
 			'}'
+		);
+	});
+
+	it('will generate correct minimal exampleJsonString for simpleSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    c:"value"
+}`
 		);
 	});
 
@@ -130,6 +186,24 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+	it('will generate correct minimal exampleJsonString (Array) for simpleSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {asArray: true, minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Array
+[
+    //Simple object
+    {
+        //Required
+        a:1,
+        //Required
+        c:"value"
+    }
+    //, ...
+    //Any additional items in this array go here.
+]`
+		);
+	});
+
 	it('will generate correct exampleJsonString for nestedSchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.nestedSchema);
 		expect(exampleJsonGenerated).to.equal(
@@ -149,6 +223,22 @@ describe('/source/util/exampleJson', function () {
 			'    //Read only (will be ignored on POST and PUT)\n' +
 			'    c:"value"\n' +
 			'}'
+		);
+	});
+
+	it('will generate correct minimal exampleJsonString for nestedSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.nestedSchema, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    b:{
+        //Required
+        e:"value"
+    }
+}`
 		);
 	});
 
@@ -179,29 +269,65 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+	it('will generate correct minimal exampleJsonString (Array) for nestedSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.nestedSchema, {asArray: true, minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Array
+[
+    //Simple object
+    {
+        //Required
+        a:1,
+        //Required
+        b:{
+            //Required
+            e:"value"
+        }
+    }
+    //, ...
+    //Any additional items in this array go here.
+]`
+		);
+	});
+
 	it('will generate correct exampleJsonString for arrayReadOnlyItemsSchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema);
 		expect(exampleJsonGenerated).to.equal(
-			'//Simple object\n' +
-			'{\n' +
-			'    //Required\n' +
-			'    a:1,\n' +
-			'    //Required\n' +
-			'    b:[\n' +
-			'        //Optional\n' +
-			'        //Read only (will be ignored on POST and PUT)\n' +
-			'        {\n' +
-			'            //Optional\n' +
-			'            //Read only (will be ignored on POST and PUT)\n' +
-			'            d:"value",\n' +
-			'            //Optional\n' +
-			'            e:"value"\n' +
-			'        }\n' +
-			'    ],\n' +
-			'    //Optional\n' +
-			'    //Read only (will be ignored on POST and PUT)\n' +
-			'    c:"value"\n' +
-			'}'
+			`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    b:[
+        //Optional
+        //Read only (will be ignored on POST and PUT)
+        {
+            //Optional
+            //Read only (will be ignored on POST and PUT)
+            d:"value",
+            //Optional
+            e:"value"
+        }
+        //, ...
+        //Any additional items in this array go here.
+    ],
+    //Optional
+    //Read only (will be ignored on POST and PUT)
+    c:"value"
+}`
+		);
+	});
+
+	it('will generate correct minimal exampleJsonString for arrayReadOnlyItemsSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    b:[]
+}`
 		);
 	});
 
@@ -225,6 +351,8 @@ describe('/source/util/exampleJson', function () {
                 //Optional
                 e:"value"
             }
+            //, ...
+            //Any additional items in this array go here.
         ],
         //Optional
         //Read only (will be ignored on POST and PUT)
@@ -236,28 +364,69 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+	it('will generate correct minimal exampleJsonString (Array) for arrayReadOnlyItemsSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {asArray: true, minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Array
+[
+    //Simple object
+    {
+        //Required
+        a:1,
+        //Required
+        b:[]
+    }
+    //, ...
+    //Any additional items in this array go here.
+]`
+		);
+	});
+
 	it('will generate correct exampleJsonString for arraySchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.arraySchema);
 		expect(exampleJsonGenerated).to.equal(
-			'//Simple object\n' +
-			'{\n' +
-			'    //Required\n' +
-			'    a:1,\n' +
-			'    //Required\n' +
-			'    b:[\n' +
-			'        //Required\n' +
-			'        {\n' +
-			'            //Optional\n' +
-			'            //Read only (will be ignored on POST and PUT)\n' +
-			'            d:"value",\n' +
-			'            //Required\n' +
-			'            e:"value"\n' +
-			'        }\n' +
-			'    ],\n' +
-			'    //Optional\n' +
-			'    //Read only (will be ignored on POST and PUT)\n' +
-			'    c:"value"\n' +
-			'}'
+			`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    b:[
+        //Required
+        {
+            //Optional
+            //Read only (will be ignored on POST and PUT)
+            d:"value",
+            //Required
+            e:"value"
+        }
+        //, ...
+        //Any additional items in this array go here.
+    ],
+    //Optional
+    //Read only (will be ignored on POST and PUT)
+    c:"value"
+}`
+		);
+	});
+
+	it('will generate correct minimal exampleJsonString for arraySchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.arraySchema, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    b:[
+        //Required
+        {
+            //Required
+            e:"value"
+        }
+        //, ...
+        //Any additional items in this array go here.
+    ]
+}`
 		);
 	});
 
@@ -280,6 +449,8 @@ describe('/source/util/exampleJson', function () {
                 //Required
                 e:"value"
             }
+            //, ...
+            //Any additional items in this array go here.
         ],
         //Optional
         //Read only (will be ignored on POST and PUT)
@@ -291,26 +462,76 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+	it('will generate correct minimal exampleJsonString (Array) for arraySchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.arraySchema, {asArray: true, minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Array
+[
+    //Simple object
+    {
+        //Required
+        a:1,
+        //Required
+        b:[
+            //Required
+            {
+                //Required
+                e:"value"
+            }
+            //, ...
+            //Any additional items in this array go here.
+        ]
+    }
+    //, ...
+    //Any additional items in this array go here.
+]`
+		);
+	});
+
 	it('will generate correct exampleJsonString for arrayNestedSchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema);
 		expect(exampleJsonGenerated).to.equal(
-			'//Simple object\n' +
-			'{\n' +
-			'    //Required\n' +
-			'    a:[\n' +
-			'        //Required\n' +
-			'        {\n' +
-			'            //Required\n' +
-			'            b:{\n' +
-			'                //Optional\n' +
-			'                //Read only (will be ignored on POST and PUT)\n' +
-			'                c:"value",\n' +
-			'                //Required\n' +
-			'                d:"value"\n' +
-			'            }\n' +
-			'        }\n' +
-			'    ]\n' +
-			'}'
+			`//Simple object
+{
+    //Required
+    a:[
+        //Required
+        {
+            //Required
+            b:{
+                //Optional
+                //Read only (will be ignored on POST and PUT)
+                c:"value",
+                //Required
+                d:"value"
+            }
+        }
+        //, ...
+        //Any additional items in this array go here.
+    ]
+}`
+		);
+	});
+
+	it('will generate correct minimal exampleJsonString for arrayNestedSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Simple object
+{
+    //Required
+    a:[
+        //Required
+        {
+            //Required
+            b:{
+                //Required
+                d:"value"
+            }
+        }
+        //, ...
+        //Any additional items in this array go here.
+    ]
+}`
 		);
 	});
 
@@ -334,6 +555,35 @@ describe('/source/util/exampleJson', function () {
                     d:"value"
                 }
             }
+            //, ...
+            //Any additional items in this array go here.
+        ]
+    }
+    //, ...
+    //Any additional items in this array go here.
+]`
+		);
+	});
+
+	it('will generate correct minimal exampleJsonString (Array) for arrayNestedSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {asArray: true, minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Array
+[
+    //Simple object
+    {
+        //Required
+        a:[
+            //Required
+            {
+                //Required
+                b:{
+                    //Required
+                    d:"value"
+                }
+            }
+            //, ...
+            //Any additional items in this array go here.
         ]
     }
     //, ...
@@ -345,17 +595,34 @@ describe('/source/util/exampleJson', function () {
 	it('will generate correct exampleJsonString for arrayAtRootSchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema);
 		expect(exampleJsonGenerated).to.equal(
-			'//Schema that contains an array at root level\n' +
-			'[\n' +
-			'    //The id\n' +
-			'    //Required\n' +
-			'    {\n' +
-			'        //Must be a valid id\n' +
-			'        //Optional\n' +
-			'        //Read only (will be ignored on POST and PUT)\n' +
-			'        id:"503714a74400b29809000004"\n' +
-			'    }\n' +
-			']'
+			`//Schema that contains an array at root level
+[
+    //The id
+    //Required
+    {
+        //Must be a valid id
+        //Optional
+        //Read only (will be ignored on POST and PUT)
+        id:"503714a74400b29809000004"
+    }
+    //, ...
+    //Any additional items in this array go here.
+]`
+		);
+	});
+
+	it('will generate correct minimal exampleJsonString for arrayAtRootSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Schema that contains an array at root level
+[
+    //The id
+    //Required
+    {
+    }
+    //, ...
+    //Any additional items in this array go here.
+]`
 		);
 	});
 
@@ -374,6 +641,28 @@ describe('/source/util/exampleJson', function () {
             //Read only (will be ignored on POST and PUT)
             id:"503714a74400b29809000004"
         }
+        //, ...
+        //Any additional items in this array go here.
+    ]
+    //, ...
+    //Any additional items in this array go here.
+]`
+		);
+	});
+
+	it('will generate correct minimal exampleJsonString (Array) for arrayAtRootSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {asArray: true, minimal:true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Array
+[
+    //Schema that contains an array at root level
+    [
+        //The id
+        //Required
+        {
+        }
+        //, ...
+        //Any additional items in this array go here.
     ]
     //, ...
     //Any additional items in this array go here.
