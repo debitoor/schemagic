@@ -342,8 +342,8 @@ describe('/source/schemagic with valid example schemas', function () {
 			expect(schemagic1).to.have.property('test1');
 		});
 
-		it('will have only oen schema', function () {
-			expect(Object.keys(schemagic1)).to.have.property('length').to.equal(1);
+		it('will have two schemas', function () {
+			expect(Object.keys(schemagic1)).to.have.property('length').to.equal(2);
 		});
 
 		describe('requiring it again ()', function() {
