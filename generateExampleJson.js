@@ -125,7 +125,7 @@ function generateObjectJson(schema, minimal, output) {
 
 	var comma = '';
 	for (var property in schema.properties) {
-		if(minimal && !schema.properties[property].required){
+		if(minimal && !schema.properties[property].required && !schema.properties[property].minimal){
 			continue;
 		}
 		var propertySchema = schema.properties[property];
@@ -145,10 +145,10 @@ function encodeProperty(property) {
 }
 
 function generateArrayJson(schema, minimal, output) {
-	if(minimal && !schema.required){
+	if(minimal && !schema.required && !schema.minimal){
 		return;
 	}
-	if(minimal && !schema.items.required){
+	if(minimal && !schema.items.required && !schema.items.minimal){
 		output.addText('[]');
 		return;
 	}

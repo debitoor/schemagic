@@ -63,14 +63,15 @@ module.exports = {
 		}
 	},
 
-	schemaObjectWithoutPropertiesSchema: {
+	schemaOneMinimalProperty: {
 		"description": 'Simple object',
 		"required": true,
 		"type": 'object',
 		"properties": {
 			"a": {
-				"type": 'object',
-				"required": true
+				"type": 'string',
+				"required": false,
+				minimal: true
 			}
 		}
 	},

@@ -27,6 +27,17 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+	it('will generate correct exampleMinimalJsonString for schemaOneMinimalProperty', function () {
+		var exampleJsonGenerated = exampleJson(schemas.schemaOneMinimalProperty, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Simple object
+{
+    //Optional
+    a:"value"
+}`
+		);
+	});
+
 	it('will generate correct minimal exampleJsonString for noReadOnlySchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
@@ -653,7 +664,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString (Array) for arrayAtRootSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {asArray: true, minimal:true});
+		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {asArray: true, minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [

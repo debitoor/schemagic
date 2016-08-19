@@ -132,7 +132,7 @@ schemagic.login.exampleMinimalJson
 This property wil contain a string, with pretty-printed JSON-ish and comments about what is required, read only and so on.
 This example-JSON is generated directly from the schema definition, using the `example` properties, if available (not required).
 
-NOTE: This example only includes required properties, all other properties have been omitted
+NOTE: This example only includes required properties and properties that have `minimal: true`,  all other properties have been omitted
 
 Example:
 
@@ -153,7 +153,7 @@ schemagic.login.exampleMinimal
 This property wil contain the parsed version of the `exampleMinimalJson` property. The `exampleJMinimalson` can not be parsed
 trivially because it's not valid JSON. It contains comments and property names are not quoted.
 
-NOTE: This example only includes required properties, all other properties have been omitted
+NOTE: This example only includes required properties and properties that have `minimal: true`, all other properties have been omitted
 
 
 schemagic.login.array.exampleJson
