@@ -32,7 +32,8 @@ module.exports = {
 		properties: {
 			a: {
 				type: 'number',
-				format: 'currency'
+				format: 'currency',
+				example: 0
 			},
 			b: {
 				type: 'number',
@@ -53,7 +54,12 @@ module.exports = {
 			f: {
 				type: 'string',
 				format: 'date-time'
+			},
+			g: {
+				type: 'string',
+				example: ''
 			}
+
 		}
 	},
 

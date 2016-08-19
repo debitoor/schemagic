@@ -58,18 +58,18 @@ function generateExampleJson(schema, minimal, output) {
 		case 'object':
 			return generateObjectJson(schema, minimal, output);
 		case 'string':
-			if (schema.example) {
+			if (typeof schema.example === 'string') {
 				return output.addText(JSON.stringify(schema.example));
 			}
 			return output.addText('"value"');
 		case 'number':
 		case 'integer':
-			if (schema.example) {
+			if (typeof schema.example === 'number') {
 				return output.addText(schema.example);
 			}
 			return output.addText('1');
 		case 'boolean':
-			if (schema.example) {
+			if (typeof schema.example === 'boolean') {
 				return output.addText(schema.example);
 			}
 			return output.addText('false');
