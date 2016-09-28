@@ -57,8 +57,8 @@ NOTE: Schemagic 2.0 does not support removing properties with the values null, e
 Take a look at the node module [groom](https://github.com/e-conomic/groom), for this functionality.
 
 
-Build in formats
-===================================
+Build-in formats
+================
 Schmagic has these build in formats:
 - `currency`. Use this for numbers that are currency. Will allow maximum 2 decimals after the decimal point.
 - `currency-rate` Positive number. Minimum 0.000001, maximum 999,999,999. Will allow maximum 6 decimals after the decimal point.
@@ -129,68 +129,23 @@ trivially because it's not valid JSON. It contains comments and property names a
 
 schemagic.login.exampleMinimalJson
 ==================================
-This property wil contain a string, with pretty-printed JSON-ish and comments about what is required, read only and so on.
-This example-JSON is generated directly from the schema definition, using the `example` properties, if available (not required).
-
-NOTE: This example only includes required properties and properties that have `minimal: true`,  all other properties have been omitted
-
-Example:
-
-```js
-//Signup and login
-{
-     //Email of the user
-    //Required
-    email:"email@mydomain.com",
-    //Password of the user
-    //Required
-    password:"*********"
-}
-```
+The same as `schemagic.login.exampleJson`, except this example only includes required properties and properties that have `minimal: true`,  all other properties have been omitted
 
 schemagic.login.exampleMinimal
 ==============================
-This property wil contain the parsed version of the `exampleMinimalJson` property. The `exampleJMinimalson` can not be parsed
-trivially because it's not valid JSON. It contains comments and property names are not quoted.
+The same as `schemagic.login.example`, except this example only includes required properties and properties that have `minimal: true`, all other properties have been omitted
 
-NOTE: This example only includes required properties and properties that have `minimal: true`, all other properties have been omitted
+schemagic.login.exampleNoReadOnlyJson
+=====================================
+The same as `schemagic.login.exampleJson`, except this example excludes properties that have `readonly: true`.
 
-
-schemagic.login.array.exampleJson
-================================
-(formerly known as schemagic.login.exampleJsonArray)
-
-This property wil contain a string, with pretty-printed JSON-ish and comments about what is required, read only and so on.
-This example is almost the same as above, except the example shows an Array of objects that satisfy the schema.
-Example:
-
-```js
-//Array
-[
-    //Signup and login
-    {
-        //Email of the user
-        //Required
-        email:"email@mydomain.com",
-        //Password of the user
-        //Required
-        password:"*********"
-    }
-    , ...
-]
-```
-
-schemagic.login.array.example
-=============================
-This property wil contain the parsed version of the `exampleJson` property for the array.
-The `exampleJson` can not be parsed trivially because it's not valid JSON.
-It contains comments and property names are not quoted.
-
+schemagic.login.exampleNoReadOnly
+==============================
+The same as `schemagic.login.example`, except this example excludes properties that have `readonly: true`.
 
 schemagic.login.schema
 ======================
 This property wil contain the result of `require("schemagic/login.js")`, the raw schema as it was required from disk.
-
 
 schemagic.login.array
 ======================
@@ -199,6 +154,11 @@ This property wil contain a schemagic schema like `login` except it accepts an a
 ```
 - schemagic.login.array.validate
 - schemagic.login.array.exampleJson
+- schemagic.login.array.example
+- schemagic.login.array.exampleMinimalJson
+- schemagic.login.array.exampleMinimal
+- schemagic.login.array.exampleNoReadOnlyJson
+- schemagic.login.array.exampleNoReadOnly
 - schemagic.login.array.schema
 ```
 
@@ -209,7 +169,12 @@ properties allow null values. This schema is intended for validation of JSON-PAT
 ```
 - schemagic.login.patch.validate
 - schemagic.login.patch.exampleJson
-- schemagic.login.patch.exampleJsonArray
+- schemagic.login.patch.example
+- schemagic.login.patch.exampleMinimalJson (this will be empty object, as nothing is required on PATCH)
+- schemagic.login.patch.exampleMinimal (this will be empty object, as nothing is required on PATCH)
+- schemagic.login.patch.exampleNoReadOnlyJson
+- schemagic.login.patch.exampleNoReadOnly
+- schemagic.login.patch.array (with sub properties like schemagic.login.array)
 - schemagic.login.patch.schema
 ```
 

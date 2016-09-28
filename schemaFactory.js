@@ -92,6 +92,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 	var exampleArray = parseExampleJson(exampleJsonArray); //make sure it can be parser, this will throw if not
 	var exampleMinimalJson = generateExampleJson(schema, {minimal: true});
 	var exampleMinimal = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
+	var exampleNoReadOnlyJson = generateExampleJson(schema, {noReadOnly: true});
+	var exampleNoReadOnly = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
 	return {
 		validate,
 		schema,
@@ -101,6 +103,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 		exampleArray,
 		exampleMinimalJson,
 		exampleMinimal,
+		exampleNoReadOnlyJson,
+		exampleNoReadOnly,
 		toJSON
 	};
 }

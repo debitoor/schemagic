@@ -65,7 +65,8 @@ describe('/source/util/exampleJson', function () {
     //long long long long long long long long long long long long long long long long 
     //long long long long long long long long long long long long long long long long 
     //long long long long long long long long long long long long long long
-    //Optional. Format: currency. Must be a number with a maximum of two decimals after the decimal point. Must be between -90071992547409.9 and 90071992547409.9
+    //Optional
+    //Format: currency. Must be a number with a maximum of two decimals after the decimal point. Must be between -90071992547409.9 and 90071992547409.9
     a:1
 }`);
 	});
@@ -75,17 +76,23 @@ describe('/source/util/exampleJson', function () {
 		expect(exampleJsonGenerated).to.equal(
 			`//Formats
 {
-    //Optional. Format: currency. Must be a number with a maximum of two decimals after the decimal point. Must be between -90071992547409.9 and 90071992547409.9
+    //Optional
+    //Format: currency. Must be a number with a maximum of two decimals after the decimal point. Must be between -90071992547409.9 and 90071992547409.9
     a:0,
-    //Optional. Format: rate. Must be a number with a maximum of two decimals after the decimal point. Must be between 0 and 100
+    //Optional
+    //Format: rate. Must be a number with a maximum of two decimals after the decimal point. Must be between 0 and 100
     b:1,
-    //Optional. Format: rate-negative. Must be a number with a maximum of two decimals after the decimal point. Must be between -100 and 0
+    //Optional
+    //Format: rate-negative. Must be a number with a maximum of two decimals after the decimal point. Must be between -100 and 0
     c:1,
-    //Optional. Format: currency-rate. Must be a number with a maximum of six decimals after the decimal point. Must be between 0.000001 and 999999999
+    //Optional
+    //Format: currency-rate. Must be a number with a maximum of six decimals after the decimal point. Must be between 0.000001 and 999999999
     d:1,
-    //Optional. Format: date. Must be a date in the format YYYY-MM-DD
+    //Optional
+    //Format: date. Must be a date in the format YYYY-MM-DD
     e:"value",
-    //Optional. Format: date-time. Must be a date and time in the format YYYY-MM-DDThh:mm:ssZ
+    //Optional
+    //Format: date-time. Must be a date and time in the format YYYY-MM-DDThh:mm:ssZ
     f:"value",
     //Optional
     g:""
@@ -145,25 +152,34 @@ describe('/source/util/exampleJson', function () {
 
 	it('will generate correct exampleJsonString for simpleSchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.simpleSchema);
-		expect(exampleJsonGenerated).to.equal(
-			'//Simple object\n' +
-			'{\n' +
-			'    //Required\n' +
-			'    a:1,\n' +
-			'    //Optional\n' +
-			'    //Read only (will be ignored on POST and PUT)\n' +
-			'    b:"value",\n' +
-			'    //Required\n' +
-			'    c:"value",\n' +
-			'    //Optional\n' +
-			'    //Read only (will be ignored on POST and PUT)\n' +
-			'    d:"value"\n' +
-			'}'
-		);
+		expect(exampleJsonGenerated).to.equal(`//Simple object
+{
+    //Required
+    a:1,
+    //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
+    b:"value",
+    //Required
+    c:"value",
+    //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
+    d:"value"
+}`);
 	});
 
 	it('will generate correct minimal exampleJsonString for simpleSchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {minimal: true});
+		expect(exampleJsonGenerated).to.equal(
+			`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    c:"value"
+}`
+		);
+	});
+
+	it('will generate correct noReadOnly exampleJsonString for simpleSchema', function () {
+		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {noReadOnly: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -184,13 +200,11 @@ describe('/source/util/exampleJson', function () {
     {
         //Required
         a:1,
-        //Optional
-        //Read only (will be ignored on POST and PUT)
+        //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
         b:"value",
         //Required
         c:"value",
-        //Optional
-        //Read only (will be ignored on POST and PUT)
+        //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
         d:"value"
     }
     //, ...
@@ -217,26 +231,23 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 
+
 	it('will generate correct exampleJsonString for nestedSchema', function () {
 		var exampleJsonGenerated = exampleJson(schemas.nestedSchema);
-		expect(exampleJsonGenerated).to.equal(
-			'//Simple object\n' +
-			'{\n' +
-			'    //Required\n' +
-			'    a:1,\n' +
-			'    //Required\n' +
-			'    b:{\n' +
-			'        //Optional\n' +
-			'        //Read only (will be ignored on POST and PUT)\n' +
-			'        d:"value",\n' +
-			'        //Required\n' +
-			'        e:"value"\n' +
-			'    },\n' +
-			'    //Optional\n' +
-			'    //Read only (will be ignored on POST and PUT)\n' +
-			'    c:"value"\n' +
-			'}'
-		);
+		expect(exampleJsonGenerated).to.equal(`//Simple object
+{
+    //Required
+    a:1,
+    //Required
+    b:{
+        //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
+        d:"value",
+        //Required
+        e:"value"
+    },
+    //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
+    c:"value"
+}`);
 	});
 
 	it('will generate correct minimal exampleJsonString for nestedSchema', function () {
@@ -266,14 +277,12 @@ describe('/source/util/exampleJson', function () {
         a:1,
         //Required
         b:{
-            //Optional
-            //Read only (will be ignored on POST and PUT)
+            //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
             d:"value",
             //Required
             e:"value"
         },
-        //Optional
-        //Read only (will be ignored on POST and PUT)
+        //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
         c:"value"
     }
     //, ...
@@ -312,11 +321,9 @@ describe('/source/util/exampleJson', function () {
     a:1,
     //Required
     b:[
-        //Optional
-        //Read only (will be ignored on POST and PUT)
+        //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
         {
-            //Optional
-            //Read only (will be ignored on POST and PUT)
+            //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
             d:"value",
             //Optional
             e:"value"
@@ -324,8 +331,7 @@ describe('/source/util/exampleJson', function () {
         //, ...
         //Any additional items in this array go here.
     ],
-    //Optional
-    //Read only (will be ignored on POST and PUT)
+    //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
     c:"value"
 }`
 		);
@@ -355,11 +361,9 @@ describe('/source/util/exampleJson', function () {
         a:1,
         //Required
         b:[
-            //Optional
-            //Read only (will be ignored on POST and PUT)
+            //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
             {
-                //Optional
-                //Read only (will be ignored on POST and PUT)
+                //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
                 d:"value",
                 //Optional
                 e:"value"
@@ -367,8 +371,7 @@ describe('/source/util/exampleJson', function () {
             //, ...
             //Any additional items in this array go here.
         ],
-        //Optional
-        //Read only (will be ignored on POST and PUT)
+        //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
         c:"value"
     }
     //, ...
@@ -406,8 +409,7 @@ describe('/source/util/exampleJson', function () {
     b:[
         //Required
         {
-            //Optional
-            //Read only (will be ignored on POST and PUT)
+            //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
             d:"value",
             //Required
             e:"value"
@@ -415,8 +417,7 @@ describe('/source/util/exampleJson', function () {
         //, ...
         //Any additional items in this array go here.
     ],
-    //Optional
-    //Read only (will be ignored on POST and PUT)
+    //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
     c:"value"
 }`
 		);
@@ -456,8 +457,7 @@ describe('/source/util/exampleJson', function () {
         b:[
             //Required
             {
-                //Optional
-                //Read only (will be ignored on POST and PUT)
+                //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
                 d:"value",
                 //Required
                 e:"value"
@@ -465,8 +465,7 @@ describe('/source/util/exampleJson', function () {
             //, ...
             //Any additional items in this array go here.
         ],
-        //Optional
-        //Read only (will be ignored on POST and PUT)
+        //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
         c:"value"
     }
     //, ...
@@ -512,8 +511,7 @@ describe('/source/util/exampleJson', function () {
         {
             //Required
             b:{
-                //Optional
-                //Read only (will be ignored on POST and PUT)
+                //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
                 c:"value",
                 //Required
                 d:"value"
@@ -561,8 +559,7 @@ describe('/source/util/exampleJson', function () {
             {
                 //Required
                 b:{
-                    //Optional
-                    //Read only (will be ignored on POST and PUT)
+                    //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
                     c:"value",
                     //Required
                     d:"value"
@@ -614,8 +611,7 @@ describe('/source/util/exampleJson', function () {
     //Required
     {
         //Must be a valid id
-        //Optional
-        //Read only (will be ignored on POST and PUT)
+        //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
         id:"503714a74400b29809000004"
     }
     //, ...
@@ -650,8 +646,7 @@ describe('/source/util/exampleJson', function () {
         //Required
         {
             //Must be a valid id
-            //Optional
-            //Read only (will be ignored on POST and PUT)
+            //Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.
             id:"503714a74400b29809000004"
         }
         //, ...

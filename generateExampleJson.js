@@ -36,7 +36,7 @@ function createOutput(indentation) {
 }
 /*** END output class that encapsulated indentation ***/
 
-function generateExampleJson(schema, minimal, output) {
+function generateExampleJson(schema, minimal, noReadOnly, output) {
 	var type = schema.type;
 	if (Array.isArray(type)) {
 		if (type.length === 0) {
@@ -56,7 +56,7 @@ function generateExampleJson(schema, minimal, output) {
 
 	switch (type) {
 		case 'object':
-			return generateObjectJson(schema, minimal, output);
+			return generateObjectJson(schema, minimal, noReadOnly, output);
 		case 'string':
 			if (typeof schema.example === 'string') {
 				return output.addText(JSON.stringify(schema.example));
@@ -74,7 +74,7 @@ function generateExampleJson(schema, minimal, output) {
 			}
 			return output.addText('false');
 		case 'array':
-			return generateArrayJson(schema, minimal, output);
+			return generateArrayJson(schema, minimal, noReadOnly, output);
 		default:
 			throw new Error('unknown type: ' + JSON.stringify(type));
 	}
@@ -99,40 +99,45 @@ function addIntro(schema, output) {
 		lines.forEach(output.addLine.bind(output));
 	}
 	var doc;
-	if (schema.required) {
-		doc = '//Required';
+	if (schema.readonly) {
+		output.addLine('//Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.');
 	} else {
-		doc = '//Optional';
-	}
-	if (allowNull) {
-		doc += ', can be null';
+		if (schema.required) {
+			doc = '//Required';
+		} else {
+			doc = '//Optional';
+		}
+		if (allowNull) {
+			doc += ', can be null';
+		}
+		output.addLine(doc);
 	}
 	if (schema.format) {
-		doc += '. Format: ' + schema.format;
+		doc = '//Format: ' + schema.format;
 		if (formats[schema.format] && formats[schema.format].doc) {
 			doc += '. ' + formats[schema.format].doc;
 		}
-	}
-	output.addLine(doc);
-	if (schema.readonly) {
-		output.addLine('//Read only (will be ignored on POST and PUT)');
+		output.addLine(doc);
 	}
 }
 
-function generateObjectJson(schema, minimal, output) {
+function generateObjectJson(schema, minimal, noReadOnly, output) {
 	output.addText('{');
 	output.indentation++;
 
 	var comma = '';
 	for (var property in schema.properties) {
-		if(minimal && !schema.properties[property].required && !schema.properties[property].minimal){
+		if (minimal && !schema.properties[property].required && !schema.properties[property].minimal) {
+			continue;
+		}
+		if (noReadOnly && schema.properties[property].readonly) {
 			continue;
 		}
 		var propertySchema = schema.properties[property];
 		output.addText(comma);
 		addIntro(propertySchema, output);
 		output.addLine(encodeProperty(property) + ':');
-		generateExampleJson(propertySchema, minimal,  output);
+		generateExampleJson(propertySchema, minimal, noReadOnly, output);
 		comma = ',';
 	}
 
@@ -144,11 +149,14 @@ function encodeProperty(property) {
 	return isProperty(property) ? property : JSON.stringify(property);
 }
 
-function generateArrayJson(schema, minimal, output) {
-	if(minimal && !schema.required && !schema.minimal){
+function generateArrayJson(schema, minimal, noReadOnly, output) {
+	if (minimal && !schema.required && !schema.minimal) {
 		return;
 	}
-	if(minimal && !schema.items.required && !schema.items.minimal){
+	if (noReadOnly && schema.readonly) {
+		return;
+	}
+	if (minimal && !schema.items.required && !schema.items.minimal) {
 		output.addText('[]');
 		return;
 	}
@@ -158,7 +166,7 @@ function generateArrayJson(schema, minimal, output) {
 	var propertySchema = schema.items;
 	addIntro(propertySchema, output);
 	output.addLine('');
-	generateExampleJson(propertySchema, minimal, output);
+	generateExampleJson(propertySchema, minimal, noReadOnly, output);
 	output.addLine('//, ...');
 	output.addLine('//Any additional items in this array go here.');
 	output.indentation--;
@@ -168,6 +176,7 @@ function generateArrayJson(schema, minimal, output) {
 module.exports = function (schema, options) {
 	var asArray = options && options.asArray;
 	var minimal = options && options.minimal;
+	var noReadOnly = options && options.noReadOnly;
 	var output = createOutput(0);
 	if (asArray) {
 		output.addLine('//Array');
@@ -181,7 +190,7 @@ module.exports = function (schema, options) {
 		output.addLine(lastLine + '\n'); //we need linebreak because object (top level in schema) does not insert linebreak
 		output.indent();
 	}
-	generateExampleJson(schema, minimal, output);
+	generateExampleJson(schema, minimal, noReadOnly, output);
 	if (asArray) {
 		output.addLine('//, ...');
 		output.addLine('//Any additional items in this array go here.');

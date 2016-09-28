@@ -19,11 +19,17 @@ describe('/source/schemagic with valid example schemas', function () {
 		it('has the \'test.exampleMinimalJson\' property', function () {
 			expect(schemagic).to.have.deep.property('test.exampleMinimalJson').to.be.a('string');
 		});
+		it('has the \'test.exampleNoReadOnlyJson\' property', function () {
+			expect(schemagic).to.have.deep.property('test.exampleNoReadOnlyJson').to.be.a('string');
+		});
 		it('has the \'test.example\' property', function () {
 			expect(schemagic).to.have.deep.property('test.example').to.be.a('object');
 		});
 		it('has the \'test.exampleMinimal\' property', function () {
 			expect(schemagic).to.have.deep.property('test.exampleMinimal').to.be.a('object');
+		});
+		it('has the \'test.exampleNoReadOnly\' property', function () {
+			expect(schemagic).to.have.deep.property('test.exampleNoReadOnly').to.be.a('object');
 		});
 		it('has the \'test2\' schema', function () {
 			expect(schemagic).to.have.property('test2');
