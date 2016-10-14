@@ -62,6 +62,11 @@ function generateExampleJson(schema, minimal, noReadOnly, output) {
 				return output.addText(JSON.stringify(schema.example));
 			}
 			return output.addText('"value"');
+		case 'url':
+			if (typeof schema.example === 'string') {
+				return output.addText(JSON.stringify(schema.example));
+			}
+			return output.addText('"http://my-domain.com/my-endpoint"');
 		case 'number':
 		case 'integer':
 			if (typeof schema.example === 'number') {

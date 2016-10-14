@@ -66,6 +66,7 @@ Schmagic has these build in formats:
 - `date-time`. Is verified to be a valid date and time in the format `YYYY-MM-DDThh:mm:ssZ`
 - `rate`. Positive number, between zero and 100. Will allow maximum 2 decimals after the decimal point
 - `rate-negative`. Negative number, between zero and -100. Will allow maximum 2 decimals after the decimal point
+- `url`. A `http://` or `https://` URL
 
 schemagic.login.validate(object, options[, callback])
 ================================

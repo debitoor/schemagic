@@ -8,10 +8,15 @@ function readRawSchemas(schemasDirectory) {
 	schemaFileNames.forEach(function (schemaFileName) {
 		var schemaName = schemaFileName.replace('.js', '');
 		var schemaFilePath = path.join(schemasDirectory, schemaFileName);
-		if(!fs.statSync(schemaFilePath).isFile()){
+		if (!fs.statSync(schemaFilePath).isFile()) {
 			return; //only require files (in schema dir root)
 		}
-		schemas[schemaName] = require(schemaFilePath);
+		var schema = require(schemaFilePath);
+		var keys = Object.keys(schema);
+		if (keys.length === 1 && keys[0] === 'default') {
+			schema = schema.default;
+		}
+		schemas[schemaName] = schema;
 	});
 	return schemas;
 }

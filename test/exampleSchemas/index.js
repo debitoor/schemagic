@@ -58,6 +58,10 @@ module.exports = {
 			g: {
 				type: 'string',
 				example: ''
+			},
+			h: {
+				format: 'url',
+				type: 'string',
 			}
 
 		}

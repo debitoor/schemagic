@@ -1,5 +1,6 @@
 var moment = require('moment');
 var format = require('util').format;
+var validUrl = require('valid-url');
 
 module.exports = {
 	'date-time': datetimeFormatCheck,
@@ -7,7 +8,8 @@ module.exports = {
 	currency: currencyFormatCheck,
 	rate: rateFormat,
 	'rate-negative': rateNegativeFormat,
-	'currency-rate': currencyRateFormat
+	'currency-rate': currencyRateFormat,
+	url: urlFormat
 };
 
 var minYear = 1970;
@@ -98,3 +100,8 @@ function currencyRateFormat(value) {
 }
 currencyRateFormat.doc = format('Must be a number with a maximum of six decimals after the decimal point. ' +
 'Must be between %s and %s', minCurrencyRate, maxCurrencyRate);
+
+function urlFormat(value){
+	return /http(s)?:\/\//.test(value) && validUrl.isUri(value);
+}
+urlFormat.doc = 'Must be a valid http:// or https:// URL';

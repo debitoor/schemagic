@@ -95,7 +95,10 @@ describe('/source/util/exampleJson', function () {
     //Format: date-time. Must be a date and time in the format YYYY-MM-DDThh:mm:ssZ
     f:"value",
     //Optional
-    g:""
+    g:"",
+    //Optional
+    //Format: url. Must be a valid http:// or https:// URL
+    h:"value"
 }`
 		);
 	});
