@@ -1,6 +1,7 @@
 "use strict";
 var path = require('path');
 var fs = require('fs');
+var deepEqual = require('deep-equal');
 
 function readRawSchemas(schemasDirectory) {
 	var schemaFileNames = fs.readdirSync(schemasDirectory);
@@ -17,6 +18,12 @@ function readRawSchemas(schemasDirectory) {
 			schema = schema.default;
 		}
 		schemas[schemaName] = schema;
+		if (schemaName !== 'foreignKeys') {
+			var copy = JSON.parse(JSON.stringify(schema));
+			if (!deepEqual(schema, copy)) {
+				throw new Error(`The schema ${schemaFilePath} is not JSON stringify-able`);
+			}
+		}
 	});
 	return schemas;
 }

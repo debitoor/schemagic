@@ -16,6 +16,7 @@
   "dependencies": {
     "async": "^2.0.1",
     "clone": "^1.0.2",
+    "deep-equal": "^1.0.1",
     "is-my-json-valid": "2.13.1",
     "is-property": "^1.0.2",
     "moment": "^2.14.1",
