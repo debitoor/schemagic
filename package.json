@@ -5,7 +5,7 @@
   "version": "6.0.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/e-conomic/schemagic.git"
+    "url": "git+https://github.com/debitoor/schemagic.git"
   },
   "private": false,
   "main": "./source/schemagic.js",
@@ -38,9 +38,9 @@
     "sinon-chai": "^2.8.0"
   },
   "bugs": {
-    "url": "https://github.com/e-conomic/schemagic/issues"
+    "url": "https://github.com/debitoor/schemagic/issues"
   },
-  "homepage": "https://github.com/e-conomic/schemagic#readme",
+  "homepage": "https://github.com/debitoor/schemagic#readme",
   "directories": {
     "test": "test"
   },
