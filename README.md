@@ -1,4 +1,4 @@
-schemagic [![Build Status](https://travis-ci.org/e-conomic/schemagic.svg?branch=master)](https://travis-ci.org/e-conomic/schemagic)
+schemagic [![Build Status](https://travis-ci.org/debitoor/schemagic.svg?branch=master)](https://travis-ci.org/debitoor/schemagic)
 =========
 [![npm package](https://nodei.co/npm/schemagic.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/schemagic/)
 
