@@ -13,8 +13,8 @@ module.exports = {
 };
 
 var minYear = 1970;
-var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
-var dateTimeFormat = 'YYYY-MM-DDThh:mm:ssZ';
+var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.\d{3})?Z$/;
+var dateTimeFormat = 'YYYY-MM-DDThh:mm:ss.SSSZ';
 function datetimeFormatCheck(value) {
 	var dateTime = moment(value, dateTimeFormat);
 	if (!dateTime || !dateTime.isValid() || !dateTimePattern.test(value)) {

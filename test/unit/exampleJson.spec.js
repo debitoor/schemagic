@@ -92,7 +92,7 @@ describe('/source/util/exampleJson', function () {
     //Format: date. Must be a date in the format YYYY-MM-DD
     e:"value",
     //Optional
-    //Format: date-time. Must be a date and time in the format YYYY-MM-DDThh:mm:ssZ
+    //Format: date-time. Must be a date and time in the format YYYY-MM-DDThh:mm:ss.SSSZ
     f:"value",
     //Optional
     g:"",

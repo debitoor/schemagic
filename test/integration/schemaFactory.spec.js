@@ -182,6 +182,38 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			});
 		});
 
+		describe('and pass date without ms as datetime', function () {
+			before(function () {
+				document = {
+					b: '2013-01-01T12:00:00Z'
+				};
+			});
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should be valid', function () {
+				expect(result).to.have.property('valid').to.equal(true);
+			});
+		});
+
+		describe('and pass date with ms as datetime', function () {
+			before(function () {
+				document = {
+					b: '2013-01-01T12:00:00.123Z'
+				};
+			});
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should be valid', function () {
+				expect(result).to.have.property('valid').to.equal(true);
+			});
+		});
+
 		describe('and pass new date stringify as json', function () {
 			before(function () {
 				document = {
