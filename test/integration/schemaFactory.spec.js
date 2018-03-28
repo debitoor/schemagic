@@ -209,8 +209,40 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 				result = schema.validate(document);
 			});
 
+			it('should be invalid', function () {
+				expect(result).to.have.property('valid').to.equal(false);
+			});
+		});
+
+		describe('and pass date with ms for checking date-time-iso format', function () {
+			before(function () {
+				document = {
+					c: '2013-01-01T12:00:00.123Z'
+				};
+			});
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
 			it('should be valid', function () {
 				expect(result).to.have.property('valid').to.equal(true);
+			});
+		});
+
+		describe('and pass date without ms for checking date-time-iso format', function () {
+			before(function () {
+				document = {
+					c: '2013-01-01T12:00:00Z'
+				};
+			});
+
+			before(function () {
+				result = schema.validate(document);
+			});
+
+			it('should be invalid', function () {
+				expect(result).to.have.property('valid').to.equal(false);
 			});
 		});
 
