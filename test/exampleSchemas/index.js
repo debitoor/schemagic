@@ -62,8 +62,11 @@ module.exports = {
 			h: {
 				format: 'url',
 				type: 'string',
+			},
+			i: {
+				type: 'string',
+				format: 'date-time-iso'
 			}
-
 		}
 	},
 
@@ -378,6 +381,11 @@ module.exports = {
 			"b": {
 				"type": 'string',
 				"format": 'date-time',
+				"required": false
+			},
+			"c": {
+				"type": 'string',
+				"format": 'date-time-iso',
 				"required": false
 			}
 		}

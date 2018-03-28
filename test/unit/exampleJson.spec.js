@@ -98,7 +98,10 @@ describe('/source/util/exampleJson', function () {
     g:"",
     //Optional
     //Format: url. Must be a valid http:// or https:// URL
-    h:"value"
+    h:"value",
+    //Optional
+    //Format: date-time-iso. Must be a date and time in the iso format YYYY-MM-DDThh:mm:ss.SSSZ
+    i:"value"
 }`
 		);
 	});

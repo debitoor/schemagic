@@ -4,6 +4,7 @@ var validUrl = require('valid-url');
 
 module.exports = {
 	'date-time': datetimeFormatCheck,
+	'date-time-iso': datetimeISOFormatCheck,
 	date: dateFormatCheck,
 	currency: currencyFormatCheck,
 	rate: rateFormat,
@@ -12,19 +13,29 @@ module.exports = {
 	url: urlFormat
 };
 
-var minYear = 1970;
-var dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
-var dateTimeFormat = 'YYYY-MM-DDThh:mm:ssZ';
-function datetimeFormatCheck(value) {
-	var dateTime = moment(value, dateTimeFormat);
-	if (!dateTime || !dateTime.isValid() || !dateTimePattern.test(value)) {
+const minYear = 1970;
+const dateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}?Z$/;
+const dateTimeFormat = 'YYYY-MM-DDThh:mm:ssZ';
+
+const isoDateTimePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+const isoDateTimeFormat = 'YYYY-MM-DDThh:mm:ss.SSSZ';
+
+function datetimeFormatCheck(value, {pattern = dateTimePattern, format = dateTimeFormat} = {}) {
+	const dateTime = moment(value, format);
+	if (!dateTime || !dateTime.isValid() || !pattern.test(value)) {
 		return false;
 	} else if (dateTime.year() < minYear) {
 		return false;
 	}
 	return true;
 }
+
+function datetimeISOFormatCheck(value) {
+	return datetimeFormatCheck(value, {pattern: isoDateTimePattern, format: isoDateTimeFormat});
+}
+
 datetimeFormatCheck.doc = format('Must be a date and time in the format %s', dateTimeFormat);
+datetimeISOFormatCheck.doc = format('Must be a date and time in the iso format %s', isoDateTimeFormat);
 
 var datePattern = /^\d{4}-\d{2}-\d{2}$/;
 var dateFormat = 'YYYY-MM-DD';
