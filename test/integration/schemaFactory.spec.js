@@ -182,68 +182,48 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			});
 		});
 
-		describe('and pass date without ms as datetime', function () {
-			before(function () {
+		describe('and pass date without ms as datetime', () => {
+			before('validate the document', () => {
 				document = {
 					b: '2013-01-01T12:00:00Z'
 				};
-			});
-
-			before(function () {
 				result = schema.validate(document);
 			});
 
-			it('should be valid', function () {
-				expect(result).to.have.property('valid').to.equal(true);
-			});
+			it('should be valid', () => expect(result).to.have.property('valid', true));
 		});
 
-		describe('and pass date with ms as datetime', function () {
-			before(function () {
+		describe('and pass date with ms as datetime', () => {
+			before('validate the document', () => {
 				document = {
 					b: '2013-01-01T12:00:00.123Z'
 				};
-			});
-
-			before(function () {
 				result = schema.validate(document);
 			});
 
-			it('should be invalid', function () {
-				expect(result).to.have.property('valid').to.equal(false);
-			});
+			it('should be invalid', () => expect(result).to.have.property('valid', false));
 		});
 
-		describe('and pass date with ms for checking date-time-iso format', function () {
-			before(function () {
+		describe('and pass date with ms for checking date-time-iso format', () => {
+			before('validate the document', () => {
 				document = {
 					c: '2013-01-01T12:00:00.123Z'
 				};
-			});
-
-			before(function () {
 				result = schema.validate(document);
 			});
 
-			it('should be valid', function () {
-				expect(result).to.have.property('valid').to.equal(true);
-			});
+			it('should be valid', () => expect(result).to.have.property('valid', true));
 		});
 
-		describe('and pass date without ms for checking date-time-iso format', function () {
-			before(function () {
+		describe('and pass date without ms for checking date-time-iso format', () => {
+			before('validate the document', () => {
 				document = {
 					c: '2013-01-01T12:00:00Z'
 				};
-			});
-
-			before(function () {
 				result = schema.validate(document);
 			});
 
-			it('should be invalid', function () {
-				expect(result).to.have.property('valid').to.equal(false);
-			});
+			it('should be invalid', () => expect(result).to.have.property('valid', false));
 		});
 
 		describe('and pass new date stringify as json', function () {
