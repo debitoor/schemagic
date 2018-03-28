@@ -100,7 +100,7 @@ describe('/source/util/exampleJson', function () {
     //Format: url. Must be a valid http:// or https:// URL
     h:"value",
     //Optional
-    //Format: date-time-iso. Must be a date and time in the format YYYY-MM-DDThh:mm:ss.SSSZ
+    //Format: date-time-iso. Must be a date and time in the iso format YYYY-MM-DDThh:mm:ss.SSSZ
     i:"value"
 }`
 		);

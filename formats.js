@@ -35,7 +35,7 @@ function datetimeISOFormatCheck(value) {
 }
 
 datetimeFormatCheck.doc = format('Must be a date and time in the format %s', dateTimeFormat);
-datetimeISOFormatCheck.doc = format('Must be a date and time in the format %s', isoDateTimeFormat);
+datetimeISOFormatCheck.doc = format('Must be a date and time in the iso format %s', isoDateTimeFormat);
 
 var datePattern = /^\d{4}-\d{2}-\d{2}$/;
 var dateFormat = 'YYYY-MM-DD';
