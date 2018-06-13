@@ -478,7 +478,6 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 					{
 						message: 'has additional properties',
 						property: 'notInSchemaField',
-						schemaPath: [],
 						type: 'object'
 					}
 				]);
