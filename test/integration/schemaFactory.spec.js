@@ -17,7 +17,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	it('has exampleJsonArray', function () {
-		expect(schema).to.have.property('exampleJsonArray').to.equal(exampleJson(rawSchemas.simpleSchema, {asArray: true}));
+		expect(schema).to.have.property('exampleJsonArray').to.equal(exampleJson(rawSchemas.simpleSchema, { asArray: true }));
 	});
 	it('has example', function () {
 		expect(schema).to.have.property('example').to.be.ok;
@@ -27,7 +27,41 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		expect(schema).to.have.property('exampleArray').to.be.ok;
 	});
 
-	describe('loading schema with property that requires string', function(){
+	it('generates correct json for schema', function () {
+		const correctJsonOutput = {
+			'description': 'Simple object',
+			'required': true,
+			'type': 'object',
+			'properties': {
+				'a': {
+					'type': 'number',
+					'required': true
+				},
+				'b': {
+					'type': 'string',
+					'required': false,
+					'readonly': true
+				},
+				'c': {
+					'type': 'string',
+					'required': true,
+					'readonly': false
+				},
+				'd': {
+					'type': 'string',
+					'required': false,
+					'readonly': true
+				}
+			},
+			'additionalProperties': false
+		};
+
+		expect(schema).to.have.property('schema');
+		expect(JSON.stringify(schema.schema)).to.be.eql(JSON.stringify(correctJsonOutput));
+	});
+
+
+	describe('loading schema with property that requires string', function () {
 		var schema2;
 		before(function () {
 			schema2 = schemaFactory(rawSchemas.schemaWithStringEscapePropertyName);
@@ -76,7 +110,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		var result;
 
 		before(function () {
-			result = schema.validate(document, {removeReadOnlyFields: true});
+			result = schema.validate(document, { removeReadOnlyFields: true });
 		});
 
 		it('will validate the document', function () {
@@ -85,8 +119,8 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 		it('will have removed the document', function () {
 			expect(document).to.eql({
-				"a": 1,
-				"c": 'y'
+				'a': 1,
+				'c': 'y'
 			});
 		});
 	});
@@ -101,7 +135,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		var result;
 
 		before(function () {
-			result = schema.validate(document, {removeReadOnlyFields: false});
+			result = schema.validate(document, { removeReadOnlyFields: false });
 		});
 
 		it('will validate the document', function () {
@@ -137,11 +171,11 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 		it('will have the correct error', function () {
 			expect(result.errors).to.containSubset([
-					{
-						"property": 'a',
-						"message": 'is the wrong type'
-					}
-				]
+				{
+					'property': 'a',
+					'message': 'is the wrong type'
+				}
+			]
 			);
 		});
 	});
@@ -151,7 +185,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		var result;
 
 		before(function () {
-			result = schema.validate(document, {emptyStringsToNull: false, removeEmptyFields: false});
+			result = schema.validate(document, { emptyStringsToNull: false, removeEmptyFields: false });
 		});
 
 		it('should not validate the document', function () {
@@ -268,7 +302,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			var result;
 
 			var document = {
-				a: {b: 'yes'}
+				a: { b: 'yes' }
 			};
 
 			before(function () {
@@ -300,7 +334,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			var result;
 
 			var document = {
-				a: {b: 'yess', c: 'de'}
+				a: { b: 'yess', c: 'de' }
 			};
 
 			before(function () {
@@ -429,7 +463,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 		describe('simple schema validation without filter: true', function () {
 			var result;
-			var document = {a: 1, b: 'd', notInSchemaField: 'foo'};
+			var document = { a: 1, b: 'd', notInSchemaField: 'foo' };
 
 			before(function () {
 				result = schema.validate(document);
@@ -450,17 +484,17 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 				]);
 			});
 			it('should not remove properties that are not in schema', function () {
-				expect(document).to.eql({a: 1, b: 'd', notInSchemaField: 'foo'});
+				expect(document).to.eql({ a: 1, b: 'd', notInSchemaField: 'foo' });
 			});
 
 		});
 
 		describe('simple schema validation with filter: true', function () {
 			var result;
-			var document = {a: 1, b: 'd', thisIsNotInSchemaField: 'foo'};
+			var document = { a: 1, b: 'd', thisIsNotInSchemaField: 'foo' };
 
 			before(function () {
-				result = schema.validate(document, {filter: true});
+				result = schema.validate(document, { filter: true });
 			});
 
 			it('should not validate', function () {
@@ -468,7 +502,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			});
 
 			it('should remove properties that are not in schema', function () {
-				expect(document).to.eql({a: 1, b: 'd'});
+				expect(document).to.eql({ a: 1, b: 'd' });
 			});
 		});
 
@@ -478,11 +512,11 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 				a: 1,
 				b: 'd',
 				thisIsNotInSchemaField: 'foo',
-				c: {a: 1, b: 'd', thisIsNotInSchemaField: 'foo'}
+				c: { a: 1, b: 'd', thisIsNotInSchemaField: 'foo' }
 			};
 
 			before(function () {
-				result = schema.validate(document, {filter: true});
+				result = schema.validate(document, { filter: true });
 			});
 
 			it('should not validate', function () {
@@ -491,11 +525,11 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 			it('should remove properties that are not in schema', function () {
 				expect(document).to.eql({
-					"a": 1,
-					"b": "d",
-					"c": {
-						"a": 1,
-						"b": "d"
+					'a': 1,
+					'b': 'd',
+					'c': {
+						'a': 1,
+						'b': 'd'
 					}
 				});
 			});

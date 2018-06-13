@@ -14,6 +14,12 @@ module.exports = {
 		testForeignKey2:{
 			"type":'number',
 			"required":false
+		},
+		hiddenProperty: {
+			type: ['null', 'string'],
+			enum: [null, 'test', 'test2'],
+			required: false,
+			hidden: true
 		}
 	}
 };

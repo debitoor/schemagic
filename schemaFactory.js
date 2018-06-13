@@ -21,7 +21,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 		filter: true,
 		formats: formats
 	});
-	var validateSchemaNoReadonly = imjv(schemaWitNoReadonlyProperties, {filter: true});
+	var validateSchemaNoReadonly = imjv(schemaWitNoReadonlyProperties, { filter: true });
 	var normalizedJSON;
 
 	function validate(document, options, optionalCallback) {
@@ -58,9 +58,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 					err.property += '.' + err.value.split('.').pop();
 					delete err.value;
 				}
-				if(err.property){
+				if (err.property) {
 					err.property = err.property.replace(dataRegExp, '');
-					if(!err.property || err.property === 'data'){
+					if (!err.property || err.property === 'data') {
 						err.property = 'root';
 					}
 					var index = parseInt(err.property, 10);
@@ -74,25 +74,25 @@ function schemaFactory(rawSchema, foreignKeys) {
 			} else if (options.filter === true) {
 				filterSchema(document);
 			}
-			var result = {valid: !errors.length, errors: errors};
+			var result = { valid: !errors.length, errors: errors };
 			return result;
 		}
 	}
 
 	function toJSON() {
 		normalizedJSON = normalizedJSON || JSON.parse(JSON.stringify(schema, function (key, val) {
-				return util.isRegExp(val) ? val.source : val;
-			}));
+			return util.isRegExp(val) ? val.source : val;
+		}));
 		return normalizedJSON;
 	}
 
 	var exampleJson = generateExampleJson(schema);
 	var example = parseExampleJson(exampleJson); //make sure it can be parser, this will throw if not
-	var exampleJsonArray = generateExampleJson(schema, {asArray: true});
+	var exampleJsonArray = generateExampleJson(schema, { asArray: true });
 	var exampleArray = parseExampleJson(exampleJsonArray); //make sure it can be parser, this will throw if not
-	var exampleMinimalJson = generateExampleJson(schema, {minimal: true});
+	var exampleMinimalJson = generateExampleJson(schema, { minimal: true });
 	var exampleMinimal = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
-	var exampleNoReadOnlyJson = generateExampleJson(schema, {noReadOnly: true});
+	var exampleNoReadOnlyJson = generateExampleJson(schema, { noReadOnly: true });
 	var exampleNoReadOnly = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
 	return {
 		validate,
@@ -141,9 +141,13 @@ function schemaWitNoReadonly(schema) {
 }
 
 function schemaWithAdditionalPropertiesNotAllowedAsDefault(schema) {
+	var hasHiddenProperties = false;
 	var s = clone(schema);
 	var t = traverse(s);
 	t.forEach(function (value) {
+		if (this.key === 'hidden' && value === true) {
+			hasHiddenProperties = true;
+		}
 		if (this.key === 'type' && value === 'object') {
 			var getProp = getParentObjectProp.bind(this);
 			var additionalProperties = getProp('additionalProperties');
@@ -153,6 +157,18 @@ function schemaWithAdditionalPropertiesNotAllowedAsDefault(schema) {
 			}
 		}
 	});
+
+	if (hasHiddenProperties) {
+		const schemaWithoutHiddenProperties = traverse(clone(s))
+			.forEach(function (value) {
+				(this.key === 'hidden') && (value === true) && this.parent.remove();
+			});
+
+		s.toJSON = function () {
+			return schemaWithoutHiddenProperties;
+		};
+	}
+
 	return s;
 
 	function getParentObjectProp(prop) {

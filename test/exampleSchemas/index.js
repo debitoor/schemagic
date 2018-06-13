@@ -83,6 +83,19 @@ module.exports = {
 		}
 	},
 
+	schemaOneMinimalAndOneHiddenProperty: {
+		"description": 'Simple object',
+		"required": true,
+		"type": 'object',
+		"properties": {
+			"a": {
+				"type": 'string',
+				"required": false,
+				minimal: true
+			}
+		}
+	},
+
 	noReadOnlySchema: {
 		"description": 'Simple object',
 		"required": true,
@@ -131,6 +144,11 @@ module.exports = {
 				"type": 'string',
 				"required": false,
 				"readonly": true
+			},
+			'e': {
+				'type': 'string',
+				'hidden': true,
+				"required": false
 			}
 		}
 	},

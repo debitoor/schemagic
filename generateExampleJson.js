@@ -138,6 +138,9 @@ function generateObjectJson(schema, minimal, noReadOnly, output) {
 		if (noReadOnly && schema.properties[property].readonly) {
 			continue;
 		}
+		if (schema.properties[property].hidden) {
+			continue;
+		}
 		var propertySchema = schema.properties[property];
 		output.addText(comma);
 		addIntro(propertySchema, output);
