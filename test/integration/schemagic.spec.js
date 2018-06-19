@@ -94,6 +94,7 @@ describe('/source/schemagic with valid example schemas', function () {
 						{
 							type: ['null', 'string'],
 							value: 'random text',
+							schemaPath: ['properties', 'hiddenProperty'],
 							message: 'must be an enum value',
 							property: 'hiddenProperty',
 						}

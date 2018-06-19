@@ -477,6 +477,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 				expect(result.errors).to.deep.equal([
 					{
 						message: 'has additional properties',
+						schemaPath: [],
 						property: 'notInSchemaField',
 						type: 'object'
 					}
