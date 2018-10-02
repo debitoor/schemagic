@@ -10,6 +10,8 @@ var parseExampleJson = require('./parseExampleJson');
 var dataRegExp = /^data\./;
 
 function schemaFactory(rawSchema, foreignKeys) {
+	var normalizedJSON;
+
 	var foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
 	var schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
 	var schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
@@ -22,7 +24,35 @@ function schemaFactory(rawSchema, foreignKeys) {
 		formats: formats
 	});
 	var validateSchemaNoReadonly = imjv(schemaWitNoReadonlyProperties, { filter: true });
-	var normalizedJSON;
+	var exampleJson = generateExampleJson(schema);
+	var example = parseExampleJson(exampleJson); //make sure it can be parser, this will throw if not
+	var exampleJsonArray = generateExampleJson(schema, { asArray: true });
+	var exampleArray = parseExampleJson(exampleJsonArray); //make sure it can be parser, this will throw if not
+	var exampleMinimalJson = generateExampleJson(schema, { minimal: true });
+	var exampleMinimal = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
+	var exampleNoReadOnlyJson = generateExampleJson(schema, { noReadOnly: true });
+	var exampleNoReadOnly = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
+
+	var schemaContainer = {
+		localize,
+		validate,
+		schema,
+		exampleJson,
+		exampleJsonArray,
+		example,
+		exampleArray,
+		exampleMinimalJson,
+		exampleMinimal,
+		exampleNoReadOnlyJson,
+		exampleNoReadOnly,
+		toJSON
+	};
+	return schemaContainer;	
+
+
+	function localize(locale) {
+		return locale && schemaContainer.localizedSchemas && schemaContainer.localizedSchemas[locale] || schemaContainer;
+	}
 
 	function validate(document, options, optionalCallback) {
 		options = options || {};
@@ -85,28 +115,6 @@ function schemaFactory(rawSchema, foreignKeys) {
 		}));
 		return normalizedJSON;
 	}
-
-	var exampleJson = generateExampleJson(schema);
-	var example = parseExampleJson(exampleJson); //make sure it can be parser, this will throw if not
-	var exampleJsonArray = generateExampleJson(schema, { asArray: true });
-	var exampleArray = parseExampleJson(exampleJsonArray); //make sure it can be parser, this will throw if not
-	var exampleMinimalJson = generateExampleJson(schema, { minimal: true });
-	var exampleMinimal = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
-	var exampleNoReadOnlyJson = generateExampleJson(schema, { noReadOnly: true });
-	var exampleNoReadOnly = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
-	return {
-		validate,
-		schema,
-		exampleJson,
-		exampleJsonArray,
-		example,
-		exampleArray,
-		exampleMinimalJson,
-		exampleMinimal,
-		exampleNoReadOnlyJson,
-		exampleNoReadOnly,
-		toJSON
-	};
 }
 
 function schemaWitNoReadonly(schema) {
@@ -175,6 +183,5 @@ function schemaWithAdditionalPropertiesNotAllowedAsDefault(schema) {
 		return !this.parent || t.get(this.parent.path.concat(prop));
 	}
 }
-
 
 module.exports = schemaFactory;

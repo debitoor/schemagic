@@ -8,6 +8,7 @@ var cache = require('./cache'); //use requires caching to have a singleton
 var path = require('path');
 var clone = require('clone');
 var traverse = require('traverse');
+var localizedSchemaNameMatcher = new RegExp('\.([A-Z]{2})$');
 
 
 function schemagicInit() {
@@ -49,7 +50,7 @@ function schemagicInit() {
 		foreignKeys = rawSchemas.foreignKeys;
 		delete rawSchemas.foreignKeys;
 	}
-	Object.keys(rawSchemas).forEach(function (schemaName) {
+	Object.keys(rawSchemas).sort().forEach(function (schemaName) {
 		var schemaForeignKeys = getSchemaForeignKeys(schemaName, foreignKeys);
 		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName], schemaForeignKeys);
 		var rawPatchSchema = clone(rawSchemas[schemaName]);
@@ -83,6 +84,25 @@ function schemagicInit() {
 			"items": clone(rawSchemas[schemaName])
 		};
 		schemagic[schemaName].array = schemaFactory(rawArraySchema, schemaForeignKeys);
+
+		if (localizedSchemaNameMatcher.test(schemaName)) {
+			var localizationEdition = schemaName.slice(-2).toUpperCase();
+			var globalSchemaName = schemaName.slice(0, -3);
+			var globalSchema = schemagic[globalSchemaName];
+			if (globalSchema) {
+				schemagic[schemaName].globalSchema = globalSchema;
+				globalSchema.localizedSchemas = globalSchema.localizedSchemas || {};
+				globalSchema.localizedSchemas[localizationEdition] = schemagic[schemaName];
+				if (globalSchema.patch) {
+					globalSchema.patch.localizedSchemas = globalSchema.patch.localizedSchemas || {};
+					globalSchema.patch.localizedSchemas[localizationEdition] = schemagic[schemaName].patch;
+				}
+				if (globalSchema.array) {
+					globalSchema.array.localizedSchemas = globalSchema.array.localizedSchemas || {};
+					globalSchema.array.localizedSchemas[localizationEdition] = schemagic[schemaName].array;
+				}
+			}
+		}
 	});
 	cache.schemagics[schemasDirectory] = schemagic;
 	return schemagic;

@@ -56,7 +56,7 @@ describe('/source/schemagic with valid example schemas', function () {
 			expect(schemagic.test.patch.schema).to.have.property('properties').to.have.property('c').to.have.property('type').to.contain('null');
 		});
 		it('has all the exact number of keys at there are schemas (schemagic.getSchemaFromObject is not enumerable)', function () {
-			expect(Object.keys(schemagic)).to.have.property('length').to.equal(3);
+			expect(Object.keys(schemagic)).to.have.property('length').to.equal(4);
 		});
 
 		it('has getSchemaFromObject as property', function () {
@@ -377,6 +377,29 @@ describe('/source/schemagic with valid example schemas', function () {
 
 			it('should error', function () {
 				expect(error).to.be.instanceOf(Error).to.have.property('message', 'This mock foreign key check fails');
+			});
+		});
+
+		describe('schema localization', () => {
+			let localizedSchema;
+			before('localize schema', () => {
+				localizedSchema = schemagic.test.localize('it').schema;
+			});
+
+			it('returns a schema object', () => {
+				expect(localizedSchema).to.be.a('object');
+			});
+
+			it('has the valid \'description\' property', () => {
+				expect(localizedSchema).to.have.deep.property('description').to.be.equal('Simple object for Italy');
+			});
+
+			it('has italy special property \'itField\'', () => {
+				expect(localizedSchema).to.have.deep.property('properties.itField');
+			});
+
+			it('has the \'test.exampleNoReadOnlyJson\' property with special type for italy', () => {
+				expect(localizedSchema).to.have.deep.property('properties.b.type').to.be.equal('number');
 			});
 		});
 	});
