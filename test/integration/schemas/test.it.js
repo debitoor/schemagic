@@ -6,10 +6,6 @@ module.exports = extend(test, {
 	"required": true,
 	"type": 'object',
 	"properties": {
-		"a": {
-			"type": 'number',
-			"required": true
-		},
 		"b": {
 			"type": 'number'
 		},
