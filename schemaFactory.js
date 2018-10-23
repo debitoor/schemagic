@@ -118,40 +118,29 @@ function schemaFactory(rawSchema, foreignKeys) {
 }
 
 function schemaWitNoReadonly(schema) {
-	var s = clone(schema);
-	var t = traverse(s);
-	var p = getReadonlyPath();
-	if (p && p.length === 1) {
-		if (s.type !== 'object') {
+	if (schema.readonly) {
+		if (schema.type !== 'object') {
 			throw new Error('only object type root objects in schema are allowed to be readonly');
 		}
 		return {
-			description: s.description,
+			description: schema.description,
 			type: 'object',
 			additionalProperties: false
 		};
 	}
-	while (p) {
-		p.pop(); //pop readonly
-		var prop = p.pop();
-		var obj = t.get(p);
-		delete obj[prop];
-		t = traverse(s);
-		p = getReadonlyPath();
-	}
-	return s;
 
-	function getReadonlyPath() {
-		return t.paths().filter(function (path) {
-			return path[path.length - 1] === 'readonly' && t.get(path);
-		})[0];
-	}
+	return traverse(schema).map(function (value) {
+		if (this.key === 'readonly' && value) {
+			this.parent.remove();
+		}
+	});
 }
 
 function schemaWithAdditionalPropertiesNotAllowedAsDefault(schema) {
 	var hasHiddenProperties = false;
 	var s = clone(schema);
 	var t = traverse(s);
+	
 	t.forEach(function (value) {
 		if (this.key === 'hidden' && value === true) {
 			hasHiddenProperties = true;
