@@ -15,15 +15,11 @@ function schemaFactory(rawSchema, foreignKeys) {
 	var foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
 	var schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
 	var schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
-	var validateSchema = imjv(schema, {
-		formats: formats,
-		verbose: true
-	});
-	var filterSchema = imjv(schema, {
-		filter: true,
-		formats: formats
-	});
-	var validateSchemaNoReadonly = imjv(schemaWitNoReadonlyProperties, { filter: true });
+
+	var validateSchema;
+	var filterSchema;
+	var validateSchemaNoReadonly;
+
 	var exampleJson = generateExampleJson(schema);
 	var example = parseExampleJson(exampleJson); //make sure it can be parser, this will throw if not
 	var exampleJsonArray = generateExampleJson(schema, { asArray: true });
@@ -50,14 +46,37 @@ function schemaFactory(rawSchema, foreignKeys) {
 	return schemaContainer;	
 
 
+	function getValidateSchema() {
+		validateSchema = validateSchema || imjv(schema, {
+			formats: formats,
+			verbose: true
+		});
+		return validateSchema;
+	}
+	function getFilterSchema() {
+		filterSchema = filterSchema || imjv(schema, {
+			filter: true,
+			formats: formats
+		});
+		return filterSchema;
+	}
+
+	function getValidateSchemaNoReadonly() {
+		validateSchemaNoReadonly = validateSchemaNoReadonly || imjv(schemaWitNoReadonlyProperties, {
+			filter: true
+		});
+		return validateSchemaNoReadonly;
+	}
+
 	function localize(locale) {
 		return locale && schemaContainer.localizedSchemas && schemaContainer.localizedSchemas[locale] || schemaContainer;
 	}
 
 	function validate(document, options, optionalCallback) {
 		options = options || {};
-		validateSchema(document);
-		var errors = validateSchema.errors || [];
+
+		getValidateSchema()(document);
+		var errors = getValidateSchema().errors || [];
 		var doForeignKeyValidation = options && options.foreignKey === true;
 		if (errors.length === 0 && doForeignKeyValidation && foreignKeys) {
 			if (!optionalCallback) {
@@ -100,9 +119,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 				}
 			});
 			if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
-				validateSchemaNoReadonly(document);
+				getValidateSchemaNoReadonly()(document);
 			} else if (options.filter === true) {
-				filterSchema(document);
+				getFilterSchema()(document);
 			}
 			var result = { valid: !errors.length, errors: errors };
 			return result;
