@@ -46,14 +46,14 @@ function schemaFactory(rawSchema, foreignKeys) {
 	return schemaContainer;	
 
 
-	function getValidateSchema() {
+	function getValidateSchemaInstance() {
 		validateSchema = validateSchema || imjv(schema, {
 			formats: formats,
 			verbose: true
 		});
 		return validateSchema;
 	}
-	function getFilterSchema() {
+	function getFilterSchemaInstance() {
 		filterSchema = filterSchema || imjv(schema, {
 			filter: true,
 			formats: formats
@@ -61,7 +61,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 		return filterSchema;
 	}
 
-	function getValidateSchemaNoReadonly() {
+	function getValidateSchemaNoReadonlyInstance() {
 		validateSchemaNoReadonly = validateSchemaNoReadonly || imjv(schemaWitNoReadonlyProperties, {
 			filter: true
 		});
@@ -75,8 +75,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 	function validate(document, options, optionalCallback) {
 		options = options || {};
 
-		getValidateSchema()(document);
-		var errors = getValidateSchema().errors || [];
+		getValidateSchemaInstance()(document);
+		var errors = getValidateSchemaInstance().errors || [];
 		var doForeignKeyValidation = options && options.foreignKey === true;
 		if (errors.length === 0 && doForeignKeyValidation && foreignKeys) {
 			if (!optionalCallback) {
@@ -119,9 +119,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 				}
 			});
 			if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
-				getValidateSchemaNoReadonly()(document);
+				getValidateSchemaNoReadonlyInstance()(document);
 			} else if (options.filter === true) {
-				getFilterSchema()(document);
+				getFilterSchemaInstance()(document);
 			}
 			var result = { valid: !errors.length, errors: errors };
 			return result;
