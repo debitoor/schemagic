@@ -411,7 +411,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			var result;
 
 			var document = {
-				a: 100.001
+				a: 100.0011
 			};
 
 			before(function () {
