@@ -1,7 +1,7 @@
 var moment = require('moment');
 var format = require('util').format;
 var validUrl = require('valid-url');
-const decimals = 3;
+const NUMBER_OF_ALLOWED_DECIMALS = 3;
 
 module.exports = {
 	'date-time': datetimeFormatCheck,
@@ -58,7 +58,7 @@ var minCurrency = -MAX_SAFE_INTEGER / 100;
 function currencyFormatCheck(value) {
 	if (typeof value !== 'number') {
 		return true;
-	} else if ((value.toString().split('.')[1] || '').length > decimals) {
+	} else if ((value.toString().split('.')[1] || '').length > NUMBER_OF_ALLOWED_DECIMALS) {
 		return false;
 	} else if (value > maxCurrency || value < minCurrency) {
 		return false;
