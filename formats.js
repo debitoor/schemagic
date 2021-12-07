@@ -71,10 +71,11 @@ currencyFormatCheck.doc = format('Must be a number with a maximum of two decimal
 
 var maxRate = 100;
 var minRate = 0;
+const RATE_DECIMALS_LIMIT = 3;
 function rateFormat(value) {
 	if (typeof value !== 'number') {
 		return true;
-	} else if ((value.toString().split('.')[1] || '').length > 2) {
+	} else if ((value.toString().split('.')[1] || '').length > RATE_DECIMALS_LIMIT) {
 		return false;
 	} else if (value > maxRate || value < minRate) {
 		return false;
