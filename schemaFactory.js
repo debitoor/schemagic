@@ -16,9 +16,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 	var schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
 	var schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
 
-	var validateSchema;
-	var filterSchema;
-	var validateSchemaNoReadonly;
+	var validateSchema = getValidateSchemaInstance();
+	var filterSchema = getFilterSchemaInstance();
+	var validateSchemaNoReadonly = getValidateSchemaNoReadonlyInstance();
 
 	var exampleJson = generateExampleJson(schema);
 	var example = parseExampleJson(exampleJson); //make sure it can be parser, this will throw if not
@@ -47,25 +47,22 @@ function schemaFactory(rawSchema, foreignKeys) {
 
 
 	function getValidateSchemaInstance() {
-		validateSchema = validateSchema || imjv(schema, {
+		return imjv(schema, {
 			formats: formats,
 			verbose: true
 		});
-		return validateSchema;
 	}
 	function getFilterSchemaInstance() {
-		filterSchema = filterSchema || imjv(schema, {
+		return imjv(schema, {
 			filter: true,
 			formats: formats
 		});
-		return filterSchema;
 	}
 
 	function getValidateSchemaNoReadonlyInstance() {
-		validateSchemaNoReadonly = validateSchemaNoReadonly || imjv(schemaWitNoReadonlyProperties, {
+		return imjv(schemaWitNoReadonlyProperties, {
 			filter: true
 		});
-		return validateSchemaNoReadonly;
 	}
 
 	function localize(locale) {
@@ -75,8 +72,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 	function validate(document, options, optionalCallback) {
 		options = options || {};
 
-		getValidateSchemaInstance()(document);
-		var errors = getValidateSchemaInstance().errors || [];
+		validateSchema(document);
+		var errors = validateSchema.errors || [];
 		var doForeignKeyValidation = options && options.foreignKey === true;
 		if (errors.length === 0 && doForeignKeyValidation && foreignKeys) {
 			if (!optionalCallback) {
@@ -119,9 +116,9 @@ function schemaFactory(rawSchema, foreignKeys) {
 				}
 			});
 			if (options.removeReadOnlyFields === true) { // remove readonly fields from the object, default: false
-				getValidateSchemaNoReadonlyInstance()(document);
+				validateSchemaNoReadonly(document);
 			} else if (options.filter === true) {
-				getFilterSchemaInstance()(document);
+				filterSchema(document);
 			}
 			var result = { valid: !errors.length, errors: errors };
 			return result;
