@@ -1,19 +1,19 @@
 delete require.cache[__filename]; //do not cache in require cache
-var getSchemasDirectory = require('./getSchemasDirectory');
-var readRawSchemas = require('./readRawSchemas');
-var schemaFactory = require('./schemaFactory');
-var getSchemaFromObject = require('./getSchemaFromObject');
-var parseExampleJson = require('./parseExampleJson');
-var cache = require('./cache'); //use requires caching to have a singleton
-var path = require('path');
-var clone = require('clone');
-var traverse = require('traverse');
-var localizedSchemaNameMatcher = new RegExp('\.([A-Z]{2})$');
+const getSchemasDirectory = require('./getSchemasDirectory');
+const readRawSchemas = require('./readRawSchemas');
+const schemaFactory = require('./schemaFactory');
+const getSchemaFromObject = require('./getSchemaFromObject');
+const parseExampleJson = require('./parseExampleJson');
+const cache = require('./cache'); //use requires caching to have a singleton
+const path = require('path');
+const clone = require('clone');
+const traverse = require('traverse');
+const localizedSchemaNameMatcher = new RegExp('\.([A-Z]{2})$');
 
 
 function schemagicInit() {
-	var startDir = path.dirname(module.parent.filename);
-	var schemasDirectory;
+	const startDir = path.dirname(module.parent.filename);
+	let schemasDirectory;
 	if (cache.schemaDirectories[startDir]) {
 		schemasDirectory = cache.schemaDirectories[startDir];
 	} else {
@@ -23,8 +23,8 @@ function schemagicInit() {
 	if (cache.schemagics[schemasDirectory]) {
 		return cache.schemagics[schemasDirectory];
 	}
-	var rawSchemas = readRawSchemas(schemasDirectory);
-	var schemagic = {};
+	const rawSchemas = readRawSchemas(schemasDirectory);
+	const schemagic = {};
 	Object.defineProperty(
 		schemagic,
 		'getSchemaFromObject',
@@ -45,22 +45,22 @@ function schemagicInit() {
 			value: parseExampleJson
 		}
 	); //schemagic.parseExampleJson is not enumerable
-	var foreignKeys = {};
+	let foreignKeys = {};
 	if (rawSchemas.foreignKeys) {
 		foreignKeys = rawSchemas.foreignKeys;
 		delete rawSchemas.foreignKeys;
 	}
 	Object.keys(rawSchemas).sort().forEach(function (schemaName) {
-		var schemaForeignKeys = getSchemaForeignKeys(schemaName, foreignKeys);
+		const schemaForeignKeys = getSchemaForeignKeys(schemaName, foreignKeys);
 		schemagic[schemaName] = schemaFactory(rawSchemas[schemaName], schemaForeignKeys);
-		var rawPatchSchema = clone(rawSchemas[schemaName]);
-		var t = traverse(rawPatchSchema);
+		const rawPatchSchema = clone(rawSchemas[schemaName]);
+		const t = traverse(rawPatchSchema);
 		t.forEach(function (value) {
 			//make sure null is allowed for all non-required properties
 			if (this.key === 'type' && this.path.length >= 3 && this.path[this.path.length - 3] === 'properties') {
-				var required = t.get([].concat(this.parent.path, ['required']));
+				const required = t.get([].concat(this.parent.path, ['required']));
 				if (required === false) {
-					var type = value;
+					let type = value;
 					if (!Array.isArray(type)) {
 						type = [type];
 					}
@@ -78,7 +78,7 @@ function schemagicInit() {
 			}
 		});
 		schemagic[schemaName].patch = schemaFactory(rawPatchSchema, schemaForeignKeys);
-		var rawArraySchema = {
+		const rawArraySchema = {
 			"required": true,
 			"type": 'array',
 			"items": clone(rawSchemas[schemaName])
@@ -86,9 +86,9 @@ function schemagicInit() {
 		schemagic[schemaName].array = schemaFactory(rawArraySchema, schemaForeignKeys);
 
 		if (localizedSchemaNameMatcher.test(schemaName)) {
-			var localizationEdition = schemaName.slice(-2).toUpperCase();
-			var globalSchemaName = schemaName.slice(0, -3);
-			var globalSchema = schemagic[globalSchemaName];
+			const localizationEdition = schemaName.slice(-2).toUpperCase();
+			const globalSchemaName = schemaName.slice(0, -3);
+			const globalSchema = schemagic[globalSchemaName];
 			if (globalSchema) {
 				schemagic[schemaName].globalSchema = globalSchema;
 				globalSchema.localizedSchemas = globalSchema.localizedSchemas || {};
@@ -110,11 +110,11 @@ function schemagicInit() {
 
 function getSchemaForeignKeys(schemaName, foreignKeys) {
 	return Object.keys(foreignKeys).reduce(function (memo, key) {
-		var keyParts = key.split('.');
+		const keyParts = key.split('.');
 		if (keyParts.length === 1) {
 			memo[key] = foreignKeys[key];
 		} else {
-			var keySchemaName = keyParts.slice(0, keyParts.length - 1).join('.');
+			const keySchemaName = keyParts.slice(0, keyParts.length - 1).join('.');
 			if (keySchemaName === schemaName) {
 				memo[keyParts.pop()] = foreignKeys[key];
 			}

@@ -1,5 +1,5 @@
-var schemas = require('../exampleSchemas');
-var exampleJson = require('../../generateExampleJson');
+const schemas = require('../exampleSchemas');
+const exampleJson = require('../../generateExampleJson');
 
 //This is just a helper function I used for adding tests retrospectively
 //Given a string output from exampleJson, it will console log
@@ -11,7 +11,7 @@ function formatJsonExampleForExpect(exampleJsonGenerated) {
 describe('/source/util/exampleJson', function () {
 
 	it('will generate correct exampleJsonString for noReadOnlySchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema);
+		const exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema);
 		expect(exampleJsonGenerated).to.equal(
 			'//Simple object\n' +
 			'{\n' +
@@ -28,7 +28,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleMinimalJsonString for schemaOneMinimalProperty', function () {
-		var exampleJsonGenerated = exampleJson(schemas.schemaOneMinimalProperty, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.schemaOneMinimalProperty, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -39,7 +39,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString for noReadOnlySchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -55,7 +55,7 @@ describe('/source/util/exampleJson', function () {
 
 	it('will generate correct exampleJsonString for schemaWithVeryLongDescription, ' +
 		'should word wrap the long description', function () {
-		var exampleJsonGenerated = exampleJson(schemas.schemaWithVeryLongDescription);
+		const exampleJsonGenerated = exampleJson(schemas.schemaWithVeryLongDescription);
 		expect(exampleJsonGenerated).to.equal(`//long long long long long long long long long long long long long long long long 
 //long long long long long long long long long long long long long long long long 
 //long long long long long long long long long long long long long long long long 
@@ -72,7 +72,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString for schemaWithFormats', function () {
-		var exampleJsonGenerated = exampleJson(schemas.schemaWithFormats);
+		const exampleJsonGenerated = exampleJson(schemas.schemaWithFormats);
 		expect(exampleJsonGenerated).to.equal(
 			`//Formats
 {
@@ -107,7 +107,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString for schemaWithFormats', function () {
-		var exampleJsonGenerated = exampleJson(schemas.schemaWithFormats, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.schemaWithFormats, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Formats
 {
@@ -116,7 +116,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString (Array) for noReadOnlySchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {asArray: true});
+		const exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {asArray: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -137,7 +137,7 @@ describe('/source/util/exampleJson', function () {
 		);
 	});
 	it('will generate correct minimal exampleJsonString (Array) for noReadOnlySchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {asArray: true, minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.noReadOnlySchema, {asArray: true, minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -157,7 +157,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString for simpleSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.simpleSchema);
+		const exampleJsonGenerated = exampleJson(schemas.simpleSchema);
 		expect(exampleJsonGenerated).to.equal(`//Simple object
 {
     //Required
@@ -172,7 +172,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString for simpleSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.simpleSchema, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -185,7 +185,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct noReadOnly exampleJsonString for simpleSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {noReadOnly: true});
+		const exampleJsonGenerated = exampleJson(schemas.simpleSchema, {noReadOnly: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -198,7 +198,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString (Array) for simpleSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {asArray: true});
+		const exampleJsonGenerated = exampleJson(schemas.simpleSchema, {asArray: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -220,7 +220,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString (Array) for simpleSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.simpleSchema, {asArray: true, minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.simpleSchema, {asArray: true, minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -239,7 +239,7 @@ describe('/source/util/exampleJson', function () {
 
 
 	it('will generate correct exampleJsonString for nestedSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.nestedSchema);
+		const exampleJsonGenerated = exampleJson(schemas.nestedSchema);
 		expect(exampleJsonGenerated).to.equal(`//Simple object
 {
     //Required
@@ -257,7 +257,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString for nestedSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.nestedSchema, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.nestedSchema, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -273,7 +273,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString (Array) for nestedSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.nestedSchema, {asArray: true});
+		const exampleJsonGenerated = exampleJson(schemas.nestedSchema, {asArray: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -298,7 +298,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString (Array) for nestedSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.nestedSchema, {asArray: true, minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.nestedSchema, {asArray: true, minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -319,7 +319,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString for arrayReadOnlyItemsSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema);
+		const exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema);
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -344,7 +344,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString for arrayReadOnlyItemsSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -357,7 +357,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString (Array) for arrayReadOnlyItemsSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {asArray: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {asArray: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -387,7 +387,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString (Array) for arrayReadOnlyItemsSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {asArray: true, minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayReadOnlyItemsSchema, {asArray: true, minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -405,7 +405,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString for arraySchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arraySchema);
+		const exampleJsonGenerated = exampleJson(schemas.arraySchema);
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -430,7 +430,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString for arraySchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arraySchema, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.arraySchema, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -451,7 +451,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString (Array) for arraySchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arraySchema, {asArray: true});
+		const exampleJsonGenerated = exampleJson(schemas.arraySchema, {asArray: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -481,7 +481,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString (Array) for arraySchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arraySchema, {asArray: true, minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.arraySchema, {asArray: true, minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -507,7 +507,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString for arrayNestedSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema);
+		const exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema);
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -531,7 +531,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString for arrayNestedSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Simple object
 {
@@ -553,7 +553,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString (Array) for arrayNestedSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {asArray: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {asArray: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -582,7 +582,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString (Array) for arrayNestedSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {asArray: true, minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayNestedSchema, {asArray: true, minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -609,7 +609,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString for arrayAtRootSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema);
+		const exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema);
 		expect(exampleJsonGenerated).to.equal(
 			`//Schema that contains an array at root level
 [
@@ -627,7 +627,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString for arrayAtRootSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Schema that contains an array at root level
 [
@@ -642,7 +642,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct exampleJsonString (Array) for arrayAtRootSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {asArray: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {asArray: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [
@@ -665,7 +665,7 @@ describe('/source/util/exampleJson', function () {
 	});
 
 	it('will generate correct minimal exampleJsonString (Array) for arrayAtRootSchema', function () {
-		var exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {asArray: true, minimal: true});
+		const exampleJsonGenerated = exampleJson(schemas.arrayAtRootSchema, {asArray: true, minimal: true});
 		expect(exampleJsonGenerated).to.equal(
 			`//Array
 [

@@ -1,11 +1,11 @@
 //Generate example JSONs for schemas
 //Examples are strings (so they can contain comments)
-var wordWrap = require('word-wrap');
-var formats = require('./formats');
-var isProperty = require('is-property');
+const wordWrap = require('word-wrap');
+const formats = require('./formats');
+const isProperty = require('is-property');
 
 /*** BEGIN output class that encapsulated indentation ***/
-var output = {
+const output = {
 	addLine: function (line) {
 		if (this.value.length > 0) {
 			this.value += '\n'; //add linechange
@@ -13,8 +13,8 @@ var output = {
 		this.addIndentedText(line);
 	},
 	indent: function () {
-		var array = [];
-		for (var i = 0; i < this.indentation; i++) {
+		const array = [];
+		for (let i = 0; i < this.indentation; i++) {
 			array.push('    ');
 		}
 		this.value += array.join('');
@@ -29,7 +29,7 @@ var output = {
 };
 
 function createOutput(indentation) {
-	var newOutput = Object.create(output);
+	const newOutput = Object.create(output);
 	newOutput.indentation = indentation;
 	newOutput.value = '';
 	return newOutput;
@@ -37,12 +37,12 @@ function createOutput(indentation) {
 /*** END output class that encapsulated indentation ***/
 
 function generateExampleJson(schema, minimal, noReadOnly, output) {
-	var type = schema.type;
+	let type = schema.type;
 	if (Array.isArray(type)) {
 		if (type.length === 0) {
 			throw new Error('type is array with length=0: ' + JSON.stringify(type));
 		}
-		for (var i = 0; i < type.length; i++) {
+		for (let i = 0; i < type.length; i++) {
 			if (type[i] !== 'null') {
 				type = type[i];
 				break; //exit for
@@ -86,9 +86,9 @@ function generateExampleJson(schema, minimal, noReadOnly, output) {
 }
 
 function getAllowsNull(schema) {
-	var type = schema.type;
+	const type = schema.type;
 	if (Array.isArray(type)) {
-		for (var i = 0; i < type.length; i++) {
+		for (let i = 0; i < type.length; i++) {
 			if (type[i] === 'null') {
 				return true;
 			}
@@ -98,12 +98,12 @@ function getAllowsNull(schema) {
 }
 
 function addIntro(schema, output) {
-	var allowNull = getAllowsNull(schema);
+	const allowNull = getAllowsNull(schema);
 	if (schema.description) {
-		var lines = wordWrap(schema.description, {width: 80, indent: '//'}).split('\n');
+		const lines = wordWrap(schema.description, {width: 80, indent: '//'}).split('\n');
 		lines.forEach(output.addLine.bind(output));
 	}
-	var doc;
+	let doc;
 	if (schema.readonly) {
 		output.addLine('//Read only. You do not need this on POST, PUT and PATCH. You can leave it in from what you GET, it will simply be ignored.');
 	} else {
@@ -130,8 +130,8 @@ function generateObjectJson(schema, minimal, noReadOnly, output) {
 	output.addText('{');
 	output.indentation++;
 
-	var comma = '';
-	for (var property in schema.properties) {
+	let comma = '';
+	for (let property in schema.properties) {
 		if (minimal && !schema.properties[property].required && !schema.properties[property].minimal) {
 			continue;
 		}
@@ -141,7 +141,7 @@ function generateObjectJson(schema, minimal, noReadOnly, output) {
 		if (schema.properties[property].hidden) {
 			continue;
 		}
-		var propertySchema = schema.properties[property];
+		const propertySchema = schema.properties[property];
 		output.addText(comma);
 		addIntro(propertySchema, output);
 		output.addLine(encodeProperty(property) + ':');
@@ -171,7 +171,7 @@ function generateArrayJson(schema, minimal, noReadOnly, output) {
 	output.addText('[');
 	output.indentation++;
 
-	var propertySchema = schema.items;
+	const propertySchema = schema.items;
 	addIntro(propertySchema, output);
 	output.addLine('');
 	generateExampleJson(propertySchema, minimal, noReadOnly, output);
@@ -182,18 +182,18 @@ function generateArrayJson(schema, minimal, noReadOnly, output) {
 }
 
 module.exports = function (schema, options) {
-	var asArray = options && options.asArray;
-	var minimal = options && options.minimal;
-	var noReadOnly = options && options.noReadOnly;
-	var output = createOutput(0);
+	const asArray = options && options.asArray;
+	const minimal = options && options.minimal;
+	const noReadOnly = options && options.noReadOnly;
+	const output = createOutput(0);
 	if (asArray) {
 		output.addLine('//Array');
 		output.addLine('[');
 		output.indentation++;
 	}
 	if (schema.description) {
-		var lines = wordWrap(schema.description, {width: 80, indent: '//'}).split('\n');
-		var lastLine = lines.pop();
+		const lines = wordWrap(schema.description, {width: 80, indent: '//'}).split('\n');
+		const lastLine = lines.pop();
 		lines.forEach(output.addLine.bind(output));
 		output.addLine(lastLine + '\n'); //we need linebreak because object (top level in schema) does not insert linebreak
 		output.indent();

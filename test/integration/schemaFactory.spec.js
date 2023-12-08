@@ -1,9 +1,9 @@
-var schemaFactory = require('../../schemaFactory');
-var rawSchemas = require('../exampleSchemas');
-var exampleJson = require('../../generateExampleJson');
+const schemaFactory = require('../../schemaFactory');
+const rawSchemas = require('../exampleSchemas');
+const exampleJson = require('../../generateExampleJson');
 
 describe('/source/util/schemaFactory run on simpleSchema, the returned object', function () {
-	var schema;
+	let schema;
 	before(function () {
 		schema = schemaFactory(rawSchemas.simpleSchema);
 	});
@@ -62,7 +62,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 
 
 	describe('loading schema with property that requires string', function () {
-		var schema2;
+		let schema2;
 		before(function () {
 			schema2 = schemaFactory(rawSchemas.schemaWithStringEscapePropertyName);
 		});
@@ -74,13 +74,13 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('validating valid document with removeReadOnlyFields option not set', function () {
-		var document = {
+		const document = {
 			a: 1,
 			b: 'x',
 			c: 'y',
 			d: 'z'
 		};
-		var result;
+		let result;
 
 		before(function () {
 			result = schema.validate(document);
@@ -101,13 +101,13 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('validating valid document with removeReadOnlyFields option set to true', function () {
-		var document = {
+		const document = {
 			a: 1,
 			b: 'x',
 			c: 'y',
 			d: 'z'
 		};
-		var result;
+		let result;
 
 		before(function () {
 			result = schema.validate(document, { removeReadOnlyFields: true });
@@ -126,13 +126,13 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('validating valid document with removeReadOnlyFields option set to false', function () {
-		var document = {
+		const document = {
 			a: 1,
 			b: 'x',
 			c: 'y',
 			d: 'z'
 		};
-		var result;
+		let result;
 
 		before(function () {
 			result = schema.validate(document, { removeReadOnlyFields: false });
@@ -153,13 +153,13 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('validating an invalid document', function () {
-		var document = {
+		const document = {
 			a: 'I SHOULD BE A NUMBER',
 			b: 'x',
 			c: 'y',
 			d: 'z'
 		};
-		var result;
+		let result;
 
 		before(function () {
 			result = schema.validate(document);
@@ -181,8 +181,8 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('validating an Array in root, where schema requires an object', function () {
-		var document = ['test'];
-		var result;
+		const document = ['test'];
+		let result;
 
 		before(function () {
 			result = schema.validate(document, { emptyStringsToNull: false, removeEmptyFields: false });
@@ -194,7 +194,7 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('validating document with date and date-time', function () {
-		var document, result;
+		let document, result;
 
 		before(function () {
 			schema = schemaFactory(rawSchemas.dateTimeSchema);
@@ -299,9 +299,9 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('test valid document', function () {
-			var result;
+			let result;
 
-			var document = {
+			const document = {
 				a: { b: 'yes' }
 			};
 
@@ -315,9 +315,9 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('test 1st invalid document', function () {
-			var result;
+			let result;
 
-			var document = {
+			const document = {
 				a: {}
 			};
 
@@ -331,9 +331,9 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('test 2nd invalid document', function () {
-			var result;
+			let result;
 
-			var document = {
+			const document = {
 				a: { b: 'yess', c: 'de' }
 			};
 
@@ -349,15 +349,15 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('test enum fields', function () {
-		var schema;
+		let schema;
 		before(function () {
 			schema = schemaFactory(rawSchemas.schemaWithEnum);
 		});
 
 		describe('default positive case', function () {
-			var result;
+			let result;
 
-			var document = {
+			const document = {
 				a: 'foo'
 			};
 
@@ -371,9 +371,9 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('not required field', function () {
-			var result;
+			let result;
 
-			var document = {};
+			const document = {};
 
 			before(function () {
 				result = schema.validate(document);
@@ -386,15 +386,15 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('test currency format', function () {
-		var schema;
+		let schema;
 		before(function () {
 			schema = schemaFactory(rawSchemas.currencySchema);
 		});
 
 		describe('default positive case', function () {
-			var result;
+			let result;
 
-			var document = {
+			const document = {
 				a: 100.01
 			};
 
@@ -408,9 +408,9 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('invalid format', function () {
-			var result;
+			let result;
 
-			var document = {
+			const document = {
 				a: 100.001
 			};
 
@@ -424,9 +424,9 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('not required field', function () {
-			var result;
+			let result;
 
-			var document = {};
+			const document = {};
 
 			before(function () {
 				result = schema.validate(document);
@@ -438,9 +438,9 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('allow null', function () {
-			var result;
+			let result;
 
-			var document = {
+			const document = {
 				a: null
 			};
 
@@ -455,15 +455,15 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 	});
 
 	describe('validate with filter', function () {
-		var schema;
+		let schema;
 
 		before(function () {
 			schema = schemaFactory(rawSchemas.simpleSchemaWithNoAdditionalProperties);
 		});
 
 		describe('simple schema validation without filter: true', function () {
-			var result;
-			var document = { a: 1, b: 'd', notInSchemaField: 'foo' };
+			let result;
+			const document = { a: 1, b: 'd', notInSchemaField: 'foo' };
 
 			before(function () {
 				result = schema.validate(document);
@@ -490,8 +490,8 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('simple schema validation with filter: true', function () {
-			var result;
-			var document = { a: 1, b: 'd', thisIsNotInSchemaField: 'foo' };
+			let result;
+			const document = { a: 1, b: 'd', thisIsNotInSchemaField: 'foo' };
 
 			before(function () {
 				result = schema.validate(document, { filter: true });
@@ -507,8 +507,8 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 		});
 
 		describe('nested objects schema validation with filter: true', function () {
-			var result;
-			var document = {
+			let result;
+			const document = {
 				a: 1,
 				b: 'd',
 				thisIsNotInSchemaField: 'foo',

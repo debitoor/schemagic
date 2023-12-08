@@ -1,35 +1,35 @@
-var util = require('util');
-var foreignKeyValidationFactory = require('./foreignKeyValidationFactory');
-var generateExampleJson = require('./generateExampleJson');
-var imjv = require('is-my-json-valid');
-var clone = require('clone');
-var traverse = require('traverse');
-var formats = require('./formats');
-var parseExampleJson = require('./parseExampleJson');
+const util = require('util');
+const foreignKeyValidationFactory = require('./foreignKeyValidationFactory');
+const generateExampleJson = require('./generateExampleJson');
+const imjv = require('is-my-json-valid');
+const clone = require('clone');
+const traverse = require('traverse');
+const formats = require('./formats');
+const parseExampleJson = require('./parseExampleJson');
 
-var dataRegExp = /^data\./;
+const dataRegExp = /^data\./;
 
 function schemaFactory(rawSchema, foreignKeys) {
-	var normalizedJSON;
+	let normalizedJSON;
 
-	var foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
-	var schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
-	var schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
+	const foreignKeyValidation = foreignKeyValidationFactory(foreignKeys);
+	const schema = schemaWithAdditionalPropertiesNotAllowedAsDefault(rawSchema);
+	const schemaWitNoReadonlyProperties = schemaWitNoReadonly(schema);
 
-	var validateSchema = getValidateSchemaInstance();
-	var filterSchema = getFilterSchemaInstance();
-	var validateSchemaNoReadonly = getValidateSchemaNoReadonlyInstance();
+	const validateSchema = getValidateSchemaInstance();
+	const filterSchema = getFilterSchemaInstance();
+	const validateSchemaNoReadonly = getValidateSchemaNoReadonlyInstance();
 
-	var exampleJson = generateExampleJson(schema);
-	var example = parseExampleJson(exampleJson); //make sure it can be parser, this will throw if not
-	var exampleJsonArray = generateExampleJson(schema, { asArray: true });
-	var exampleArray = parseExampleJson(exampleJsonArray); //make sure it can be parser, this will throw if not
-	var exampleMinimalJson = generateExampleJson(schema, { minimal: true });
-	var exampleMinimal = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
-	var exampleNoReadOnlyJson = generateExampleJson(schema, { noReadOnly: true });
-	var exampleNoReadOnly = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
+	const exampleJson = generateExampleJson(schema);
+	const example = parseExampleJson(exampleJson); //make sure it can be parser, this will throw if not
+	const exampleJsonArray = generateExampleJson(schema, { asArray: true });
+	const exampleArray = parseExampleJson(exampleJsonArray); //make sure it can be parser, this will throw if not
+	const exampleMinimalJson = generateExampleJson(schema, { minimal: true });
+	const exampleMinimal = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
+	const exampleNoReadOnlyJson = generateExampleJson(schema, { noReadOnly: true });
+	const exampleNoReadOnly = exampleMinimalJson && parseExampleJson(exampleMinimalJson); //make sure it can be parser, this will throw if not
 
-	var schemaContainer = {
+	const schemaContainer = {
 		localize,
 		validate,
 		schema,
@@ -73,8 +73,8 @@ function schemaFactory(rawSchema, foreignKeys) {
 		options = options || {};
 
 		validateSchema(document);
-		var errors = validateSchema.errors || [];
-		var doForeignKeyValidation = options && options.foreignKey === true;
+		let errors = validateSchema.errors || [];
+		const doForeignKeyValidation = options && options.foreignKey === true;
 		if (errors.length === 0 && doForeignKeyValidation && foreignKeys) {
 			if (!optionalCallback) {
 				throw new Error('Foreign key validation requires a callback');
@@ -84,11 +84,11 @@ function schemaFactory(rawSchema, foreignKeys) {
 					return optionalCallback(err);
 				}
 				errors = errors.concat(foreignKeyErrors);
-				var result = transformErrorsAndHandleReadOnly(errors);
+				const result = transformErrorsAndHandleReadOnly(errors);
 				return optionalCallback(null, result);
 			});
 		}
-		var result = transformErrorsAndHandleReadOnly(errors);
+		const result = transformErrorsAndHandleReadOnly(errors);
 		if (optionalCallback) {
 			return optionalCallback(null, result);
 		}
@@ -109,7 +109,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 					if (!err.property || err.property === 'data') {
 						err.property = 'root';
 					}
-					var index = parseInt(err.property, 10);
+					const index = parseInt(err.property, 10);
 					if (!isNaN(index)) {
 						err.index = index;
 					}
@@ -120,7 +120,7 @@ function schemaFactory(rawSchema, foreignKeys) {
 			} else if (options.filter === true) {
 				filterSchema(document);
 			}
-			var result = { valid: !errors.length, errors: errors };
+			const result = { valid: !errors.length, errors: errors };
 			return result;
 		}
 	}
@@ -153,39 +153,39 @@ function schemaWitNoReadonly(schema) {
 }
 
 function schemaWithAdditionalPropertiesNotAllowedAsDefault(schema) {
-	var hasHiddenProperties = false;
-	var s = clone(schema);
-	var t = traverse(s);
+	let hasHiddenProperties = false;
+	const schemaCopy = clone(schema);
+	const schemaTraverse = traverse(schemaCopy);
 	
-	t.forEach(function (value) {
+	schemaTraverse.forEach(function (value) {
 		if (this.key === 'hidden' && value === true) {
 			hasHiddenProperties = true;
 		}
 		if (this.key === 'type' && value === 'object') {
-			var getProp = getParentObjectProp.bind(this);
-			var additionalProperties = getProp('additionalProperties');
-			var oneOfAllOfOrAnyOff = ['oneOf', 'anyOf', 'allOf'].some(getProp);
+			const getProp = getParentObjectProp.bind(this);
+			const additionalProperties = getProp('additionalProperties');
+			const oneOfAllOfOrAnyOff = ['oneOf', 'anyOf', 'allOf'].some(getProp);
 			if ((!oneOfAllOfOrAnyOff) && (additionalProperties !== true)) {
-				t.set([].concat(this.parent.path, ['additionalProperties']), false);
+				schemaTraverse.set([].concat(this.parent.path, ['additionalProperties']), false);
 			}
 		}
 	});
 
 	if (hasHiddenProperties) {
-		const schemaWithoutHiddenProperties = traverse(clone(s))
+		const schemaWithoutHiddenProperties = traverse(clone(schemaCopy))
 			.forEach(function (value) {
 				(this.key === 'hidden') && (value === true) && this.parent.remove();
 			});
 
-		s.toJSON = function () {
+		schemaCopy.toJSON = function () {
 			return schemaWithoutHiddenProperties;
 		};
 	}
 
-	return s;
+	return schemaCopy;
 
 	function getParentObjectProp(prop) {
-		return !this.parent || t.get(this.parent.path.concat(prop));
+		return !this.parent || schemaTraverse.get(this.parent.path.concat(prop));
 	}
 }
 

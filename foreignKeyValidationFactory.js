@@ -1,30 +1,30 @@
-var traverse = require('traverse');
-var async = require('async');
+const traverse = require('traverse');
+const async = require('async');
 
 module.exports = function foreignKeyValidationFactory(foreignKeys) {
 	return foreignKeyValidation;
 
 	function foreignKeyValidation(document, options, callback) {
-		var valuesToCheck = getValuesToCheck(foreignKeys, document);
+		const valuesToCheck = getValuesToCheck(foreignKeys, document);
 		if (Object.keys(valuesToCheck).length === 0) {
 			return callback(null, []);
 		}
-		var tasks = Object.keys(valuesToCheck).map(function (propertyName) {
-			var foreignKeyCheckFunction = foreignKeys[propertyName];
+		const tasks = Object.keys(valuesToCheck).map(function (propertyName) {
+			const foreignKeyCheckFunction = foreignKeys[propertyName];
 			return getForeignKeyCheckTask(foreignKeyCheckFunction, valuesToCheck[propertyName], options);
 		});
 		async.parallel(tasks, function (err, results) {
 			if (err) {
 				return callback(err);
 			}
-			var errors = Array.prototype.concat.apply([], results);
+			const errors = Array.prototype.concat.apply([], results);
 			return callback(null, errors);
 		});
 	}
 };
 
 function getValuesToCheck(foreignKeys, document) {
-	var memo = {};
+	let memo = {};
 	Object.keys(foreignKeys).forEach(function (propertyName) {
 		memo[propertyName] = [];
 	});
@@ -47,7 +47,7 @@ function getValuesToCheck(foreignKeys, document) {
 
 function getForeignKeyCheckTask(foreignKeyCheckFunction, valuesToCheck, options) {
 	return function foreignKeyCheck(callback) {
-		var values = valuesToCheck.map(function (o) {
+		const values = valuesToCheck.map(function (o) {
 			return o.value;
 		});
 		return foreignKeyCheckFunction(values, options, returnErrors);
@@ -57,14 +57,14 @@ function getForeignKeyCheckTask(foreignKeyCheckFunction, valuesToCheck, options)
 				return callback(err);
 			}
 			if (validArray.length !== valuesToCheck.length) {
-				var error = new Error('Foreign key check function did not return array of same length as values array passed to it');
+				const error = new Error('Foreign key check function did not return array of same length as values array passed to it');
 				error.forignKeyFunction = foreignKeyCheckFunction.toString();
 				error.valuesPassed = values;
 				error.valuesReturned = validArray;
 				return callback(error);
 			}
-			var errors = [];
-			for (var i = 0; i < validArray.length; i++) {
+			const errors = [];
+			for (let i = 0; i < validArray.length; i++) {
 				if (!validArray[i]) {
 					errors.push({
 						property: valuesToCheck[i].path.join('.'),

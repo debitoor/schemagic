@@ -10,7 +10,7 @@ Each schema will be loaded with `require`. This is an example of a schema in the
 
 ```js
 //JSON Schemas defined according to the standard json-schema http://json-schema.org/latest/json-schema-core.html
-var regexpPatternUtil = require("./util/regexpPatternUtil");
+const regexpPatternUtil = require("./util/regexpPatternUtil");
 module.exports = {
 	"description":"Login",
 	"required":true,
@@ -36,7 +36,7 @@ module.exports = {
 
 When you require schemagic
 ```
-var schemagic = require("schemagic");
+const schemagic = require("schemagic");
 ```
 
 You will find the following things on `schemagic.login`
@@ -188,9 +188,10 @@ like this:
 ```js
 function getForeignKeyChecker(collectionName, propertyName) {
 	return function (documentIds, options, callback) {
-		var ids = [], formatErrors = [], anyFormatError = false;
+		const ids = [], formatErrors = [];
+		let anyFormatError = false;
 		documentIds.forEach(function (invoiceId) {
-			var id;
+			let id;
 			try {
 				id = new options.mongo.ObjectID(invoiceId);
 				formatErrors.push(true);
@@ -203,9 +204,9 @@ function getForeignKeyChecker(collectionName, propertyName) {
 		if(anyFormatError){
 			return callback(null, formatErrors);
 		}
-		var query = {};
+		const query = {};
 		query[propertyName] = {$in: ids};
-		var fields = {};
+		const fields = {};
 		fields[propertyName] = 1;
 		return options.mongo(collectionName).find(query, fields, getArray);
 
@@ -217,7 +218,7 @@ function getForeignKeyChecker(collectionName, propertyName) {
 		}
 
 		function checkResults(err, documentsInDb) {
-			var result;
+			let result;
 			if (err) {
 				return callback(err);
 			}
@@ -226,7 +227,7 @@ function getForeignKeyChecker(collectionName, propertyName) {
 				result = documentsInDb.map(Boolean); //truthy values become TRUE
 				return callback(null, result); //result array must have same order as array passed in documentIds param
 			}
-			var idsInDb = documentsInDb.map(function (invoice) {
+			const idsInDb = documentsInDb.map(function (invoice) {
 				return traverse(invoice).get(propertyName.split(".")).toString();
 			});
 			result = documentIds.map(function (id) {

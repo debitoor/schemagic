@@ -1,6 +1,6 @@
-var moment = require('moment');
-var format = require('util').format;
-var validUrl = require('valid-url');
+const moment = require('moment');
+const format = require('util').format;
+const validUrl = require('valid-url');
 
 module.exports = {
 	'date-time': datetimeFormatCheck,
@@ -37,10 +37,10 @@ function datetimeISOFormatCheck(value) {
 datetimeFormatCheck.doc = format('Must be a date and time in the format %s', dateTimeFormat);
 datetimeISOFormatCheck.doc = format('Must be a date and time in the iso format %s', isoDateTimeFormat);
 
-var datePattern = /^\d{4}-\d{2}-\d{2}$/;
-var dateFormat = 'YYYY-MM-DD';
+const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+const dateFormat = 'YYYY-MM-DD';
 function dateFormatCheck(value) {
-	var dateTime = moment(value, dateFormat);
+	const dateTime = moment(value, dateFormat);
 	if (!dateTime || !dateTime.isValid() || !datePattern.test(value)) {
 		return false;
 	} else if (dateTime.year() < minYear) {
@@ -51,9 +51,9 @@ function dateFormatCheck(value) {
 dateFormatCheck.doc = format('Must be a date in the format %s', dateFormat);
 
 
-var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
-var maxCurrency = MAX_SAFE_INTEGER / 100;
-var minCurrency = -MAX_SAFE_INTEGER / 100;
+const MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+const maxCurrency = MAX_SAFE_INTEGER / 100;
+const minCurrency = -MAX_SAFE_INTEGER / 100;
 function currencyFormatCheck(value) {
 	if (typeof value !== 'number') {
 		return true;
@@ -67,8 +67,8 @@ function currencyFormatCheck(value) {
 currencyFormatCheck.doc = format('Must be a number with a maximum of two decimals after the decimal point. ' +
 'Must be between %s and %s', minCurrency, maxCurrency);
 
-var maxRate = 100;
-var minRate = 0;
+const maxRate = 100;
+const minRate = 0;
 function rateFormat(value) {
 	if (typeof value !== 'number') {
 		return true;
@@ -82,8 +82,8 @@ function rateFormat(value) {
 rateFormat.doc = format('Must be a number with a maximum of two decimals after the decimal point. ' +
 'Must be between %s and %s', minRate, maxRate);
 
-var maxNegativeRate = 0;
-var minNegativeRate = -100;
+const maxNegativeRate = 0;
+const minNegativeRate = -100;
 function rateNegativeFormat(value) {
 	if (typeof value !== 'number') {
 		return true;
@@ -97,8 +97,8 @@ function rateNegativeFormat(value) {
 rateNegativeFormat.doc = format('Must be a number with a maximum of two decimals after the decimal point. ' +
 'Must be between %s and %s', minNegativeRate, maxNegativeRate);
 
-var maxCurrencyRate = 999999999;
-var minCurrencyRate = 0.000001;
+const maxCurrencyRate = 999999999;
+const minCurrencyRate = 0.000001;
 function currencyRateFormat(value) {
 	if (typeof value !== 'number') {
 		return true;
