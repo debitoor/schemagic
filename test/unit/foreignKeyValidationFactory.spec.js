@@ -1,4 +1,4 @@
-const foreignKeyValidationFactory = require('../../foreignKeyValidationFactory');
+const foreignKeyValidationFactory = require('../../lib/foreignKeyValidationFactory');
 
 describe('creating foreignKeyValidation with mock foreign keys definition', function () {
 

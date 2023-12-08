@@ -1,6 +1,6 @@
-const schemaFactory = require('../../schemaFactory');
+const schemaFactory = require('../../lib/schemaFactory');
 const rawSchemas = require('../exampleSchemas');
-const exampleJson = require('../../generateExampleJson');
+const exampleJson = require('../../lib/generateExampleJson');
 
 describe('/source/util/schemaFactory run on simpleSchema, the returned object', function () {
 	let schema;

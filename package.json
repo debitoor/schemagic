@@ -8,7 +8,7 @@
     "url": "git+https://github.com/debitoor/schemagic.git"
   },
   "private": false,
-  "main": "./source/schemagic.js",
+  "main": "./lib/index.js",
   "engines": {
     "node": ">=16.20",
     "npm": ">=8.19"

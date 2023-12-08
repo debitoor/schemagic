@@ -1,5 +1,5 @@
 const path = require('path');
-const getSchemasDirectory = require('../../getSchemasDirectory');
+const getSchemasDirectory = require('../../lib/getSchemasDirectory');
 
 describe('/source/util/getSchemasDirectory', function(){
 	describe('when it thinks it is in /test/integration/schemas/tmp/tmp', function(){

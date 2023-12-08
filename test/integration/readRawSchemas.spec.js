@@ -1,5 +1,5 @@
 const path = require('path');
-const readRawSchemas = require('../../readRawSchemas');
+const readRawSchemas = require('../../lib/readRawSchemas');
 
 describe('/source/util/redRawSchemas', function() {
 	describe('will read schema', function() {

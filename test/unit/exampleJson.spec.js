@@ -1,5 +1,5 @@
 const schemas = require('../exampleSchemas');
-const exampleJson = require('../../generateExampleJson');
+const exampleJson = require('../../lib/generateExampleJson');
 
 //This is just a helper function I used for adding tests retrospectively
 //Given a string output from exampleJson, it will console log

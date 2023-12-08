@@ -3,7 +3,7 @@ describe('/source/schemagic with valid example schemas', function () {
 
 	describe('requiring schemagic here', function () {
 		before(function () {
-			schemagic = require('../../');
+			schemagic = require('../../lib');
 		});
 
 		it('returns a schemagic object', function () {
