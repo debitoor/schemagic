@@ -10,8 +10,8 @@
   "private": false,
   "main": "./source/schemagic.js",
   "engines": {
-    "node": ">=0.10.28",
-    "npm": ">=2.4.1"
+    "node": ">=16.20",
+    "npm": ">=8.19"
   },
   "dependencies": {
     "async": "^2.0.1",
