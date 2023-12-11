@@ -1,9 +1,9 @@
-var foreignKeyValidationFactory = require('../../foreignKeyValidationFactory');
+const foreignKeyValidationFactory = require('../../lib/foreignKeyValidationFactory');
 
 describe('creating foreignKeyValidation with mock foreign keys definition', function () {
 
-	var foreignKeyValidation;
-	var foreignKeys;
+	let foreignKeyValidation;
+	let foreignKeys;
 
 	beforeEach(function () {
 		foreignKeys = {
@@ -21,8 +21,8 @@ describe('creating foreignKeyValidation with mock foreign keys definition', func
 
 	describe('validating foreign keys, with document that has no properties that should be checked', function () {
 
-		var result;
-		var doc, options;
+		let result;
+		let doc, options;
 
 		beforeEach(function (done) {
 			foreignKeys.test = sinon.spy(foreignKeys.test);
@@ -58,8 +58,8 @@ describe('creating foreignKeyValidation with mock foreign keys definition', func
 
 	describe('validating foreign keys, with document that has 4 properties that should be checked, all values are valid', function () {
 
-		var result;
-		var doc, options;
+		let result;
+		let doc, options;
 
 		beforeEach(function (done) {
 			foreignKeys.test = sinon.spy(foreignKeys.test);
@@ -96,8 +96,8 @@ describe('creating foreignKeyValidation with mock foreign keys definition', func
 
 	describe('validating foreign keys, with document that has 4 properties that should be checked, 2 values are invalid', function () {
 
-		var result;
-		var doc, options;
+		let result;
+		let doc, options;
 
 		beforeEach(function (done) {
 			foreignKeys.test = sinon.spy(foreignKeys.test);
@@ -145,8 +145,8 @@ describe('creating foreignKeyValidation with mock foreign keys definition', func
 
 	describe('validating foreign keys, with document that has a property where the foreign key check fails', function () {
 
-		var error;
-		var doc, options;
+		let error;
+		let doc, options;
 
 		beforeEach(function (done) {
 			foreignKeys.test = sinon.spy(foreignKeys.test);
@@ -176,8 +176,8 @@ describe('creating foreignKeyValidation with mock foreign keys definition', func
 
 	describe('validating foreign keys, with document that has three properties where the foreign key check fails', function () {
 
-		var error;
-		var doc, options;
+		let error;
+		let doc, options;
 
 		beforeEach(function (done) {
 			foreignKeys.test = sinon.spy(foreignKeys.test);

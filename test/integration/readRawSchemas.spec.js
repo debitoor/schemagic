@@ -1,9 +1,9 @@
-var path = require('path');
-var readRawSchemas = require('../../readRawSchemas');
+const path = require('path');
+const readRawSchemas = require('../../lib/readRawSchemas');
 
 describe('/source/util/redRawSchemas', function() {
 	describe('will read schema', function() {
-		var schemas;
+		let schemas;
 		before(function() {
 			schemas = readRawSchemas(path.join(__dirname, 'schemas'));
 		});

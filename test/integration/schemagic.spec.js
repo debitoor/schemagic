@@ -1,9 +1,9 @@
 describe('/source/schemagic with valid example schemas', function () {
-	var schemagic;
+	let schemagic;
 
 	describe('requiring schemagic here', function () {
 		before(function () {
-			schemagic = require('../../');
+			schemagic = require('../../lib');
 		});
 
 		it('returns a schemagic object', function () {
@@ -68,7 +68,7 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('validate against test2 schema that has hidden property', function () {
-			var result1, result2, result3;
+			let result1, result2, result3;
 
 			before(function () {
 				result1 = schemagic.test2.validate({ hiddenProperty: null });
@@ -112,8 +112,8 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('validating against test2 schema that has foreign key value, foreignKey:false - no callback', function () {
-			var result;
-			var doc;
+			let result;
+			let doc;
 			before(function () {
 				doc = {
 					testForeignKey: 3 //this is invalid in foreign key check
@@ -130,8 +130,8 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('array.validate: validating against test2 array schema that has foreign key value, foreignKey:false - no callback', function () {
-			var result;
-			var doc;
+			let result;
+			let doc;
 			before(function () {
 				doc = [{
 					testForeignKey: 3 //this is invalid in foreign key check
@@ -148,8 +148,8 @@ describe('/source/schemagic with valid example schemas', function () {
 
 		});
 		describe('array.validate: validating against test2 array schema that has foreign key value, foreignKey:false - no callback, two items', function () {
-			var result;
-			var doc;
+			let result;
+			let doc;
 			before(function () {
 				doc = [{
 					testForeignKey: 3 //this is invalid in foreign key check
@@ -169,7 +169,7 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('validating against test2 schema that has foreign key value, foreignKey:true - no callback', function () {
-			var doc, options, validate;
+			let doc, options, validate;
 			before(function () {
 				doc = {
 					testForeignKey: 3 //this is invalid in foreign key check
@@ -186,7 +186,7 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('array.validate: validating against test2 array schema that has foreign key value, foreignKey:true - no callback', function () {
-			var doc, options, validate;
+			let doc, options, validate;
 			before(function () {
 				doc = [{
 					testForeignKey: 3 //this is invalid in foreign key check
@@ -203,9 +203,9 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('validating against test2 schema that has invalid foreign key value, foreignKey:true - callback', function () {
-			var result;
-			var doc;
-			var options;
+			let result;
+			let doc;
+			let options;
 			before(function (done) {
 				doc = {
 					testForeignKey: 3 //this is invalid in foreign key check
@@ -235,9 +235,9 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('array.validate: validating against test2 schema that has invalid foreign key value, foreignKey:true - callback', function () {
-			var result;
-			var doc;
-			var options;
+			let result;
+			let doc;
+			let options;
 			before(function (done) {
 				doc = [{
 					testForeignKey: 3 //this is invalid in foreign key check
@@ -269,13 +269,13 @@ describe('/source/schemagic with valid example schemas', function () {
 
 		describe('validating against test1 schema that has valid foreign key value, ' +
 			'foreignKey defined with dot notation and belongs to the schema, foreignKey:true - callback', function () {
-				var result;
+				let result;
 				before(function (done) {
-					var doc = {
+					const doc = {
 						a: 1,
 						testForeignKey2: 12 //this is valid in 'test.testForeignKey2' foreign key check
 					};
-					var options = { foreignKey: true };
+					const options = { foreignKey: true };
 					return schemagic.test.validate(doc, options, saveResult);
 
 					function saveResult(err, res) {
@@ -297,12 +297,12 @@ describe('/source/schemagic with valid example schemas', function () {
 
 		describe('validating against test2 schema that has invalid foreign key value, ' +
 			'foreignKey defined with dot notation and belongs to the schema, foreignKey:true - callback', function () {
-				var result;
+				let result;
 				before(function (done) {
-					var doc = {
+					const doc = {
 						testForeignKey2: 12 //this is invalid in 'test2.testForeignKey2' foreign key check
 					};
-					var options = { foreignKey: true };
+					const options = { foreignKey: true };
 					return schemagic.test2.validate(doc, options, saveResult);
 
 					function saveResult(err, res) {
@@ -329,12 +329,12 @@ describe('/source/schemagic with valid example schemas', function () {
 		describe('validating against test3.with.dot schema that has invalid foreign key value, ' +
 			'foreignKey defined with dot notation and belongs to the schema, ' +
 			'schema has dot in its name, foreignKey:true - callback', function () {
-				var result;
+				let result;
 				before(function (done) {
-					var doc = {
+					const doc = {
 						testForeignKey2: 12 //this is invalid in 'test3.with.dot.testForeignKey2' foreign key check
 					};
-					var options = { foreignKey: true };
+					const options = { foreignKey: true };
 					return schemagic['test3.with.dot'].validate(doc, options, saveResult);
 
 					function saveResult(err, res) {
@@ -359,9 +359,9 @@ describe('/source/schemagic with valid example schemas', function () {
 			});
 
 		describe('validating against test2 schema with foreign key check that fails, foreignKey:true - callback', function () {
-			var error;
-			var doc;
-			var options;
+			let error;
+			let doc;
+			let options;
 			before(function (done) {
 				doc = {
 					testForeignKeyError: 3 //this foreign key checker fails
@@ -405,7 +405,7 @@ describe('/source/schemagic with valid example schemas', function () {
 	});
 
 	describe('having required schemagic in test1 dir', function () {
-		var schemagic1;
+		let schemagic1;
 		before(function () {
 			schemagic1 = require('./dirCacheTest/test1/requireSchemagic');
 		});
@@ -419,7 +419,7 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('requiring it again ()', function () {
-			var shcmemagic2;
+			let shcmemagic2;
 			before(function () {
 				//requireSchemagic is not cached in require cache
 				shcmemagic2 = require('./dirCacheTest/test1/requireSchemagic');
@@ -432,7 +432,7 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 	});
 	describe('having required schemagic in test2 dir', function () {
-		var schemagic1;
+		let schemagic1;
 		before(function () {
 			schemagic1 = require('./dirCacheTest/test2/requireSchemagic');
 		});
@@ -446,7 +446,7 @@ describe('/source/schemagic with valid example schemas', function () {
 		});
 
 		describe('requiring it from subdir', function () {
-			var shcmemagic2;
+			let shcmemagic2;
 			before(function () {
 				shcmemagic2 = require('./dirCacheTest/test2/test2subdir/requireSchemagic');
 			});

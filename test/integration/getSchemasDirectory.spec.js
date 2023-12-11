@@ -1,9 +1,9 @@
-var path = require('path');
-var getSchemasDirectory = require('../../getSchemasDirectory');
+const path = require('path');
+const getSchemasDirectory = require('../../lib/getSchemasDirectory');
 
 describe('/source/util/getSchemasDirectory', function(){
 	describe('when it thinks it is in /test/integration/schemas/tmp/tmp', function(){
-		var dir;
+		let dir;
 		before(function(){
 			dir = getSchemasDirectory(path.join(__dirname, 'schemas/tmp/tmp'));
 		});
@@ -14,7 +14,7 @@ describe('/source/util/getSchemasDirectory', function(){
 	});
 
 	describe('when it thinks it is in /test/integration/schemas/tmp/', function(){
-		var dir;
+		let dir;
 		before(function(){
 			dir = getSchemasDirectory(path.join(__dirname, 'schemas/tmp'));
 		});

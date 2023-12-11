@@ -1,0 +1,46 @@
+name: Continuous integration (CI)
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - id: determine-node-npm-version
+        run: |
+          # tr-d '<=>' to trim '>=8.19.x' to '8.19.x' to prevent major version bumps (like npm@9.3.0 installed by npm i npm@>=8.19.x)
+          NODE_VERSION=$(jq -r '.engines.node' ./package.json | tr -d '<=>')
+          echo "node-version=${NODE_VERSION/null/16}" >> $GITHUB_OUTPUT
+          NPM_VERSION=$(jq -r '.engines.npm' ./package.json | tr -d '<=>')
+          echo "npm-version=${NPM_VERSION/null/}" >> $GITHUB_OUTPUT
+          NPM_POSTINSTALL=$(jq -r '.scripts.postinstall' ./package.json)
+          echo "npm-postinstall=${NPM_POSTINSTALL/null/}" >> $GITHUB_OUTPUT
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.determine-node-npm-version.outputs.node-version }}
+          cache: 'npm'
+      - name: Update NPM
+        if: steps.determine-node-npm-version.outputs.npm-version != ''
+        run: npm i npm@${{ steps.determine-node-npm-version.outputs.npm-version }} -g
+      - name: NPM CI
+        run: npm ci
+      - name: Lint
+        run: npm run lint --if-present
+      - name: ⚙️ Build
+        run: npm run build --if-present
+      - name: 🧪 NPM test
+        run: npm test
