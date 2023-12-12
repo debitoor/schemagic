@@ -1,13 +1,12 @@
 {
   "author": "debitoor",
-  "name": "schemagic",
+  "name": "@debitoor/schemagic",
   "description": "JSON validation with schemas, and schema tools",
   "version": "7.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/debitoor/schemagic.git"
   },
-  "private": false,
   "main": "./lib/index.js",
   "engines": {
     "node": ">=16",
