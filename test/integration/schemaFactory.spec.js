@@ -535,4 +535,28 @@ describe('/source/util/schemaFactory run on simpleSchema, the returned object', 
 			});
 		});
 	});
+
+	describe('toJSON with a RegExp pattern', function () {
+		let schemaWithPattern;
+
+		before(function () {
+			schemaWithPattern = schemaFactory({
+				type: 'object',
+				properties: {
+					value: {
+						type: 'string',
+						pattern: /abc/
+					}
+				}
+			});
+		});
+
+		it('serializes the pattern to its source string', function () {
+			expect(schemaWithPattern.toJSON().properties.value.pattern).to.equal('abc');
+		});
+
+		it('serializes the pattern via JSON.stringify', function () {
+			expect(JSON.parse(JSON.stringify(schemaWithPattern)).properties.value.pattern).to.equal('abc');
+		});
+	});
 });
